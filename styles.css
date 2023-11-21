@@ -1,0 +1,1107 @@
+:root {
+  --black: #213551;
+  --black50: #21355188;
+  --ping-pong-blue: #247aae;
+  --black30: #08274d4c;
+  --white50: #ffffff7d;
+  --ping-pong-green: #408053;
+}
+
+*:target {
+  scroll-margin-top: 62px; /* Высота вашего фиксированного меню */
+}
+
+.trainings-block {
+  background-color: #e7f3e4;
+  padding: 16px 0px;
+}
+
+.personal-trainings-block {
+  background-color: #f9f9f9;
+  padding: 16px 0px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Общие стили */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "SF Pro", sans-serif;
+  color: var(--black);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  /* 27px */
+}
+
+h1,
+p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+h2 {
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--ping-pong-blue);
+}
+
+/* Навигационное меню */
+.navbar {
+  display: flex;
+  top: 0px;
+  position: fixed;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--black);
+  padding: 8px 24px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.logo-text span {
+  display: block;
+  background: radial-gradient(
+    115.6% 84.31% at 17.11% 50%,
+    #51c276 0%,
+    #47a99d 38.39%,
+    #3783d7 100%
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: space-evenly;
+  flex-grow: 1;
+  color: white;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.nav-links li:not(:last-child) {
+  margin-right: 1%;
+}
+
+.nav-phone {
+  display: flex;
+  align-items: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+}
+
+.nav-hamburger,
+.nav-close {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1124px) {
+  .nav-links {
+    display: none;
+  }
+
+  .nav-hamburger {
+    display: block;
+  }
+
+  .nav-links.active {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--black);
+    z-index: 999;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .nav-close.active {
+    display: flex;
+  }
+
+  .nav-hamburger.active {
+    display: none;
+  }
+
+  .nav-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    z-index: 1002;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-phone {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .nav-links li:not(:last-child) {
+    margin-right: 0;
+  }
+
+  .nav-phone {
+    margin-left: 0;
+  }
+}
+
+.main-section {
+  display: flex;
+  padding: 100px 50px 0px 50px;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  gap: 40px 0px;
+  align-self: stretch;
+  flex-wrap: wrap;
+  background: radial-gradient(
+    100.87% 79.74% at 79.74% 39.96%,
+    #80dea5 0%,
+    #1e4096 100%
+  );
+}
+
+.main-section-text .signup-button {
+  width: fit-content;
+}
+
+.trainer-image {
+  /* Ensure the image is a block-level element */
+  width: 300px;
+}
+
+.main-section-text {
+  display: flex;
+  max-width: 650px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  flex: 1 0 0; /* Above the background and image */
+}
+
+h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  color: white;
+  font-weight: 500;
+}
+
+.trainer-name {
+  font-size: 24px;
+  line-height: 1.2;
+  color: white;
+  font-weight: 400;
+}
+
+/* Hide image and adjust font sizes for mobile */
+@media (max-width: 700px) {
+  .trainer-image {
+    display: none;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .trainer-name {
+    font-size: 20px;
+  }
+
+  .main-section {
+    padding: 100px 32px 32px 32px;
+  }
+}
+
+.title-container {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 0 16px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 0 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.photo-text-block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.photo {
+  width: 100%;
+  max-width: 330px;
+  flex: 0 0 auto;
+}
+
+.photo img {
+  width: 100%;
+  max-width: 330px;
+  height: auto;
+}
+
+.text {
+  flex: 1;
+  max-width: 800px;
+  min-width: 320px;
+}
+
+.achievements {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+}
+
+.achievement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 30%;
+  flex: 1;
+  margin-top: 16px;
+}
+
+.emoji {
+  font-size: 30px;
+  color: var(--black);
+  margin-bottom: 16px;
+}
+
+.achievement .achievement-text {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+@media (max-width: 700px) {
+  .photo-text-block {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .achievements {
+    justify-content: center;
+  }
+
+  .achievement {
+    min-width: 40%;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .photo {
+    max-width: none;
+    margin: 0 auto;
+    width: auto;
+  }
+
+  .achievements {
+    gap: 16px;
+  }
+}
+.training-sessions {
+  padding: 0px 16px;
+}
+
+.session-days {
+  display: flex;
+  overflow-x: auto;
+  padding: 0px 16px;
+}
+
+.day-button {
+  background-color: #08274d11;
+  color: var(--black50);
+  padding: 8px 12px;
+  margin-right: 8px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.day-button span.weekday {
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  color: var(--black);
+}
+
+.day-button.active span.weekday {
+  font-weight: 600;
+}
+
+.day-button.active {
+  background-color: #ffffff;
+  font-weight: 400;
+}
+
+.training-schedule-container {
+  display: flex;
+  overflow-x: scroll;
+  width: 100%;
+  padding: 16px;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.training-day {
+  min-width: fit-content;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.training-day:last-child {
+  margin-right: 0;
+}
+
+.training-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.training-card {
+  display: flex;
+  min-width: 300px;
+  max-width: 400px;
+  font-size: 16px;
+  align-items: center;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  background: #fff;
+}
+
+.training-time {
+  display: flex;
+  width: 64px;
+  max-width: 64px;
+  padding: 8px 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: var(--ping-pong-blue);
+  color: #fff;
+  align-self: stretch;
+}
+
+.time {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.duration {
+  font-size: 12px;
+  color: var(--white50);
+}
+
+.training-details {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 12px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.training-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  white-space: normal;
+  color: var(--ping-pong-blue);
+}
+
+.training-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--black50);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+}
+
+.training-location,
+.training-participants,
+.training-price {
+  font-size: 12px;
+}
+
+@media (max-width: 430px) {
+  .training-schedule-container {
+    display: block;
+    overflow-x: hidden;
+    padding-bottom: 0;
+  }
+
+  .training-day {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .training-date {
+    display: none;
+  }
+}
+
+@media (min-width: 430px) {
+  .session-days {
+    display: none;
+  }
+
+  .training-schedule-container {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 20px;
+  }
+
+  .training-day {
+    display: block;
+    flex: 0 0 auto;
+    margin-right: 16px;
+    width: 300px;
+    flex-shrink: 0;
+  }
+
+  .training-day:last-child {
+    margin-right: 0;
+  }
+
+  .training-card {
+    flex-direction: row;
+    width: 400px;
+    margin: 0 auto;
+  }
+
+  .training-time,
+  .training-info {
+    flex: 1;
+  }
+}
+
+.training-topics-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.bullet-title {
+  font-size: 18px;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+.training-points {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 250px !important;
+  flex: 1;
+  max-width: 400px;
+}
+
+.training-points .point-text {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+#card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  padding: 16px;
+}
+
+.personal-training-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 32px 16px 16px 16px;
+  text-align: center;
+  gap: 32px;
+  width: 300px; /* Максимальная ширина на маленьких экранах */
+}
+
+.personal-training-time {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.prices-block {
+  background: #aed8ec;
+  padding: 16px 16px 16px 16px;
+}
+
+.personal-training-price {
+  display: block;
+  background: radial-gradient(
+    115.6% 84.31% at 17.11% 50%,
+    #51c276 0%,
+    #47a99d 38.39%,
+    #3783d7 100%
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.training-features {
+  list-style: none;
+  padding: 0;
+  color: var(--black50);
+  font-size: 16px;
+}
+
+.training-features li {
+  margin-bottom: 16px;
+}
+
+.signup-button {
+  background-color: var(--ping-pong-green);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+}
+
+.signup-button:hover {
+  background-color: #43a047;
+}
+
+.reviews-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 16px;
+}
+.review-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 100%;
+  max-width: 360px;
+  min-width: 320px;
+  margin: auto;
+}
+
+.review-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.review-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background-image: linear-gradient(white, white),
+    radial-gradient(circle at top, #51c276, #47a99d, #3783d7);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+.reviewer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reviewer-name-and-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.reviewer-name {
+  font-weight: bold;
+  color: var(--ping-pong-blue);
+  flex-grow: 1;
+  font-size: 14px;
+}
+
+.player-rating {
+  width: 50px;
+  display: flex;
+  align-items: center; /* Выравнивание по центру по вертикали */
+  justify-content: center; /* Выравнивание по центру по горизонтали */
+  background: radial-gradient(
+    116.2% 116.2% at 10% 11.25%,
+    #51c276 0%,
+    #47a99d 40.63%,
+    #3783d7 100%
+  );
+  border-radius: 4px;
+  padding: 3px 4px;
+  font-size: 12px;
+  font-weight: 700;
+  gap: 2px;
+  color: white;
+  position: relative; /* Для правильного позиционирования псевдоэлемента */
+}
+
+.player-rating-icon {
+  height: 14px; /* Размер вашей звезды */
+  width: 14px; /* Размер вашей звезды */
+}
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  color: #ffd700;
+}
+
+.review-date {
+  color: #999;
+  font-size: 14px;
+}
+
+.review-comment {
+  font-size: 16px;
+  color: var(--black);
+  margin-top: 12px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7; /* Ограничиваем количество строк до 7 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.locations-block {
+  background-color: #e6f7ff;
+  padding: 16px;
+}
+
+.locations-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center; /* Выравниваем элементы по верхнему краю */
+  gap: 32px;
+  padding: 20px;
+  /* Цвет фона, соответствующий вашему дизайну */
+}
+
+.clubs-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 500px; /* Максимальная ширина блока с адресами клубов */
+  margin-right: 20px; /* Добавим отступ справа */
+  gap: 32px;
+}
+
+.club-name {
+  font-weight: bold;
+  color: var(--ping-pong-blue); /* Цвет ссылок */
+  text-decoration: none; /* Убираем подчеркивание ссылок */
+  line-height: 1.8;
+  font-size: 21px;
+}
+
+.club-address {
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.club-metro-container {
+  display: flex;
+  align-items: center; /* Центрируем иконку метро и текст по вертикали */
+}
+
+.metro-icon {
+  width: 16px; /* Задайте нужные размеры */
+  height: 16px;
+  margin-right: 5px; /* Отступ между иконкой и текстом */
+}
+
+.club-metro {
+  color: var(--black50); /* Цвет текста метро */
+  font-size: 14px;
+}
+
+.map-container {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 400px; /* Ширина блока с картой */
+  height: 320px; /* Высота блока с картой */
+}
+
+/* Добавьте дополнительные стили, если нужно */
+
+.tennis-features {
+  padding: 16px;
+}
+
+.benefit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 130px;
+  flex: 1;
+  margin-top: 16px;
+}
+
+.benefit-text {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+@media (min-width: 700px) {
+  .benefit {
+    min-width: 20%;
+  }
+}
+
+.faq-container {
+  background-color: #e6f7ff;
+  padding: 16px;
+}
+
+.faq-item {
+  margin-bottom: 10px;
+}
+
+.faq-section {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.faq-question {
+  border: none;
+  padding: 16px 40px 8px 0px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  position: relative;
+  color: var(--black);
+  background: none;
+}
+
+.faq-question .arrow {
+  position: absolute;
+  right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq-answer p {
+  font-size: 16px;
+  padding: 10px 0;
+}
+
+/* Класс для переворота стрелки и раскрытия ответа */
+.faq-question.active .arrow {
+  transform: rotate(180deg);
+}
+
+.faq-question.active + .faq-answer {
+  max-height: 1000px; /* или значение достаточное для отображения содержимого */
+}
+
+.video-block {
+  padding: 0;
+}
+
+.video-container {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 0 32px 32px;
+  gap: 16px; /* Расстояние между видео */ /* Отступы внутри контейнера */
+}
+
+.video-container iframe {
+  flex: 0 0 auto; /* Запретить сжимание видео */
+  border: none; /* Убрать рамку */
+  border-radius: 10px; /* Скругление углов */
+  width: 420px;
+  height: calc(
+    420px / (16 / 9)
+  ); /* Рассчитываем высоту для соотношения сторон 16:9 */
+  flex: 0 0 auto;
+}
+
+@media (max-width: 520px) {
+  .video-container iframe {
+    width: 85vw; /* На маленьких экранах ширина видео будет 80% от ширины экрана */
+    height: calc(
+      85vw / (16 / 9)
+    ); /* Рассчитываем высоту для соотношения сторон 16:9 */
+  }
+}
+
+.padding-16 {
+  padding: 0px 16px;
+}
+
+.contacts-block {
+  background-color: #a3bcc8;
+  padding: 16px;
+}
+
+.contact-info {
+  display: flex;
+  min-width: 300px;
+  max-width: 300px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex: 1 0 0;
+}
+
+.contact-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.contact-photo {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 16px;
+}
+
+.contact-form {
+  flex-basis: 60%;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 500px;
+  gap: 24px;
+  flex: 1 0 0;
+}
+
+.contact-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Стили для контейнера с полями телефона и email */
+.contact-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Стили для поля телефона */
+.contact-details input[type="tel"] {
+  width: 200px; /* Фиксированная ширина для телефона */
+}
+
+/* Стили для поля email */
+.contact-details input[type="email"] {
+  flex-grow: 1;
+  width: 250px; /* Минимальная ширина для email */
+}
+
+.no-top-padding {
+  margin: 0;
+}
+
+.rttf-link {
+  display: flex;
+  padding: 8px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  width: fit-content;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.error-message {
+  color: red;
+  display: none;
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  font-size: 14px;
+}
+
+/* Общие стили для всех полей ввода */
+input {
+  height: 38px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+}
+
+/* Стили для textarea */
+textarea {
+  height: 100px; /* Высота изменена на 100 пикселей */
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  resize: none;
+  font-family: "SF Pro", sans-serif;
+  font-size: 16px;
+}
