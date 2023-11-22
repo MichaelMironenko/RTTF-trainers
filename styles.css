@@ -965,6 +965,46 @@ h1 {
     ); /* Рассчитываем высоту для соотношения сторон 16:9 */
   }
 }
+.lazy-video,
+.video-iframe {
+  flex: 0 0 auto; /* Запретить сжимание и растягивание видео */
+  width: 420px;
+  height: calc(420px / (16 / 9));
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.lazy-video img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90px;
+  height: 60px;
+  background: url("play-button.png") no-repeat;
+}
+
+@media (max-width: 520px) {
+  .lazy-video,
+  .video-iframe {
+    width: 85vw;
+    height: calc(85vw / (16 / 9));
+  }
+}
+
+/* Медиа-запросы для адаптивного дизайна */
+@media (max-width: 520px) {
+  .lazy-video {
+    width: 85vw;
+    height: calc(85vw / (16 / 9));
+  }
+}
 
 .padding-16 {
   padding: 0px 16px;

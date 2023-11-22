@@ -463,6 +463,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Больше не нужно добавлять clubsContainer в body, так как он уже в DOM
 });
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const faqQuestions = document.querySelectorAll('.faq-question');
 
@@ -567,30 +569,39 @@ const videoIDs = [
   'rW623Kugitc'
 ];
 
-// Функция для создания и возврата элемента iframe для видео на YouTube
-function createVideoIframe(videoID) {
-  const iframe = document.createElement('iframe');
-  iframe.setAttribute('width', '100%');
-  iframe.setAttribute('height', '100%');
-  iframe.setAttribute('src', `https://www.youtube.com/embed/${videoID}`);
-  iframe.setAttribute('title', 'YouTube video player');
-  iframe.setAttribute('frameborder', '0');
-  iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-  iframe.setAttribute('allowfullscreen', true);
-  return iframe;
+function createLazyVideo(videoID) {
+  const videoWrapper = document.createElement('div');
+  videoWrapper.classList.add('lazy-video');
+  videoWrapper.setAttribute('data-id', videoID);
+
+  const thumbnail = document.createElement('img');
+  thumbnail.src = `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
+  videoWrapper.appendChild(thumbnail);
+
+  const playButton = document.createElement('div');
+  playButton.classList.add('play-button');
+  videoWrapper.appendChild(playButton);
+
+  videoWrapper.addEventListener('click', function() {
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', `https://www.youtube.com/embed/${this.dataset.id}?autoplay=1&rel=0&showinfo=0`);
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allowfullscreen', true);
+    iframe.classList.add('video-iframe');
+    this.parentNode.replaceChild(iframe, this);
+  });
+
+  return videoWrapper;
 }
 
-// Функция для добавления видео в контейнер
 function addVideosToContainer(videoIDs) {
   const videoContainer = document.querySelector('.video-container');
   videoIDs.forEach(videoID => {
-    const videoWrapper = document.createElement('div');
-    videoWrapper.classList.add('video-wrapper');
-    const iframe = createVideoIframe(videoID);
-    videoWrapper.appendChild(iframe);
-    videoContainer.appendChild(videoWrapper);
+    const lazyVideo = createLazyVideo(videoID);
+    videoContainer.appendChild(lazyVideo);
   });
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
   addVideosToContainer(videoIDs);
