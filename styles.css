@@ -71,6 +71,7 @@ a {
   align-items: center;
   background-color: var(--black);
   padding: 8px 24px;
+  z-index: 1100;
 }
 
 .logo-container {
@@ -972,6 +973,7 @@ h1 {
   height: calc(420px / (16 / 9));
   border-radius: 10px;
   overflow: hidden;
+  position: relative;
 }
 
 .lazy-video img {
@@ -985,9 +987,16 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90px;
-  height: 60px;
-  background: url("play-button.png") no-repeat;
+  width: 30%;
+  height: 30%;
+  background: url("images/play-button.svg") no-repeat center center;
+  background-size: contain;
+  opacity: 0.7; /* Начальная прозрачность кнопки */
+  transition: opacity 0.3s;
+}
+
+.play-button:hover {
+  opacity: 1; /* Прозрачность при наведении */
 }
 
 @media (max-width: 520px) {

@@ -460,7 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
     clubsContainer.appendChild(clubElement);
   });
 
-  // Больше не нужно добавлять clubsContainer в body, так как он уже в DOM
 });
 
 
@@ -484,6 +483,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    function loadYandexMap() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.charset = 'utf-8';
+        script.async = true;
+        script.src = "https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1be65a4810c0aa898c3dbfc8d1d179de1ba226c546caca742d253b8147937556&amp;width=100%25&amp;height=320&amp;lang=ru_RU&amp;scroll=true";
+        document.getElementById('yandex-map').appendChild(script);
+    }
+
+    var mapContainer = document.getElementById('yandex-map');
+    if (mapContainer) {
+        var observer = new IntersectionObserver(function(entries) {
+            if (entries[0].isIntersecting) {
+                loadYandexMap();
+                observer.disconnect();
+            }
+        }, { threshold: [0.5] });
+
+        observer.observe(mapContainer);
+    }
+});
+
 
 const faqData = [
   {
@@ -582,14 +605,15 @@ function createLazyVideo(videoID) {
   playButton.classList.add('play-button');
   videoWrapper.appendChild(playButton);
 
-  videoWrapper.addEventListener('click', function() {
-    const iframe = document.createElement('iframe');
-    iframe.setAttribute('src', `https://www.youtube.com/embed/${this.dataset.id}?autoplay=1&rel=0&showinfo=0`);
-    iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('allowfullscreen', true);
-    iframe.classList.add('video-iframe');
-    this.parentNode.replaceChild(iframe, this);
-  });
+videoWrapper.addEventListener('click', function() {
+  const iframe = document.createElement('iframe');
+  iframe.setAttribute('src', `https://www.youtube.com/embed/${this.dataset.id}?autoplay=1&mute=1&enablejsapi=1`);
+  iframe.setAttribute('frameborder', '0');
+  iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+  iframe.setAttribute('allowfullscreen', true);
+  iframe.classList.add('video-iframe');
+  this.parentNode.replaceChild(iframe, this);
+});
 
   return videoWrapper;
 }
