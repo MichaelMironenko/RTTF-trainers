@@ -598,7 +598,7 @@ function createLazyVideo(videoID) {
   videoWrapper.setAttribute('data-id', videoID);
 
   const thumbnail = document.createElement('img');
-  thumbnail.src = `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
+  thumbnail.src = `https://img.youtube.com/vi/${videoID}/mqdefault.jpg`;
   videoWrapper.appendChild(thumbnail);
 
   const playButton = document.createElement('div');
