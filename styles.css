@@ -11,6 +11,10 @@
   scroll-margin-top: 62px; /* Высота вашего фиксированного меню */
 }
 
+[v-cloak] {
+  display: none;
+}
+
 .trainings-block {
   background-color: #e7f3e4;
   padding: 16px 0px;
