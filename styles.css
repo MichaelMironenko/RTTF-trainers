@@ -594,7 +594,8 @@ h1 {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 16px;
+  justify-content: center;
+  gap: 32px;
 }
 
 .bullet-title {
@@ -696,6 +697,7 @@ h1 {
   overflow-x: auto;
   gap: 16px;
   padding: 16px;
+  align-items: flex-start;
 }
 .review-card {
   background: #ffffff;
@@ -705,7 +707,6 @@ h1 {
   width: 100%;
   max-width: 360px;
   min-width: 320px;
-  margin: auto;
 }
 
 .review-header {
@@ -820,9 +821,8 @@ h1 {
 
 .club-name {
   font-weight: bold;
-  color: var(--ping-pong-blue); /* Цвет ссылок */
-  text-decoration: none; /* Убираем подчеркивание ссылок */
-  line-height: 1.8;
+  color: var(--ping-pong-blue);
+  text-decoration: none;
   font-size: 21px;
 }
 
@@ -834,17 +834,17 @@ h1 {
 
 .club-metro-container {
   display: flex;
-  align-items: center; /* Центрируем иконку метро и текст по вертикали */
+  align-items: center;
 }
 
 .metro-icon {
-  width: 16px; /* Задайте нужные размеры */
+  width: 16px;
   height: 16px;
-  margin-right: 5px; /* Отступ между иконкой и текстом */
+  margin-right: 5px;
 }
 
 .club-metro {
-  color: var(--black50); /* Цвет текста метро */
+  color: var(--black50);
   font-size: 14px;
 }
 
@@ -852,11 +852,9 @@ h1 {
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
-  max-width: 400px; /* Ширина блока с картой */
-  height: 320px; /* Высота блока с картой */
+  max-width: 400px;
+  height: 320px;
 }
-
-/* Добавьте дополнительные стили, если нужно */
 
 .tennis-features {
   padding: 16px;
@@ -927,13 +925,12 @@ h1 {
   padding: 10px 0;
 }
 
-/* Класс для переворота стрелки и раскрытия ответа */
-.faq-question.active .arrow {
+.arrow.active {
   transform: rotate(180deg);
 }
 
 .faq-question.active + .faq-answer {
-  max-height: 1000px; /* или значение достаточное для отображения содержимого */
+  max-height: 1000px;
 }
 
 .video-block {
@@ -944,31 +941,27 @@ h1 {
   display: flex;
   overflow-x: auto;
   padding: 0 0 32px 32px;
-  gap: 16px; /* Расстояние между видео */ /* Отступы внутри контейнера */
+  gap: 16px;
 }
 
 .video-container iframe {
-  flex: 0 0 auto; /* Запретить сжимание видео */
-  border: none; /* Убрать рамку */
-  border-radius: 10px; /* Скругление углов */
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 10px;
   width: 420px;
-  height: calc(
-    420px / (16 / 9)
-  ); /* Рассчитываем высоту для соотношения сторон 16:9 */
+  height: calc(420px / (16 / 9));
   flex: 0 0 auto;
 }
 
 @media (max-width: 520px) {
   .video-container iframe {
-    width: 85vw; /* На маленьких экранах ширина видео будет 80% от ширины экрана */
-    height: calc(
-      85vw / (16 / 9)
-    ); /* Рассчитываем высоту для соотношения сторон 16:9 */
+    width: 85vw;
+    height: calc(85vw / (16 / 9));
   }
 }
 .lazy-video,
 .video-iframe {
-  flex: 0 0 auto; /* Запретить сжимание и растягивание видео */
+  flex: 0 0 auto;
   width: 420px;
   height: calc(420px / (16 / 9));
   border-radius: 10px;
@@ -991,12 +984,12 @@ h1 {
   height: 30%;
   background: url("images/play-button.svg") no-repeat center center;
   background-size: contain;
-  opacity: 0.7; /* Начальная прозрачность кнопки */
+  opacity: 0.7;
   transition: opacity 0.3s;
 }
 
 .play-button:hover {
-  opacity: 1; /* Прозрачность при наведении */
+  opacity: 1;
 }
 
 @media (max-width: 520px) {

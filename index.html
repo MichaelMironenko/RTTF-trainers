@@ -15,508 +15,589 @@
     <title>Тренер по настольному теннису Анна Вознесенская</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
-    <!-- Верхнее меню -->
-    <nav class="navbar">
-      <div class="logo-container">
-        <img
-          loading="lazy"
-          src="images/Anna-40px.png"
-          alt="Анна Вознесенская"
-          class="logo-image"
-        />
-        <div class="logo-text">
-          <span>АННА</span>
-          <span>ВОЗНЕСЕНСКАЯ</span>
-        </div>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#about">Обо мне</a></li>
-        <li><a href="#trainings">Тренировки</a></li>
-        <li><a href="#prices">Цены</a></li>
-        <li><a href="#reviews">Отзывы</a></li>
-        <li><a href="#videos">Видео</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contacts">Контакты</a></li>
-      </ul>
-      <div class="nav-phone">
-        <a href="https://wa.me/71234567890" target="_blank" class="nav-icon">
-          <img src="images/logo-whatsapp.svg" alt="WhatsApp" class="nav-icon" />
-        </a>
-        <a href="https://t.me/71234567890" target="_blank" class="nav-icon">
-          <img src="images/logo-telegram.svg" alt="Telegram" class="nav-icon" />
-        </a>
-        <a href="tel:+71234567890" class="phone-number">+7 123 456-78-90</a>
-      </div>
-
-      <div class="nav-hamburger">☰</div>
-      <div class="nav-close">􀅾</div>
-    </nav>
-
-    <div class="main-section">
-      <div class="main-section-text">
-        <p class="trainer-name">Анна Вознесенская, тренер</p>
-        <h1>
-          Групповые и персональные тренировки по настольному теннису в Москве
-        </h1>
-
-        <a href="#contacts" class="signup-button">Записаться на тренировку</a>
-      </div>
-      <img
-        src="images/anna-transparent.png"
-        alt="Trainer"
-        class="trainer-image"
-      />
-    </div>
-
-    <div id="about" class="about-me">
-      <div class="title-container">
-        <h2>Обо мне</h2>
-      </div>
-      <div class="container">
-        <div class="photo-text-block">
-          <div class="photo">
-            <img src="images/Anna2.jpg" alt="Trainer Photo" />
-          </div>
-          <div class="text">
-            <p>
-              Привет! Меня зовут Анна Вознесенская, и я тренер по настольному
-              теннису. Обучаю детей и взрослых, вдохновляю на достижения в
-              спорте и в жизни. Персональные тренировки и групповые занятия
-              проходят в дружелюбной, поддерживающей атмосфере. Моя методика —
-              это сбалансированное сочетание физической нагрузки и
-              психологического комфорта. Я стараюсь быть не просто тренером, но
-              и наставником, который всегда поддержит и поможет. Легкость в
-              общении и вежливость — мои неизменные спутники. Ценю
-              индивидуальный подход к каждому ученику, верю в мощь личного
-              примера и постоянного самосовершенствования. Давайте вместе
-              стремиться к лучшей версии себя!
-            </p>
+    <div id="app">
+      <!-- Верхнее меню -->
+      <nav class="navbar">
+        <div class="logo-container">
+          <img
+            :src="contacts.avatar"
+            :alt="`${contacts.trainerName} ${contacts.trainerSurname}`"
+            class="logo-image"
+          />
+          <div class="logo-text">
+            <span>{{ contacts.trainerName.toUpperCase() }}</span>
+            <span>{{ contacts.trainerSurname.toUpperCase() }}</span>
           </div>
         </div>
-
-        <div class="achievements">
-          <div class="achievement">
-            <span class="emoji" role="img" aria-label="Trophy">🏆</span>
-            <span class="achievement-text"
-              >Кандидат в мастера спорта по настольному теннису</span
-            >
-          </div>
-          <div class="achievement">
-            <span class="emoji" role="img" aria-label="Medal">🥇</span>
-            <span class="achievement-text">Победитель Первенства Москвы</span>
-          </div>
-          <div class="achievement">
-            <span class="emoji" role="img" aria-label="Certificate">📜</span>
-            <span class="achievement-text">Призер Чемпионата России</span>
-          </div>
-          <div class="achievement">
-            <span class="emoji" role="img" aria-label="Trophy">🏆</span>
-            <span class="achievement-text"
-              >Призер Международных соревнований</span
-            >
-          </div>
-          <div class="achievement">
-            <span class="emoji" role="img" aria-label="Medal">👩🏼‍🏫</span>
-            <span class="achievement-text"
-              >Более 5 лет опыта работы тренером</span
-            >
-          </div>
-          <div class="achievement">
-            <span class="emoji" role="img" aria-label="Certificate">👨‍👩‍👦</span>
-            <span class="achievement-text">Обучаю взрослых и детей</span>
-          </div>
+        <ul class="nav-links">
+          <li><a href="#about">Обо мне</a></li>
+          <li><a href="#trainings">Тренировки</a></li>
+          <li><a href="#prices">Цены</a></li>
+          <li><a href="#reviews">Отзывы</a></li>
+          <li><a href="#videos">Видео</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+        </ul>
+        <div class="nav-phone">
+          <a
+            v-if="contacts.phoneLink"
+            :href="contacts.phoneLink"
+            target="_blank"
+            class="nav-icon"
+          >
+            <img src="images/logo-whatsapp.svg" alt="WhatsApp" />
+          </a>
+          <a
+            v-if="contacts.telegramLink"
+            :href="contacts.telegramLink"
+            target="_blank"
+            class="nav-icon"
+          >
+            <img src="images/logo-telegram.svg" alt="Telegram" />
+          </a>
+          <a v-if="contacts.phoneNumber" :href="`tel:${contacts.phoneNumber}`"
+            >{{ contacts.phoneNumber }}</a
+          >
         </div>
-      </div>
-    </div>
 
-    <div id="trainings" class="trainings-block">
-      <div class="title-container">
-        <h2>Групповые тренировки</h2>
-      </div>
-      <div class="container">
-        <div class="photo-text-block">
-          <div class="photo">
-            <img src="images/group-training.jpg" alt="Групповая тренировка" />
-          </div>
-          <div class="text">
-            <p>
-              Групповые тренировки — это отличный способ улучшить технику,
-              получить новые знания и научиться чему-то новому в компании
-              единомышленников. Занимайтесь спортом и поддерживайте отличное
-              настроение, тренируясь вместе с нами!
-            </p>
-          </div>
-        </div>
-      </div>
+        <div class="nav-hamburger" @click="toggleNav">☰</div>
+        <div class="nav-close" @click="closeNav">✕</div>
+      </nav>
 
-      <div class="title-container">
-        <h3>Ближайшие тренировки со мной</h3>
-      </div>
-
-      <!-- Кнопки для переключения дней -->
-      <div class="session-days">
-        <button class="day-button" data-day="day1">
-          <span class="weekday">day</span>
-          <span>date</span>
-        </button>
-        <button class="day-button" data-day="day2">
-          <span class="weekday">Завтра</span>
-          <span>date</span>
-        </button>
-        <button class="day-button" data-day="day3">
-          <span class="weekday">Четверг</span>
-          <span>date</span>
-        </button>
-      </div>
-
-      <script type="text/template" id="training-day-template">
-        <div class="training-day">
-          <h3 class="training-date">%DATE%</h3>
-          <div class="training-cards">
-            <!-- Карточки тренировок будут вставлены сюда -->
-          </div>
-        </div>
-      </script>
-
-      <!-- Шаблон для карточки тренировки -->
-      <script type="text/template" id="training-card-template">
-        <div class="training-card">
-          <div class="training-time">
-            <span class="time">%TIME%</span>
-            <span class="duration">%DURATION%</span>
-          </div>
-          <div class="training-details">
-            <div class="training-name">%NAME%</div>
-            <div class="training-info">
-              <div class="info-item">
-                <img src="images/trainings-block-home.svg" alt="Локация" class="icon home-icon" />
-                <span class="training-location">%LOCATION%</span>
-              </div>
-              <div class="info-item">
-                <img src="images/trainings-block-person.svg" alt="Участники" class="icon person-icon" />
-                <span class="training-participants">%PARTICIPANTS%</span>
-              </div>
-              <div class="info-item">
-                <img src="images/trainings-block-price.svg" alt="Цена" class="icon price-icon" />
-                <span class="training-price">%PRICE%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </script>
-
-      <!-- Контейнер, куда будут вставлены все дни тренировок -->
-      <div class="training-schedule-container">
-        <!-- Сгенерированные карточки появятся здесь -->
-      </div>
-    </div>
-
-    <div class="personal-trainings-block">
-      <div class="title-container">
-        <h2>Индивидуальные тренировки</h2>
-      </div>
-      <div class="container">
-        <div class="photo-text-block">
-          <div class="photo">
-            <img
-              loading="lazy"
-              src="images/personal-training.jpg"
-              alt="Групповая тренировка"
-            />
-          </div>
-          <div class="text">
-            <p>
-              Не важно, планируете ли вы стать чемпионом России или выигрывать
-              на любительских турнирах, я помогу вам достичь вашей цели. Вы
-              заметите прогресс уже после первого занятия, а регулярные занятия
-              постепенно поднимут ваше мастерство на новый уровень. Тренировки
-              разнообразны по содержанию и включают в себя следующие элементы:
-            </p>
-          </div>
-        </div>
-        <div class="training-topics-list">
-          <!-- Сюда будет добавлен список тренировок -->
-        </div>
-      </div>
-    </div>
-
-    <div id="prices" class="prices-block">
-      <div class="title-container">
-        <h2>Цены на индивидуальные тренировки</h2>
-      </div>
-
-      <template id="personal-training-card-template">
-        <div class="personal-training-card">
-          <div class="personal-training-time"></div>
-          <div class="personal-training-price"></div>
-          <ul class="training-features"></ul>
+      <div class="main-section">
+        <div class="main-section-text">
+          <p class="trainer-name">{{ mainSection.subtitle }}</p>
+          <h1>{{ mainSection.heading }}</h1>
           <a href="#contacts" class="signup-button">Записаться на тренировку</a>
         </div>
-      </template>
-
-      <div id="card-container"></div>
-    </div>
-
-    <div id="reviews" class="reviews-block">
-      <div class="title-container">
-        <h2>Отзывы с сайта RTTF</h2>
+        <img :src="mainSection.image" alt="Trainer" class="trainer-image" />
       </div>
 
-      <div id="reviews-container" class="reviews-container"></div>
-
-      <template id="review-card-template">
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-avatar-wrapper">
-              <img class="review-avatar" src="" alt="Аватар" />
+      <!-- About Me Section -->
+      <div id="about" class="about-me">
+        <div class="title-container">
+          <h2>{{ aboutMeData.aboutTitle }}</h2>
+        </div>
+        <div class="container">
+          <div class="photo-text-block">
+            <div class="photo">
+              <img :src="aboutMeData.photoUrl" alt="Trainer Photo" />
             </div>
-            <div class="reviewer-info">
-              <div class="reviewer-name-and-rating">
-                <span class="reviewer-name"></span>
-                <div class="player-rating">
-                  <img
-                    src="images/white-star.svg"
-                    alt="Rating Star"
-                    class="player-rating-icon"
-                  />
+            <div class="text">
+              <p v-html="formattedAboutText"></p>
+            </div>
+          </div>
 
-                  <span class="rating-number"></span>
-                  <!-- Сюда будет вставлен рейтинг -->
+          <div class="achievements">
+            <div
+              class="achievement"
+              v-for="(achievement, index) in aboutMeData.achievements"
+              :key="index"
+            >
+              <span class="emoji" role="img" :aria-label="achievement.emoji"
+                >{{ achievement.emoji }}</span
+              >
+              <span class="achievement-text">{{ achievement.text }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trainings-block">
+        <div class="title-container">
+          <h2>Групповые тренировки</h2>
+        </div>
+        <div class="container">
+          <div class="photo-text-block">
+            <div class="photo">
+              <img src="images/group-training.jpg" alt="Групповая тренировка" />
+            </div>
+            <div class="text">
+              <p>
+                Групповые тренировки — это отличный способ улучшить технику,
+                получить новые знания и научиться чему-то новому в компании
+                единомышленников. Занимайтесь спортом и поддерживайте отличное
+                настроение, тренируясь вместе с нами!
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="title-container">
+          <h3>Ближайшие тренировки со мной</h3>
+        </div>
+        <div class="session-days">
+          <button
+            v-for="(day, index) in trainingsData"
+            :key="index"
+            @click="switchDay(index)"
+            class="day-button"
+          >
+            <span class="weekday">{{ day.date.split(', ')[0] }}</span>
+            <span>{{ day.date.split(', ')[1] }}</span>
+          </button>
+        </div>
+        <div class="training-schedule-container">
+          <div
+            v-for="(day, index) in trainingsData"
+            :key="index"
+            class="training-day"
+            :style="{ display: getDayDisplay(index) }"
+          >
+            <h3 class="training-date">{{ day.date }}</h3>
+            <div class="training-cards">
+              <div
+                v-for="training in day.trainings"
+                :key="training.time"
+                class="training-card"
+              >
+                <div class="training-time">
+                  <span class="time">{{ training.time }}</span>
+                  <span class="duration">{{ training.duration }}</span>
+                </div>
+                <div class="training-details">
+                  <div class="training-name">{{ training.name }}</div>
+                  <div class="training-info">
+                    <div class="info-item">
+                      <img
+                        src="images/trainings-block-home.svg"
+                        alt="Локация"
+                        class="icon home-icon"
+                      />
+                      <span class="training-location"
+                        >{{ training.location }}</span
+                      >
+                    </div>
+                    <div class="info-item">
+                      <img
+                        src="images/trainings-block-person.svg"
+                        alt="Участники"
+                        class="icon person-icon"
+                      />
+                      <span class="training-participants"
+                        >{{ training.participants }}</span
+                      >
+                    </div>
+                    <div class="info-item">
+                      <img
+                        src="images/trainings-block-price.svg"
+                        alt="Цена"
+                        class="icon price-icon"
+                      />
+                      <span class="training-price">{{ training.price }}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="review-rating"></div>
-              <div class="review-date"></div>
             </div>
           </div>
-          <div class="review-comment"></div>
-        </div>
-      </template>
-    </div>
-
-    <div id="about" class="locations-block">
-      <div class="title-container">
-        <h2>Я тренирую в следующих клубах</h2>
-      </div>
-
-      <div class="locations-container">
-        <div id="clubs-container" class="clubs-container"></div>
-
-        <!-- Контейнер для карты -->
-        <div id="yandex-map" class="map-container">
-          <script
-            type="text/javascript"
-            charset="utf-8"
-            async
-            src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1be65a4810c0aa898c3dbfc8d1d179de1ba226c546caca742d253b8147937556&amp;width=100%25 &amp;height=320&amp;lang=ru_RU&amp;scroll=true"
-          ></script>
         </div>
       </div>
-    </div>
 
-    <div id="tennis-features" class="tennis-features">
-      <div class="title-container">
-        <h2>Польза настольного тенниса</h2>
-      </div>
-      <div class="container">
-        <div class="photo-text-block">
-          <div class="photo">
-            <img loading="lazy" src="images/tt.jpg" alt="Trainer Photo" />
-          </div>
-          <div class="text">
-            <p>
-              Настольный теннис оказывает комплексное положительное воздействие
-              на физическое и психическое здоровье человека. Игра в настольный
-              теннис имеет множество полезных свойств:
-            </p>
-          </div>
+      <div class="personal-trainings-block">
+        <div class="title-container">
+          <h2>{{ personalTrainings.title }}</h2>
         </div>
-
-        <div class="achievements">
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Coordination">🤹</span>
-            <span class="benefit-text">Улучшает координацию</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Reaction">⚡</span>
-            <span class="benefit-text">Повышает реакцию</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Muscle">💪</span>
-            <span class="benefit-text">Укрепляет мышцы</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Calories">🔥</span>
-            <span class="benefit-text">Сжигает калории</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Vision">👀</span>
-            <span class="benefit-text">Улучшает зрение</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Flexibility">🤸‍♂️</span>
-            <span class="benefit-text">Улучшает гибкость</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Vestibular">🧠</span>
-            <span class="benefit-text">Развивает вестибулярный аппарат</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Activity">💡</span>
-            <span class="benefit-text">Стимулирует мозговую активность</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Joints">🦵</span>
-            <span class="benefit-text">Поддерживает здоровье суставов</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Stress">😌</span>
-            <span class="benefit-text">Снижает стресс</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Socialization">🤝</span>
-            <span class="benefit-text">Способствует социализации</span>
-          </div>
-          <div class="benefit">
-            <span class="emoji" role="img" aria-label="Mood">😃</span>
-            <span class="benefit-text">Повышает настроение</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="faq" class="faq-container">
-      <div class="title-container">
-        <h2>Часто задаваемые вопросы</h2>
-      </div>
-      <div id="faq-section" class="faq-section"></div>
-    </div>
-
-    <div id="videos" class="video-block">
-      <div class="title-container padding-16">
-        <h2>Видео со мной</h2>
-      </div>
-      <div class="video-container"></div>
-    </div>
-
-    <div id="contacts" class="contacts-block">
-      <div class="title-container">
-        <h2>Контакты</h2>
-      </div>
-
-      <div class="contact-section">
-        <div class="contact-info">
-          <img
-            loading="lazy"
-            src="images/Anna2.jpg"
-            alt="Anna Voznesenskaya"
-            class="contact-photo"
-          />
-          <p class="bold">Анна Вознесенская</p>
-          <div class="align-center">
-            <a href="https://wa.me/71234567890" target="_blank">
+        <div class="container">
+          <div class="photo-text-block">
+            <div class="photo">
               <img
-                src="images/logo-whatsapp.svg"
-                alt="WhatsApp"
-                class="nav-icon"
+                loading="lazy"
+                :src="personalTrainings.imageUrl"
+                alt="Индивидуальная тренировка"
               />
-            </a>
-            <a href="https://t.me/71234567890" target="_blank">
-              <img
-                src="images/logo-telegram.svg"
-                alt="Telegram"
-                class="nav-icon"
-              />
-            </a>
-            <a href="tel:+71234567890" class="bold">+7 123 456-78-90</a>
+            </div>
+            <div class="text">
+              <p>{{ personalTrainings.description }}</p>
+            </div>
           </div>
-          <a href="mailto:anna-voznesenskaya@example.com"
-            >anna-voznesenskaya@example.com</a
+          <div class="training-topics-list">
+            <div
+              v-for="topic in personalTrainings.trainingTopics"
+              :key="topic.title"
+              class="training-points"
+            >
+              <div class="emoji">{{topic.emoji}}</div>
+              <div class="bullet-title">{{topic.title}}</div>
+              <div class="point-text">{{topic.text}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="prices" class="prices-block">
+        <div class="title-container">
+          <h2>{{ prices.title }}</h2>
+        </div>
+        <div id="card-container">
+          <div
+            v-for="card in prices.priceCards"
+            :key="card.duration"
+            class="personal-training-card"
           >
+            <div class="personal-training-time">{{ card.duration }}</div>
+            <div class="personal-training-price">{{ card.price }}</div>
+            <ul class="training-features">
+              <li v-for="feature in card.features" :key="feature">
+                {{ feature }}
+              </li>
+            </ul>
+            <a href="#contacts" class="signup-button"
+              >Записаться на тренировку</a
+            >
+          </div>
+        </div>
+      </div>
 
-          <a
-            href="https://rttf.ru/anna-voznesenskaya"
-            target="_blank"
-            class="rttf-link"
+      <div id="reviews" class="reviews-block">
+        <div class="title-container">
+          <h2>{{ reviews.title }}</h2>
+        </div>
+        <div class="reviews-container">
+          <div
+            v-for="review in reviews.reviewData"
+            :key="review.name"
+            class="review-card"
+          >
+            <div class="review-header">
+              <div class="review-avatar-wrapper">
+                <img
+                  class="review-avatar"
+                  :src="review.avatar"
+                  alt="Аватар пользователя"
+                />
+              </div>
+              <div class="reviewer-info">
+                <div class="reviewer-name-and-rating">
+                  <span class="reviewer-name">{{ review.name }}</span>
+                  <div class="player-rating">
+                    <img
+                      src="images/white-star.svg"
+                      alt="Rating Star"
+                      class="player-rating-icon"
+                    />
+                    <span class="rating-number">{{ review.gameRating }}</span>
+                  </div>
+                </div>
+                <div class="review-rating">
+                  <img
+                    v-for="index in 5"
+                    :src="getStarImage(review.rating, index)"
+                    alt="Rating Star"
+                    class="player-rating-icon"
+                    :key="`star-${review.name}-${index}`"
+                  />
+                </div>
+                <div class="review-date">{{ review.date }}</div>
+              </div>
+            </div>
+            <div class="review-comment">{{ review.comment }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="about" class="locations-block">
+        <div class="title-container">
+          <h2>{{ locations.title }}</h2>
+        </div>
+
+        <div class="locations-container">
+          <div class="clubs-container">
+            <div
+              v-for="club in locations.clubsData"
+              :key="club.name"
+              class="club"
+            >
+              <a :href="club.link" class="club-name">{{ club.name }}</a>
+              <div class="club-address">{{ club.address }}</div>
+              <div class="club-metro-container">
+                <img src="images/metro.svg" alt="Метро" class="metro-icon" />
+                <div class="club-metro">{{ club.metro }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Контейнер для карты -->
+          <div id="yandex-map" class="map-container">
+            <script
+              src="https://api-maps.yandex.ru/2.1/?apikey=b8881559-3564-4ced-9428-3763a582d14d&lang=ru_RU"
+              type="text/javascript"
+            ></script>
+            <div id="map" style="width: 100%; height: 320px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tennis-features" class="tennis-features">
+        <div class="title-container">
+          <h2>Польза настольного тенниса</h2>
+        </div>
+        <div class="container">
+          <div class="photo-text-block">
+            <div class="photo">
+              <img loading="lazy" src="images/tt.jpg" alt="Trainer Photo" />
+            </div>
+            <div class="text">
+              <p>
+                Настольный теннис оказывает комплексное положительное
+                воздействие на физическое и психическое здоровье человека. Игра
+                в настольный теннис имеет множество полезных свойств:
+              </p>
+            </div>
+          </div>
+
+          <div class="achievements">
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Coordination">🤹</span>
+              <span class="benefit-text">Улучшает координацию</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Reaction">⚡</span>
+              <span class="benefit-text">Повышает реакцию</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Muscle">💪</span>
+              <span class="benefit-text">Укрепляет мышцы</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Calories">🔥</span>
+              <span class="benefit-text">Сжигает калории</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Vision">👀</span>
+              <span class="benefit-text">Улучшает зрение</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Flexibility">🤸‍♂️</span>
+              <span class="benefit-text">Улучшает гибкость</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Vestibular">🧠</span>
+              <span class="benefit-text">Развивает вестибулярный аппарат</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Activity">💡</span>
+              <span class="benefit-text">Стимулирует мозговую активность</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Joints">🦵</span>
+              <span class="benefit-text">Поддерживает здоровье суставов</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Stress">😌</span>
+              <span class="benefit-text">Снижает стресс</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Socialization"
+                >🤝</span
+              >
+              <span class="benefit-text">Способствует социализации</span>
+            </div>
+            <div class="benefit">
+              <span class="emoji" role="img" aria-label="Mood">😃</span>
+              <span class="benefit-text">Повышает настроение</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="faq" class="faq-container">
+        <div class="title-container">
+          <h2>{{ faq.title }}</h2>
+        </div>
+        <div class="faq-section">
+          <div v-for="(item, index) in faq.items" :key="index" class="faq-item">
+            <button class="faq-question" @click="toggleActive(index)">
+              {{ item.question }}
+              <span class="arrow" :class="{ 'active': isActive(index) }"
+                >&#9660;</span
+              >
+            </button>
+            <div
+              class="faq-answer"
+              :style="{ 'max-height': isActive(index) ? '1000px' : '0' }"
+            >
+              <p>{{ item.answer }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="videos" class="video-block">
+        <div class="title-container padding-16">
+          <h2>{{ videos.title }}</h2>
+        </div>
+
+        <div class="video-container">
+          <div
+            v-for="videoID in videos.videoIDs"
+            :key="videoID"
+            class="lazy-video"
+            @click="playVideo(videoID)"
           >
             <img
-              src="images/rttf-birch.svg"
-              alt="Профиль RTTF"
-              class="nav-icon"
+              v-if="videos.activeVideoID !== videoID"
+              :src="`https://img.youtube.com/vi/${videoID}/mqdefault.jpg`"
+              :alt="`YouTube video ${videoID}`"
+              class="video-thumbnail"
             />
-
-            <p>@anna-voznesenskaya</p>
-          </a>
-        </div>
-
-        <div class="contact-form-container">
-          <h3 class="no-top-padding">Оставьте заявку на тренировку</h3>
-          <form
-            id="contact-form"
-            action="your-server-side-script.php"
-            method="POST"
-            class="contact-form-fields"
-          >
-            <div class="input-group">
-              <label for="name">Имя</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Иван Иванов"
-                required
-                autocomplete="name"
-                oninvalid="this.setCustomValidity('Это поле необходимо заполнить')"
-                oninput="this.setCustomValidity('')"
-              />
-              <span class="error-message">Это поле необходимо заполнить</span>
+            <div
+              v-if="videos.activeVideoID === videoID"
+              class="video-iframe-container"
+            >
+              <iframe
+                :src="`https://www.youtube.com/embed/${videoID}?autoplay=1&mute=1&enablejsapi=1`"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                class="video-iframe"
+              ></iframe>
             </div>
-            <div class="input-group contact-details">
-              <label for="phone">Номер телефона</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                placeholder="+7..."
-                inputmode="tel"
-                required
-                autocomplete="tel"
-                oninvalid="this.setCustomValidity('Введите номер телефона')"
-                oninput="this.setCustomValidity('')"
-              />
-              <span class="error-message">Введите номер телефона</span>
-              <label for="email">E-mail</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="ivan@ivanov.ru"
-                required
-                autocomplete="email"
-                oninvalid="this.setCustomValidity('Email какой-то странный')"
-                oninput="this.setCustomValidity('')"
-              />
-              <span class="error-message">Введите действительный email</span>
-            </div>
-            <div class="input-group">
-              <label for="message">Сообщение</label>
-              <textarea
-                id="message"
-                name="message"
-                placeholder="Напишите где и когда вы бы хотели тренироваться"
-                required
-                autocomplete="off"
-                oninvalid="this.setCustomValidity('Напишите хоть немного')"
-                oninput="this.setCustomValidity('')"
-              ></textarea>
-              <span class="error-message">Введите ваше сообщение</span>
-            </div>
-            <button class="signup-button" type="submit">Записаться</button>
-          </form>
+            <div
+              v-if="videos.activeVideoID !== videoID"
+              class="play-button"
+            ></div>
+          </div>
         </div>
       </div>
+
+      <div id="contacts" class="contacts-block">
+        <div class="title-container">
+          <h2>Контакты</h2>
+        </div>
+
+        <div class="contact-section">
+          <div class="contact-info">
+            <img
+              loading="lazy"
+              src="images/Anna2.jpg"
+              alt="Anna Voznesenskaya"
+              class="contact-photo"
+            />
+            <p class="bold">{{ contacts.trainerName }}</p>
+            <div class="align-center">
+              <a
+                v-if="contacts.phoneLink"
+                :href="contacts.phoneLink"
+                target="_blank"
+              >
+                <img
+                  src="images/logo-whatsapp.svg"
+                  alt="WhatsApp"
+                  class="nav-icon"
+                />
+              </a>
+              <a
+                v-if="contacts.telegramLink"
+                :href="contacts.telegramLink"
+                target="_blank"
+              >
+                <img
+                  src="images/logo-telegram.svg"
+                  alt="Telegram"
+                  class="nav-icon"
+                />
+              </a>
+              <a
+                v-if="contacts.phoneNumber"
+                href="tel:+71234567890"
+                class="bold"
+                >{{ contacts.phoneNumber }}</a
+              >
+            </div>
+            <a
+              v-if="contacts.email"
+              href="mailto:anna-voznesenskaya@example.com"
+              >{{ contacts.email }}</a
+            >
+            <a
+              v-if="contacts.rttfLink"
+              :href="contacts.rttfLink"
+              target="_blank"
+              class="rttf-link"
+            >
+              <img
+                src="images/rttf-birch.svg"
+                alt="Профиль RTTF"
+                class="nav-icon"
+              />
+              <p>{{ contacts.rttfProfile }}</p>
+            </a>
+          </div>
+
+          <div class="contact-form-container">
+            <h3 class="no-top-padding">Оставьте заявку на тренировку</h3>
+            <form
+              id="contact-form"
+              action="your-server-side-script.php"
+              method="POST"
+              class="contact-form-fields"
+            >
+              <div class="input-group">
+                <label for="name">Имя</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Иван Иванов"
+                  required
+                  autocomplete="name"
+                  oninvalid="this.setCustomValidity('Это поле необходимо заполнить')"
+                  oninput="this.setCustomValidity('')"
+                />
+                <span class="error-message">Это поле необходимо заполнить</span>
+              </div>
+              <div class="input-group contact-details">
+                <label for="phone">Номер телефона</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+7..."
+                  inputmode="tel"
+                  required
+                  autocomplete="tel"
+                  oninvalid="this.setCustomValidity('Введите номер телефона')"
+                  oninput="this.setCustomValidity('')"
+                />
+                <span class="error-message">Введите номер телефона</span>
+                <label for="email">E-mail</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="ivan@ivanov.ru"
+                  required
+                  autocomplete="email"
+                  oninvalid="this.setCustomValidity('Email какой-то странный')"
+                  oninput="this.setCustomValidity('')"
+                />
+                <span class="error-message">Введите действительный email</span>
+              </div>
+              <div class="input-group">
+                <label for="message">Сообщение</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Напишите где и когда вы бы хотели тренироваться"
+                  required
+                  autocomplete="off"
+                  oninvalid="this.setCustomValidity('Напишите хоть немного')"
+                  oninput="this.setCustomValidity('')"
+                ></textarea>
+                <span class="error-message">Введите ваше сообщение</span>
+              </div>
+              <button class="signup-button" type="submit">Записаться</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- конец app vue-->
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="script.js"></script>
   </body>
 </html>
