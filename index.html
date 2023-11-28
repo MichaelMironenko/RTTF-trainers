@@ -447,6 +447,7 @@
           >
             <img
               v-if="videos.activeVideoID !== videoID"
+              loading="lazy"
               :src="`https://img.youtube.com/vi/${videoID}/mqdefault.jpg`"
               :alt="`YouTube video ${videoID}`"
               class="video-thumbnail"
