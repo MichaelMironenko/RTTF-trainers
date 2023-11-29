@@ -481,7 +481,7 @@ new Vue({
           // Задержка перед открытием нового вопроса
           setTimeout(() => {
             this.faq.activeIndex = index;
-          }, 200); /
+          }, 200);
         } else {
           // Если ни один вопрос не активен, открываем новый сразу
           this.faq.activeIndex = index;
