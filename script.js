@@ -375,7 +375,9 @@ new Vue({
     );
   },
   mounted() {
-    setTimeout(this.loadMapScript, 2000);
+    window.onload = () => {
+      setTimeout(this.loadMapScript, 1000); // Задержка в 1 секунду после полной загрузки страницы
+    };
   },
   methods: {
     setMeta(metaName, content) {
