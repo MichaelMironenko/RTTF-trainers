@@ -352,7 +352,7 @@ new Vue({
   },
 
   mounted() {
-    // this.initMap();
+    setTimeout(this.loadMapScript, 4000);
   },
   methods: {
     switchDay(index) {
@@ -375,52 +375,62 @@ new Vue({
         return "images/empty-star.svg";
       }
     },
-    // initMap() {
-    //   ymaps.ready(() => {
-    //     this.myMap = new ymaps.Map("map", {
-    //       center: [55.76, 37.64], // Изначальные координаты центра карты
-    //       zoom: 10,
-    //     });
+    loadMapScript() {
+      // Создаем тег script для загрузки Yandex карты
+      const script = document.createElement("script");
+      script.src =
+        "https://api-maps.yandex.ru/2.1/?apikey=b8881559-3564-4ced-9428-3763a582d14d&lang=ru_RU";
+      script.type = "text/javascript";
+      document.body.appendChild(script);
 
-    //     this.addClubsToMap();
-    //   });
-    // },
-    // addClubsToMap() {
-    //   var geoObjects = [];
+      // Инициализация карты после загрузки скрипта
+      script.onload = () => {
+        ymaps.ready(this.initMap);
+      };
+    },
+    initMap() {
+      this.myMap = new ymaps.Map("map", {
+        center: [55.76, 37.64],
+        zoom: 10,
+      });
+      this.addClubsToMap();
+    },
+    addClubsToMap() {
+      var geoObjects = [];
 
-    //   for (let club of this.locations.clubsData) {
-    //     ymaps.geocode(club.address, { results: 1 }).then((res) => {
-    //       var firstGeoObject = res.geoObjects.get(0),
-    //         coords = firstGeoObject.geometry.getCoordinates();
+      for (let club of this.locations.clubsData) {
+        ymaps.geocode(club.address, { results: 1 }).then((res) => {
+          var firstGeoObject = res.geoObjects.get(0),
+            coords = firstGeoObject.geometry.getCoordinates();
 
-    //       // Создаем метку с названием клуба
-    //       var placemark = new ymaps.Placemark(
-    //         coords,
-    //         {
-    //           balloonContentHeader: club.name,
-    //           balloonContent: `<a href="${club.link}" target="_blank">${club.name}</a><br>${club.address}<br>Метро: ${club.metro}`,
-    //           iconContent: club.name, // Текст надписи на метке
-    //         },
-    //         {
-    //           preset: "islands#blueStretchyIcon", // Стиль метки с надписью
-    //         }
-    //       );
+          // Создаем метку с названием клуба
+          var placemark = new ymaps.Placemark(
+            coords,
+            {
+              balloonContentHeader: club.name,
+              balloonContent: `<a href="${club.link}" target="_blank">${club.name}</a><br>${club.address}<br>Метро: ${club.metro}`,
+              iconContent: club.name, // Текст надписи на метке
+            },
+            {
+              preset: "islands#blueStretchyIcon", // Стиль метки с надписью
+            }
+          );
 
-    //       this.myMap.geoObjects.add(placemark);
-    //       geoObjects.push(placemark);
+          this.myMap.geoObjects.add(placemark);
+          geoObjects.push(placemark);
 
-    //       if (geoObjects.length === this.locations.clubsData.length) {
-    //         var bounds = this.myMap.geoObjects.getBounds();
-    //         if (bounds) {
-    //           this.myMap.setBounds(bounds, {
-    //             checkZoomRange: true,
-    //             zoomMargin: 9,
-    //           });
-    //         }
-    //       }
-    //     });
-    //   }
-    // },
+          if (geoObjects.length === this.locations.clubsData.length) {
+            var bounds = this.myMap.geoObjects.getBounds();
+            if (bounds) {
+              this.myMap.setBounds(bounds, {
+                checkZoomRange: true,
+                zoomMargin: 9,
+              });
+            }
+          }
+        });
+      }
+    },
     toggleActive(index) {
       if (this.faq.activeIndex === index) {
         // Если нажатый вопрос уже активен, закрываем его

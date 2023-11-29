@@ -538,6 +538,10 @@ h1 {
   height: 14px;
 }
 
+.training-date {
+  font-size: 18px;
+}
+
 .training-location,
 .training-participants,
 .training-price {
