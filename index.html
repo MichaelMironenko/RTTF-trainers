@@ -81,55 +81,44 @@
       </div>
 
       <!-- About Me Section -->
-      <div id="about" class="about-me">
-        <div class="title-container">
-          <h2>{{ aboutMeData.aboutTitle }}</h2>
-        </div>
-        <div class="container">
-          <div class="photo-text-block">
-            <div class="photo">
-              <img :src="aboutMeData.photoUrl" alt="Trainer Photo" />
-            </div>
-            <div class="text">
-              <p v-html="formattedAboutText"></p>
-            </div>
+      <div id="about" class="container">
+        <div class="photo-text-block">
+          <div class="photo">
+            <img :src="aboutMeData.photoUrl" alt="Trainer Photo" />
           </div>
+          <div class="text">
+            <h2>{{ aboutMeData.aboutTitle }}</h2>
+            <p v-html="formattedAboutText"></p>
+          </div>
+        </div>
 
-          <div class="achievements">
-            <div
-              class="achievement"
-              v-for="(achievement, index) in aboutMeData.achievements"
-              :key="index"
+        <div class="achievements">
+          <div
+            class="achievement"
+            v-for="(achievement, index) in aboutMeData.achievements"
+            :key="index"
+          >
+            <span class="emoji" role="img" :aria-label="achievement.emoji"
+              >{{ achievement.emoji }}</span
             >
-              <span class="emoji" role="img" :aria-label="achievement.emoji"
-                >{{ achievement.emoji }}</span
-              >
-              <span class="achievement-text">{{ achievement.text }}</span>
-            </div>
+            <span class="achievement-text">{{ achievement.text }}</span>
           </div>
         </div>
       </div>
 
-      <div class="trainings-block">
-        <div class="title-container">
-          <h2>Групповые тренировки</h2>
-        </div>
+      <div id="trainings" class="trainings-block">
         <div class="container">
           <div class="photo-text-block">
             <div class="photo">
               <img
                 loading="lazy"
-                src="images/group-training.jpg"
+                :src="groupTrainings.photoUrl"
                 alt="Групповая тренировка"
               />
             </div>
             <div class="text">
-              <p>
-                Групповые тренировки — это отличный способ улучшить технику,
-                получить новые знания и научиться чему-то новому в компании
-                единомышленников. Занимайтесь спортом и поддерживайте отличное
-                настроение, тренируясь вместе с нами!
-              </p>
+              <h2>{{ groupTrainings.title }}</h2>
+              <p>{{ groupTrainings.text }}</p>
             </div>
           </div>
         </div>
@@ -205,9 +194,6 @@
       </div>
 
       <div class="personal-trainings-block">
-        <div class="title-container">
-          <h2>{{ personalTrainings.title }}</h2>
-        </div>
         <div class="container">
           <div class="photo-text-block">
             <div class="photo">
@@ -218,6 +204,8 @@
               />
             </div>
             <div class="text">
+              <h2>{{ personalTrainings.title }}</h2>
+
               <p>{{ personalTrainings.description }}</p>
             </div>
           </div>
@@ -262,6 +250,19 @@
       <div id="reviews" class="reviews-block">
         <div class="title-container">
           <h2>{{ reviews.title }}</h2>
+          <div class="average-rating">
+            <span>Мой рейтинг</span>
+            <div class="review-rating">
+              <img
+                v-for="index in 5"
+                :src="getStarImage(reviews.averageRating, index)"
+                alt="Rating Star"
+                class="average-rating-icon"
+                :key="`average-star-${index}`"
+              />
+            </div>
+            <span>{{ reviews.averageRating }}</span>
+          </div>
         </div>
         <div class="reviews-container">
           <div
@@ -339,15 +340,15 @@
       </div>
 
       <div id="tennis-features" class="tennis-features">
-        <div class="title-container">
-          <h2>Польза настольного тенниса</h2>
-        </div>
         <div class="container">
           <div class="photo-text-block">
             <div class="photo">
               <img loading="lazy" src="images/tt.jpg" alt="Trainer Photo" />
             </div>
             <div class="text">
+              <div class="title-container">
+                <h2>Польза настольного тенниса</h2>
+              </div>
               <p>
                 Настольный теннис оказывает комплексное положительное
                 воздействие на физическое и психическое здоровье человека. Игра
