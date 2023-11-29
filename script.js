@@ -350,11 +350,48 @@ new Vue({
     },
     isNavOpen: false,
   },
+  created() {
+    // Устанавливаем заголовок страницы
+    document.title =
+      this.contacts.trainerName +
+      " " +
+      this.contacts.trainerSurname +
+      " - Тренер по настольному теннису";
 
+    // Устанавливаем мета-теги
+    this.setMeta(
+      "description",
+      "Профессиональные уроки и тренировки по настольному теннису с " +
+        this.contacts.trainerName +
+        " " +
+        this.contacts.trainerSurname
+    );
+    this.setMeta(
+      "keywords",
+      "настольный теннис, тренировки, " +
+        this.contacts.trainerName +
+        " " +
+        this.contacts.trainerSurname
+    );
+  },
   mounted() {
     setTimeout(this.loadMapScript, 4000);
   },
   methods: {
+    setMeta(metaName, content) {
+      let metas = document.getElementsByTagName("meta");
+      for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute("name") === metaName) {
+          metas[i].setAttribute("content", content);
+          return;
+        }
+      }
+      // Если мета-тег не найден, создаем новый
+      let meta = document.createElement("meta");
+      meta.setAttribute("name", metaName);
+      meta.setAttribute("content", content);
+      document.getElementsByTagName("head")[0].appendChild(meta);
+    },
     switchDay(index) {
       this.activeDay = index;
     },
@@ -444,7 +481,7 @@ new Vue({
           // Задержка перед открытием нового вопроса
           setTimeout(() => {
             this.faq.activeIndex = index;
-          }, 200); // Задержка должна соответствовать времени анимации
+          }, 200); /
         } else {
           // Если ни один вопрос не активен, открываем новый сразу
           this.faq.activeIndex = index;

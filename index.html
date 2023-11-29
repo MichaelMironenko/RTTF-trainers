@@ -14,6 +14,11 @@
     <meta name="author" content="Анна Вознесенская" />
     <title>Тренер по настольному теннису Анна Вознесенская</title>
     <link rel="stylesheet" href="styles.css" />
+
+    <link rel="icon" href="images/favicon.ico" sizes="any" />
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+    <meta name="theme-color" content="#4a4a4a" />
   </head>
 
   <body>
@@ -330,10 +335,6 @@
 
           <!-- Контейнер для карты -->
           <div id="yandex-map" class="map-container">
-            <!-- <script
-              src="https://api-maps.yandex.ru/2.1/?apikey=b8881559-3564-4ced-9428-3763a582d14d&lang=ru_RU"
-              type="text/javascript"
-            ></script> -->
             <div id="map" style="width: 100%; height: 320px"></div>
           </div>
         </div>
@@ -346,9 +347,7 @@
               <img loading="lazy" src="images/tt.jpg" alt="Trainer Photo" />
             </div>
             <div class="text">
-              <div class="title-container">
-                <h2>Польза настольного тенниса</h2>
-              </div>
+              <h2>Польза настольного тенниса</h2>
               <p>
                 Настольный теннис оказывает комплексное положительное
                 воздействие на физическое и психическое здоровье человека. Игра
@@ -486,7 +485,9 @@
               alt="Anna Voznesenskaya"
               class="contact-photo"
             />
-            <p class="bold">{{ contacts.trainerName }}</p>
+            <p class="bold">
+              {{ contacts.trainerName }} {{ contacts.trainerSurname }}
+            </p>
             <div class="align-center">
               <a
                 v-if="contacts.phoneLink"
@@ -559,32 +560,31 @@
                 />
                 <span class="error-message">Это поле необходимо заполнить</span>
               </div>
-              <div class="input-group contact-details">
-                <label for="phone">Номер телефона</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  placeholder="+7..."
-                  inputmode="tel"
-                  required
-                  autocomplete="tel"
-                  oninvalid="this.setCustomValidity('Введите номер телефона')"
-                  oninput="this.setCustomValidity('')"
-                />
-                <span class="error-message">Введите номер телефона</span>
-                <label for="email">E-mail</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="ivan@ivanov.ru"
-                  required
-                  autocomplete="email"
-                  oninvalid="this.setCustomValidity('Email какой-то странный')"
-                  oninput="this.setCustomValidity('')"
-                />
-                <span class="error-message">Введите действительный email</span>
+              <div class="contact-details">
+                <div class="input-group phone">
+                  <label for="phone">Номер телефона</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+7..."
+                    required
+                  />
+                  <span class="error-message">Введите номер телефона</span>
+                </div>
+                <div class="input-group email">
+                  <label for="email">E-mail</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="ivan@ivanov.ru"
+                    required
+                  />
+                  <span class="error-message"
+                    >Введите действительный email</span
+                  >
+                </div>
               </div>
               <div class="input-group">
                 <label for="message">Сообщение</label>
@@ -604,6 +604,22 @@
           </div>
         </div>
       </div>
+
+      <footer class="site-footer">
+        <div class="footer-content">
+          <a href="https://rttf.ru"
+            ><img
+              src="images/rttf-logo.png"
+              alt="RTTF Logo"
+              class="footer-logo"
+            />
+          </a>
+          <div class="footer-text">
+            Тренер по настольному теннису {{ contacts.trainerName }} {{
+            contacts.trainerSurname }} © 2023
+          </div>
+        </div>
+      </footer>
 
       <!-- конец app vue-->
     </div>

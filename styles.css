@@ -1107,23 +1107,26 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1 1 auto;
 }
 
 /* Стили для контейнера с полями телефона и email */
 .contact-details {
   display: flex;
   flex-wrap: wrap;
+  gap: 16px;
 }
 
 /* Стили для поля телефона */
-.contact-details input[type="tel"] {
+.contact-details .input-group.phone {
   width: 200px; /* Фиксированная ширина для телефона */
+  flex-grow: 0; /* Не позволяет полю расти */
+  flex-shrink: 0; /* Предотвращает уменьшение поля */
 }
 
 /* Стили для поля email */
-.contact-details input[type="email"] {
-  flex-grow: 1;
-  width: 250px; /* Минимальная ширина для email */
+.contact-details .input-group.email {
+  flex-grow: 1; /* Позволяет полю расти и занимать доступное пространство */
 }
 
 .no-top-padding {
@@ -1170,4 +1173,29 @@ textarea {
   resize: none;
   font-family: "SF Pro", sans-serif;
   font-size: 16px;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background-color: white;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-logo {
+  width: 91px;
+  height: 24px;
+}
+
+.footer-text {
+  font-size: 14px;
+  color: #333; /* Цвет текста */
 }
