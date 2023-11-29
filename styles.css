@@ -312,11 +312,13 @@ h1 {
   justify-content: center;
   gap: 32px;
   width: 100%;
+  min-height: 300px;
 }
 
 .photo {
-  width: auto;
-  height: 250px;
+  width: 100%;
+  max-width: 330px;
+  height: auto;
   flex: 0 0 auto;
 }
 

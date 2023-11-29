@@ -21,7 +21,7 @@ new Vue({
   data: {
     mainSection: {
       subtitle: "Анна Вознесенская, тренер",
-      heading: "Групповые и персональные тренировки",
+      heading: "Групповые и персональные тренировки по настольному теннису",
       image: "images/anna-transparent.png",
     },
     trainingsData: [
