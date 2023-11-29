@@ -375,7 +375,7 @@ new Vue({
     );
   },
   mounted() {
-    setTimeout(this.loadMapScript, 4000);
+    window.onload = this.loadMapScript;
   },
   methods: {
     setMeta(metaName, content) {
