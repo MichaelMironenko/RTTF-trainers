@@ -315,14 +315,13 @@ h1 {
 }
 
 .photo {
-  width: 100%;
-  max-width: 330px;
+  width: auto;
+  height: 250px;
   flex: 0 0 auto;
 }
 
 .photo img {
   width: 100%;
-  max-width: 330px;
   height: auto;
 }
 
