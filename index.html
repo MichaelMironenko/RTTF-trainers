@@ -41,6 +41,7 @@
           <li><a href="#trainings">Тренировки</a></li>
           <li><a href="#prices">Цены</a></li>
           <li><a href="#reviews">Отзывы</a></li>
+          <li><a href="#clubs">Клубы</a></li>
           <li><a href="#videos">Видео</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#contacts">Контакты</a></li>
@@ -135,6 +136,7 @@
             v-for="(day, index) in trainingsData"
             :key="index"
             @click="switchDay(index)"
+            :class="{ 'active-day': index === activeDay }"
             class="day-button"
           >
             <span class="weekday">{{ day.date.split(', ')[0] }}</span>
@@ -312,7 +314,7 @@
         </div>
       </div>
 
-      <div id="about" class="locations-block">
+      <div id="clubs" class="locations-block">
         <div class="title-container">
           <h2>{{ locations.title }}</h2>
         </div>

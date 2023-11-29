@@ -158,38 +158,13 @@ a {
   flex-shrink: 0;
 }
 
-@media (max-width: 1124px) {
+@media (max-width: 1180px) {
   .nav-links {
     display: none;
   }
 
   .nav-hamburger {
     display: block;
-  }
-
-  .nav-links.active {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    font-size: 18px;
-    width: 100%;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--black);
-    z-index: 999;
-    padding: 16px;
-    overflow-y: auto;
-  }
-
-  .nav-close.active {
-    display: flex;
-  }
-
-  .nav-hamburger.active {
-    display: none;
   }
 
   .nav-close {
@@ -369,6 +344,7 @@ h1 {
   .photo-text-block {
     flex-direction: column;
     justify-content: center;
+    gap: 0;
   }
 
   .achievements {
@@ -424,18 +400,13 @@ h1 {
 
 .day-button span.weekday {
   font-size: 14px;
-  font-weight: 400;
   text-align: center;
   color: var(--black);
 }
 
-.day-button.active span.weekday {
-  font-weight: 600;
-}
-
-.day-button.active {
-  background-color: #ffffff;
-  font-weight: 400;
+.active-day {
+  background-color: white;
+  font-weight: bold;
 }
 
 .training-schedule-container {
@@ -1097,10 +1068,6 @@ h1 {
 
 .bold {
   font-weight: bold;
-}
-
-.mb-16 {
-  margin-bottom: 16px;
 }
 
 .input-group {
