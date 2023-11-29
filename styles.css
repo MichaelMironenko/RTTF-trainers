@@ -127,6 +127,31 @@ a {
   margin-right: 1%;
 }
 
+.nav-links.active {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-size: 18px;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--black);
+  z-index: 999;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.nav-close.active {
+  display: flex;
+}
+
+.nav-hamburger.active {
+  display: none;
+}
+
 .nav-phone {
   display: flex;
   align-items: center;
