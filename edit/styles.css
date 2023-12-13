@@ -1,0 +1,58 @@
+body {
+  font-family: "SF Pro", sans-serif;
+  --selected-tab-color: #247aae; /* Ping Pong Blue */
+  --unselected-tab-color: rgba(70, 102, 132, 0.12); /* Light Grey */
+  --unselected-tab-font-color: #04162c80; /* Black for unselected tab text */
+  --tab-background-color: #f5f5f5; /* Very Light Grey, similar to the background in the image */
+  margin: 0;
+  padding: 0;
+}
+
+.tab {
+  display: flex;
+  white-space: nowrap;
+  overflow-x: auto;
+  align-items: center;
+  border-radius: 8px;
+  padding: 16px;
+  gap: 8px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tab::-webkit-scrollbar {
+  display: none;
+}
+
+.tab button {
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s ease-in-out;
+  color: var(
+    --unselected-tab-font-color
+  ); /* Dark color for unselected tab text */
+}
+
+.tab .tablinks:hover {
+  background-color: #3b8ec2;
+  color: white;
+}
+
+.tab button.active {
+  background-color: var(--selected-tab-color);
+  color: white; /* White text color for active tab */
+  font-weight: bold;
+}
+
+.tab button:not(.active) {
+  background-color: var(--unselected-tab-color);
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}

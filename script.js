@@ -1,21 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-  var hamburger = document.querySelector(".nav-hamburger");
-  var navLinks = document.querySelector(".nav-links");
-  var navClose = document.querySelector(".nav-close");
-
-  hamburger.addEventListener("click", function () {
-    navLinks.classList.add("active");
-    navClose.classList.add("active");
-    hamburger.classList.add("active");
-  });
-
-  navClose.addEventListener("click", function () {
-    navLinks.classList.remove("active");
-    navClose.classList.remove("active");
-    hamburger.classList.remove("active");
-  });
-});
-
 new Vue({
   el: "#app",
   data: {
@@ -273,6 +255,7 @@ new Vue({
         },
       ],
     },
+    expandedComment: null,
     locations: {
       title: "Я тренирую в следующих клубах",
 
@@ -295,6 +278,45 @@ new Vue({
           metro: "Багратионовская, Фили",
           link: "https://rttf.ru/halls/360",
         },
+      ],
+    },
+    benefits: {
+      title: "Польза настольного тенниса",
+      photo: "images/tt.jpg",
+      text: "Настольный теннис оказывает комплексное положительное воздействие на физическое и психическое здоровье человека. Игра в настольный теннис имеет множество полезных свойств:",
+      benefitsList: [
+        {
+          emoji: "🤹",
+          emojiLabel: "Coordination",
+          text: "Улучшает координацию",
+        },
+        { emoji: "⚡", emojiLabel: "Reaction", text: "Повышает реакцию" },
+        { emoji: "💪", emojiLabel: "Muscle", text: "Укрепляет мышцы" },
+        { emoji: "🔥", emojiLabel: "Calories", text: "Сжигает калории" },
+        { emoji: "👀", emojiLabel: "Vision", text: "Улучшает зрение" },
+        { emoji: "🤸‍♂️", emojiLabel: "Flexibility", text: "Улучшает гибкость" },
+        {
+          emoji: "🧠",
+          emojiLabel: "Vestibular",
+          text: "Развивает вестибулярный аппарат",
+        },
+        {
+          emoji: "💡",
+          emojiLabel: "Activity",
+          text: "Стимулирует мозговую активность",
+        },
+        {
+          emoji: "🦵",
+          emojiLabel: "Joints",
+          text: "Поддерживает здоровье суставов",
+        },
+        { emoji: "😌", emojiLabel: "Stress", text: "Снижает стресс" },
+        {
+          emoji: "🤝",
+          emojiLabel: "Socialization",
+          text: "Способствует социализации",
+        },
+        { emoji: "😃", emojiLabel: "Mood", text: "Повышает настроение" },
       ],
     },
     faq: {
@@ -348,6 +370,13 @@ new Vue({
       rttfLink: "https://rttf.ru/anna-voznesenskaya",
       rttfProfile: "@anna-voznesenskaya",
     },
+    submitted: false,
+    form: {
+      name: "",
+      phone: "",
+      message: "",
+      contact_method: "",
+    },
     isNavOpen: false,
   },
   created() {
@@ -394,6 +423,9 @@ new Vue({
     },
     switchDay(index) {
       this.activeDay = index;
+    },
+    toggleComment(index) {
+      this.expandedComment = this.expandedComment === index ? null : index;
     },
     getDayDisplay(index) {
       return window.innerWidth < 430 && this.activeDay !== index
@@ -494,14 +526,45 @@ new Vue({
     playVideo(videoID) {
       this.videos.activeVideoID = videoID;
     },
+    submitForm() {
+      // Показываем модальное окно
+      this.submitted = true;
+
+      // Очищаем форму
+      this.form.name = "";
+      this.form.phone = "";
+      this.form.message = "";
+      this.form.contact_method = "";
+
+      // Скрываем модальное окно через 3 секунды
+      setTimeout(() => {
+        this.submitted = false;
+      }, 3000);
+    },
     toggleNav() {
       this.isNavOpen = !this.isNavOpen;
     },
     closeNav() {
       this.isNavOpen = false;
     },
+    handleNavClick(event) {
+      if (event.target.tagName === "A") {
+        event.preventDefault();
+        this.handleNavLinkClick(event.target.getAttribute("href"));
+      }
+    },
+    handleNavLinkClick(section) {
+      const element = document.querySelector(section);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+      this.closeNav();
+    },
   },
   computed: {
+    isCommentLong() {
+      return (comment) => comment.length > 200;
+    },
     formattedAboutText() {
       // Use double <br> to create a space between paragraphs
       return this.aboutMeData.aboutText.replace(/\n/g, "<br>");

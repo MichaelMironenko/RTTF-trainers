@@ -36,7 +36,11 @@
             <span>{{ contacts.trainerSurname.toUpperCase() }}</span>
           </div>
         </div>
-        <ul class="nav-links">
+        <ul
+          class="nav-links"
+          :class="{ 'active': isNavOpen }"
+          @click="handleNavClick"
+        >
           <li><a href="#about">Обо мне</a></li>
           <li><a href="#trainings">Тренировки</a></li>
           <li><a href="#prices">Цены</a></li>
@@ -55,6 +59,7 @@
           >
             <img src="images/logo-whatsapp.svg" alt="WhatsApp" />
           </a>
+
           <a
             v-if="contacts.telegramLink"
             :href="contacts.telegramLink"
@@ -69,14 +74,22 @@
         </div>
 
         <div class="nav-hamburger" @click="toggleNav">☰</div>
-        <div class="nav-close" @click="closeNav">✕</div>
+        <div
+          class="nav-close"
+          :class="{ 'active': isNavOpen }"
+          @click="closeNav"
+        >
+          ✕
+        </div>
       </nav>
 
       <div class="main-section">
         <div class="main-section-text">
           <p class="trainer-name">{{ mainSection.subtitle }}</p>
           <h1>{{ mainSection.heading }}</h1>
-          <a href="#contacts" class="signup-button">Записаться на тренировку</a>
+          <a href="#contact-form" class="signup-button"
+            >Записаться на тренировку</a
+          >
         </div>
         <img
           loading="lazy"
@@ -273,9 +286,9 @@
         </div>
         <div class="reviews-container">
           <div
-            v-for="review in reviews.reviewData"
-            :key="review.name"
             class="review-card"
+            v-for="(review, index) in reviews.reviewData"
+            :key="review.name"
           >
             <div class="review-header">
               <div class="review-avatar-wrapper">
@@ -309,7 +322,17 @@
                 <div class="review-date">{{ review.date }}</div>
               </div>
             </div>
-            <div class="review-comment">{{ review.comment }}</div>
+            <div
+              class="review-comment"
+              :class="{ expanded: expandedComment === index, 'cursor-pointer': isCommentLong(review.comment) }"
+              @click="isCommentLong(review.comment) ? toggleComment(index) : null"
+            >
+              {{ review.comment }}
+              <span
+                v-if="isCommentLong(review.comment) && expandedComment !== index"
+                >Раскрыть комментарий</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -346,68 +369,24 @@
         <div class="container">
           <div class="photo-text-block">
             <div class="photo">
-              <img loading="lazy" src="images/tt.jpg" alt="Trainer Photo" />
+              <img :src="benefits.photo" alt="Trainer Photo" />
             </div>
             <div class="text">
-              <h2>Польза настольного тенниса</h2>
-              <p>
-                Настольный теннис оказывает комплексное положительное
-                воздействие на физическое и психическое здоровье человека. Игра
-                в настольный теннис имеет множество полезных свойств:
-              </p>
+              <h2>{{ benefits.title }}</h2>
+              <p>{{ benefits.text }}</p>
             </div>
           </div>
 
           <div class="achievements">
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Coordination">🤹</span>
-              <span class="benefit-text">Улучшает координацию</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Reaction">⚡</span>
-              <span class="benefit-text">Повышает реакцию</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Muscle">💪</span>
-              <span class="benefit-text">Укрепляет мышцы</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Calories">🔥</span>
-              <span class="benefit-text">Сжигает калории</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Vision">👀</span>
-              <span class="benefit-text">Улучшает зрение</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Flexibility">🤸‍♂️</span>
-              <span class="benefit-text">Улучшает гибкость</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Vestibular">🧠</span>
-              <span class="benefit-text">Развивает вестибулярный аппарат</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Activity">💡</span>
-              <span class="benefit-text">Стимулирует мозговую активность</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Joints">🦵</span>
-              <span class="benefit-text">Поддерживает здоровье суставов</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Stress">😌</span>
-              <span class="benefit-text">Снижает стресс</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Socialization"
-                >🤝</span
+            <div
+              class="benefit"
+              v-for="(item, index) in benefits.benefitsList"
+              :key="index"
+            >
+              <span class="emoji" role="img" :aria-label="item.emojiLabel"
+                >{{ item.emoji }}</span
               >
-              <span class="benefit-text">Способствует социализации</span>
-            </div>
-            <div class="benefit">
-              <span class="emoji" role="img" aria-label="Mood">😃</span>
-              <span class="benefit-text">Повышает настроение</span>
+              <span class="benefit-text">{{ item.text }}</span>
             </div>
           </div>
         </div>
@@ -544,8 +523,7 @@
             <h3 class="no-top-padding">Оставьте заявку на тренировку</h3>
             <form
               id="contact-form"
-              action="your-server-side-script.php"
-              method="POST"
+              @submit.prevent="submitForm"
               class="contact-form-fields"
             >
               <div class="input-group">
@@ -556,11 +534,11 @@
                   name="name"
                   placeholder="Иван Иванов"
                   required
+                  v-model="form.name"
                   autocomplete="name"
-                  oninvalid="this.setCustomValidity('Это поле необходимо заполнить')"
+                  oninvalid="this.setCustomValidity('Укажите ваше имя')"
                   oninput="this.setCustomValidity('')"
                 />
-                <span class="error-message">Это поле необходимо заполнить</span>
               </div>
               <div class="contact-details">
                 <div class="input-group phone">
@@ -571,22 +549,26 @@
                     name="phone"
                     placeholder="+7..."
                     required
+                    v-model="form.phone"
+                    oninvalid="this.setCustomValidity('Укажите корректный номер телефона')"
+                    oninput="this.setCustomValidity('')"
                   />
-                  <span class="error-message">Введите номер телефона</span>
                 </div>
-                <div class="input-group email">
-                  <label for="email">E-mail</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="ivan@ivanov.ru"
-                    required
-                  />
-                  <span class="error-message"
-                    >Введите действительный email</span
-                  >
-                </div>
+              </div>
+              <div class="input-group">
+                <label for="contact-method">Как с вами лучше связаться?</label>
+                <select
+                  id="contact-method"
+                  name="contact_method"
+                  required
+                  v-model="form.contact_method"
+                >
+                  <option value="">Выберите метод связи</option>
+                  <option value="call">Позвонить</option>
+                  <option value="telegram">Написать в Telegram</option>
+                  <option value="whatsapp">Написать в WhatsApp</option>
+                  <option value="sms">Прислать SMS</option>
+                </select>
               </div>
               <div class="input-group">
                 <label for="message">Сообщение</label>
@@ -595,14 +577,24 @@
                   name="message"
                   placeholder="Напишите где и когда вы бы хотели тренироваться"
                   required
+                  v-model="form.message"
                   autocomplete="off"
                   oninvalid="this.setCustomValidity('Напишите хоть немного')"
                   oninput="this.setCustomValidity('')"
                 ></textarea>
-                <span class="error-message">Введите ваше сообщение</span>
               </div>
               <button class="signup-button" type="submit">Записаться</button>
             </form>
+          </div>
+          <div
+            v-if="submitted"
+            class="modal-message"
+            @click="submitted = false"
+          >
+            <div class="modal-content">
+              <span>Сообщение отправлено</span>
+              <p>Я свяжусь с вами в ближайшее время</p>
+            </div>
           </div>
         </div>
       </div>
