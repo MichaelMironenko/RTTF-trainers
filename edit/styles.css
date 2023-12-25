@@ -1,11 +1,10 @@
 body {
   font-family: "SF Pro", sans-serif;
-  --selected-tab-color: #247aae; /* Ping Pong Blue */
-  --pp-blue: #247aae; /* Ping Pong Blue */
-
-  --unselected-tab-color: rgba(70, 102, 132, 0.12); /* Light Grey */
-  --unselected-tab-font-color: #04162c80; /* Black for unselected tab text */
-  --tab-background-color: #f5f5f5; /* Very Light Grey, similar to the background in the image */
+  --selected-tab-color: #247aae;
+  --pp-blue: #247aae;
+  --unselected-tab-color: rgba(70, 102, 132, 0.12);
+  --unselected-tab-font-color: #04162c80;
+  --tab-background-color: #f5f5f5;
   margin: 0;
   padding: 0;
   color: rgb(25, 49, 72);
@@ -18,17 +17,16 @@ body {
   align-items: center;
   border-radius: 8px;
   padding: 16px;
-
   gap: 8px;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  position: fixed; /* Fixes the tab at the top */
-  top: 0; /* Aligns the tab panel at the top of the page */
-  width: 100%; /* Ensures the tab panel stretches across the full width */
-  z-index: 1000; /* Ensures the tab panel stays above other content */
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
   padding-right: 32px;
-  background-color: #fff; /* Adds a background color to the tab panel */
+  background-color: #fff;
 }
 
 .tab::-webkit-scrollbar {
@@ -40,10 +38,7 @@ body {
   padding: 8px 12px;
   font-size: 14px;
   border-radius: 8px;
-  /* transition: background-color 0.3s, color 0.3s ease-out; */
-  color: var(
-    --unselected-tab-font-color
-  ); /* Dark color for unselected tab text */
+  color: var(--unselected-tab-font-color);
 }
 
 .tab button:last-child {
@@ -59,7 +54,7 @@ body {
 
 .tabcontent h3 {
   margin: 0;
-  height: fit-content;
+  height: auto;
 }
 
 .tab .tablinks:hover {
@@ -74,13 +69,60 @@ body {
     #47a99d 38.39%,
     #3783d7 100%
   );
-  color: white; /* White text color for active tab */
+  color: white;
   font-weight: 600;
 }
 
-/* .tab button:not(.active) {
-  background-color: var(--unselected-tab-color);
-} */
+@media screen and (min-width: 800px) {
+  .tab-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .tab {
+    display: block;
+    white-space: normal;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: static;
+    width: 100%;
+    min-width: 200px;
+    max-width: 300px;
+    box-shadow: none;
+    background-color: rgb(229, 237, 240);
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .tabcontent {
+    padding: 16px;
+    margin-top: 0;
+    width: 100%;
+    margin-bottom: 0;
+    margin-left: 32px; /* ширина табов + отступ */
+  }
+
+  .tab button {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    text-align: left;
+    padding: 16px;
+    background-color: transparent;
+
+    border-radius: 0;
+  }
+
+  .tab button:last-child {
+    margin-right: 0;
+  }
+
+  .tab button.active {
+    color: white;
+    font-weight: 800;
+    background: #568f94;
+  }
+}
 
 .required-star {
   color: red;
@@ -221,16 +263,14 @@ label {
 .avatar-preview,
 .avatar-placeholder {
   width: 110px; /* Ширина контейнера */
-  height: 110px; /* Высота контейнера */
-  object-fit: cover; /* Заполняет контейнер, сохраняя пропорции */
+  height: 110px;
+  object-fit: cover;
   display: block;
   box-sizing: border-box;
   object-position: center;
   flex-shrink: 0;
-  /* Для круглой формы */
-  overflow: hidden; /* Сохраняет пропорции, вписывая изображение в контейнер */
+  overflow: hidden;
 }
-
 .upload-area {
   display: flex;
   flex-direction: column;
@@ -284,7 +324,6 @@ label {
 
 .feature-item {
   flex-wrap: wrap;
-  /* Распределение на 3 колонки с отступами между ними */
   display: flex;
   flex-direction: row;
   margin-top: 8px;
@@ -331,7 +370,6 @@ label {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  /* Занимает все доступное пространство */
 }
 
 .description-textarea {
@@ -386,7 +424,7 @@ label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* Выравнивание элементов в начале контейнера */
+
   gap: 4px;
   width: 100%;
 }
@@ -432,7 +470,7 @@ label {
 }
 
 .disabled-block .toggle-container {
-  pointer-events: auto; /* Это позволяет взаимодействовать с переключателем, даже когда блок неактивен */
+  pointer-events: auto;
 }
 
 .toggle-container {
@@ -507,7 +545,7 @@ input:checked + .slider:before {
 }
 
 .delete-text {
-  color: rgb(206, 30, 30); /* Или другой стиль для текста удаления */
+  color: rgb(206, 30, 30);
   cursor: pointer;
   margin-top: 16px;
   width: fit-content;
@@ -571,7 +609,7 @@ input:checked + .slider:before {
   position: absolute;
   z-index: 1000;
   background-color: white;
-  width: calc(100% - 2px); /* adjust for border */
+  width: calc(100% - 2px);
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
   max-height: 200px;
   overflow-y: auto;
@@ -644,11 +682,11 @@ input:checked + .slider:before {
 }
 
 .save-button:hover {
-  background-color: green; /* Немного светлее или темнее оттенок для эффекта наведения */
+  background-color: green;
 }
 
 .save-button:active {
-  transform: scale(0.98); /* Уменьшение кнопки при нажатии */
+  transform: scale(0.98);
 }
 
 @media screen and (max-width: 480px) {
@@ -673,21 +711,18 @@ input:checked + .slider:before {
   color: #155724;
   background-color: #d4edda;
   border-color: #c3e6cb;
-  position: fixed; /* Фиксированное позиционирование относительно вьюпорта */
-  top: 50%; /* Центрирование по вертикали */
-  left: 50%; /* Центрирование по горизонтали */
-  transform: translate(
-    -50%,
-    -50%
-  ); /* Сдвигаем элемент на 50% его ширины и высоты для точного центрирования */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 1rem;
   border-radius: 0.25rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Убедитесь, что это значение выше, чем у других элементов на странице */
-  min-width: 300px; /* Минимальная ширина, чтобы сообщение было читабельно на мобильных */
+  z-index: 1000;
+  min-width: 300px;
   text-align: center;
   box-sizing: border-box;
-  max-width: 80%; /* Максимальная ширина, чтобы избежать слишком длинного сообщения на десктопах */
+  max-width: 80%;
 }
 
 .fade-out {
