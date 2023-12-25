@@ -140,10 +140,16 @@
                   <span class="slider round"></span>
                 </label>
               </div>
-              <div class="button-container">
-                <button type="submit" class="save-button">Сохранить</button>
-              </div>
             </form>
+          </div>
+          <div class="button-container">
+            <button
+              type="submit"
+              class="save-button"
+              @click="validateAndSubmit('groupTraining')"
+            >
+              Сохранить
+            </button>
           </div>
         </div>
 
@@ -190,11 +196,16 @@
                 @updateFeatures="handleFeatureUpdate"
                 list-title="Достижения (не более 10)"
               ></feature-list>
-
-              <div class="button-container">
-                <button type="submit" class="save-button">Сохранить</button>
-              </div>
             </form>
+          </div>
+          <div class="button-container">
+            <button
+              type="submit"
+              class="save-button"
+              @click="validateAndSubmit('individualTraining')"
+            >
+              Сохранить
+            </button>
           </div>
         </div>
 
@@ -281,11 +292,16 @@
                   + Добавить карточку
                 </button>
               </div>
-
-              <div class="button-container">
-                <button type="submit" class="save-button">Сохранить</button>
-              </div>
             </form>
+          </div>
+          <div class="button-container">
+            <button
+              type="submit"
+              class="save-button"
+              @click="validateAndSubmit('prices')"
+            >
+              Сохранить
+            </button>
           </div>
         </div>
 
@@ -325,10 +341,16 @@
                   <span class="slider round"></span>
                 </label>
               </div>
-              <div class="button-container">
-                <button type="submit" class="save-button">Сохранить</button>
-              </div>
             </form>
+          </div>
+          <div class="button-container">
+            <button
+              type="submit"
+              class="save-button"
+              @click="validateAndSubmit('reviews')"
+            >
+              Сохранить
+            </button>
           </div>
         </div>
 
@@ -383,11 +405,16 @@
               <button @click="addClub" type="button" class="add-button">
                 + Добавить клуб
               </button>
-
-              <div class="button-container">
-                <button type="submit" class="save-button">Сохранить</button>
-              </div>
             </form>
+          </div>
+          <div class="button-container">
+            <button
+              type="submit"
+              class="save-button"
+              @click="validateAndSubmit('clubs')"
+            >
+              Сохранить
+            </button>
           </div>
         </div>
 
@@ -432,11 +459,16 @@
                 @updateFeatures="handleFeatureUpdate"
                 list-title="Достижения (не более 10)"
               ></feature-list>
-
-              <div class="button-container">
-                <button type="submit" class="save-button">Сохранить</button>
-              </div>
             </form>
+          </div>
+          <div class="button-container">
+            <button
+              type="submit"
+              class="save-button"
+              @click="validateAndSubmit('benefitsTT')"
+            >
+              Сохранить
+            </button>
           </div>
         </div>
 
@@ -572,11 +604,16 @@
               <p class="hint">
                 Показываются все видео со страницы тренера на RTTF.
               </p>
-
-              <div class="button-container">
-                <button type="submit" class="save-button">Сохранить</button>
-              </div>
             </form>
+          </div>
+          <div class="button-container">
+            <button
+              type="submit"
+              class="save-button"
+              @click="validateAndSubmit('videos')"
+            >
+              Сохранить
+            </button>
           </div>
         </div>
 

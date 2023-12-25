@@ -59,8 +59,7 @@ body {
 
 .tabcontent h3 {
   margin: 0;
-  height: 32px;
-  line-height: 32px;
+  height: fit-content;
 }
 
 .tab .tablinks:hover {

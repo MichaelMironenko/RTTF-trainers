@@ -658,6 +658,14 @@ new Vue({
       console.log("Saving sections to localStorage", this.sections);
 
       localStorage.setItem("sections", JSON.stringify(this.sections));
+      console.log("kek");
+      this.saveSuccessful = true;
+      console.log(this.saveSuccessful);
+
+      setTimeout(() => {
+        this.saveSuccessful = false;
+        console.log(this.saveSuccessful);
+      }, 2000);
     },
     updateCharsLeftAndValidate(section, inputId) {
       const sectionData = this.sections[section];
@@ -676,6 +684,12 @@ new Vue({
       this.isSubmitAttempted = true;
       let isValid = true;
       const section = this.sections[sectionId];
+
+      if (!this.sections[sectionId].editable) {
+        // Сохраняем только значение editable, если блок выключен
+        this.saveToLocalStorage();
+        return;
+      }
 
       if (section.inputs) {
         section.inputs.forEach((input) => {
@@ -744,14 +758,6 @@ new Vue({
 
       if (isValid) {
         this.saveToLocalStorage();
-        console.log("kek");
-        this.saveSuccessful = true;
-        console.log(this.saveSuccessful);
-
-        setTimeout(() => {
-          this.saveSuccessful = false;
-          console.log(this.saveSuccessful);
-        }, 2000);
 
         this.isSubmitAttempted = false;
       }
