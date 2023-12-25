@@ -7,72 +7,612 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="tab">
-      <button class="tablinks" onclick="openTab(event, 'MainInfo')">
-        Основная информация
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'AboutMe')">
-        Обо мне
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'GroupTraining')">
-        Групповые тренировки
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'IndividualTraining')">
-        Индивидуальные тренировки
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'Prices')">Цены</button>
-      <button class="tablinks" onclick="openTab(event, 'FeedbackRTTF')">
-        Отзывы с RTTF
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'Clubs')">Клубы</button>
-      <button class="tablinks" onclick="openTab(event, 'BenefitsTT')">
-        Польза настольного тенниса
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'FAQ')">
-        Часто задаваемые вопросы
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'Videos')">
-        Видео со мной
-      </button>
-      <button class="tablinks" onclick="openTab(event, 'Contacts')">
-        Контакты
-      </button>
+    <div id="vue-app">
+      <div class="tab">
+        <button
+          class="tablinks"
+          v-for="(section, id) in sections"
+          :key="id"
+          @click="selectTab(id)"
+          :class="{ active: activeTab === id }"
+        >
+          {{ section.title }}
+        </button>
+      </div>
+
+      <div
+        v-for="(section, id) in sections"
+        :id="id"
+        class="tabcontent"
+        v-show="activeTab === id"
+        :key="id"
+      >
+        <!-- Основная информация -->
+        <div v-if="id === 'mainInfo'">
+          <h3>Основная информация</h3>
+
+          <form @submit.prevent="validateAndSubmit('mainInfo')">
+            <input-field
+              v-for="input in sections.mainInfo.inputs"
+              :key="input.id"
+              v-bind="input"
+              :is-submit-attempted="isSubmitAttempted"
+              @input-section="handleInputSection"
+              section-name="mainInfo"
+            ></input-field>
+
+            <photo-upload
+              :label="'Аватар'"
+              v-model="sections.mainInfo.imageData"
+              :is-avatar="true"
+              :section-id="'mainInfo'"
+              @image-uploaded="handleImageUpload"
+            ></photo-upload>
+            <div class="button-container">
+              <button type="submit" class="save-button">Сохранить</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- О себе -->
+        <div v-if="id === 'aboutMe'">
+          <h3>О себе</h3>
+          <form @submit.prevent="validateAndSubmit('aboutMe')">
+            <input-field
+              v-for="input in sections.aboutMe.inputs"
+              :key="input.id"
+              v-bind="input"
+              :is-submit-attempted="isSubmitAttempted"
+              @input-section="handleInputSection"
+              section-name="aboutMe"
+            ></input-field>
+
+            <!-- Форма загрузки картинки -->
+            <photo-upload
+              :label="'Фотография'"
+              v-model="sections.aboutMe.imageData"
+              :is-avatar="false"
+              :section-id="'aboutMe'"
+              @image-uploaded="handleImageUpload"
+            ></photo-upload>
+
+            <!-- Достижения с эмодзи и текстом -->
+
+            <feature-list
+              v-if="sections.aboutMe.featuresList"
+              :is-submit-attempted="isSubmitAttempted"
+              :initial-features="sections.aboutMe.featuresList"
+              :include-title="false"
+              :section-id="'aboutMe'"
+              ref="featureList"
+              @update-features="handleFeatureUpdate"
+              list-title="Достижения (не более 10)"
+            ></feature-list>
+
+            <div class="button-container">
+              <button type="submit" class="save-button">Сохранить</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Групповые тренировки -->
+        <div v-if="id === 'groupTraining'">
+          <div class="header-with-toggle">
+            <h3>Групповые тренировки</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  v-model="sections.groupTraining.editable"
+                />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div :class="{ 'disabled-block': !sections.groupTraining.editable }">
+            <form @submit.prevent="validateAndSubmit('groupTraining')">
+              <input-field
+                v-for="input in sections.groupTraining.inputs"
+                :key="input.id"
+                v-bind="input"
+                :is-submit-attempted="isSubmitAttempted"
+                @input-section="handleInputSection"
+                section-name="groupTraining"
+              ></input-field>
+
+              <!-- Форма загрузки картинки -->
+              <photo-upload
+                :label="'Фотография'"
+                v-model="sections.groupTraining.imageData"
+                :is-avatar="false"
+                :section-id="'groupTraining'"
+                @image-uploaded="handleImageUpload"
+              ></photo-upload>
+
+              <!-- Переключатель "Показать мои тренировки с RTTF" -->
+              <div class="toggle-container mg-top-32">
+                <span>Показать мои тренировки с RTTF</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    v-model="sections.groupTraining.showRTTF"
+                  />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div v-if="id === 'individualTraining'">
+          <div class="header-with-toggle">
+            <h3>Индивидуальные тренировки</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  v-model="sections.individualTraining.editable"
+                />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div
+            :class="{ 'disabled-block': !sections.individualTraining.editable }"
+          >
+            <form @submit.prevent="validateAndSubmit('individualTraining')">
+              <input-field
+                v-for="input in sections.individualTraining.inputs"
+                :key="input.id"
+                v-bind="input"
+                :is-submit-attempted="isSubmitAttempted"
+                @input-section="handleInputSection"
+                section-name="individualTraining"
+              ></input-field>
+
+              <!-- Форма загрузки картинки -->
+              <photo-upload
+                :label="'Фотография'"
+                v-model="sections.individualTraining.imageData"
+                :is-avatar="false"
+                :section-id="'individualTraining'"
+                @image-uploaded="handleImageUpload"
+              ></photo-upload>
+
+              <feature-list
+                v-if="sections.individualTraining.featuresList"
+                :initial-features="sections.individualTraining.featuresList"
+                :include-title="true"
+                :is-submit-attempted="isSubmitAttempted"
+                @updateFeatures="handleFeatureUpdate"
+                list-title="Достижения (не более 10)"
+              ></feature-list>
+
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div v-if="id === 'prices'">
+          <div class="header-with-toggle">
+            <h3>Цены</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input type="checkbox" v-model="sections.prices.editable" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div :class="{ 'disabled-block': !sections.prices.editable }">
+            <form @submit.prevent="validateAndSubmit('prices')">
+              <input-field
+                v-for="input in sections.prices.inputs"
+                :key="input.id"
+                v-bind="input"
+                :is-submit-attempted="isSubmitAttempted"
+                @input-section="handleInputSection"
+                section-name="prices"
+              ></input-field>
+
+              <div class="cards-container">
+                <div
+                  v-for="(card, index) in sections.prices.cards"
+                  class="element-block"
+                >
+                  <div class="card-header">
+                    <span>Карточка {{ index + 1 }}</span>
+                    <div
+                      @click="removeCard('prices', index)"
+                      class="delete-text"
+                    >
+                      Удалить
+                    </div>
+                  </div>
+                  <input-field
+                    :id="'title-' + index"
+                    label="Заголовок"
+                    type="text"
+                    :value="card.title"
+                    :maxlength="30"
+                    :required="true"
+                    :error="card.error"
+                    @input-section="value => handlePriceCards('prices', 'title', index, value)"
+                  ></input-field>
+
+                  <input-field
+                    :id="'price-' + index"
+                    label="Цена"
+                    type="text"
+                    :value="card.price"
+                    :maxlength="10"
+                    :required="true"
+                    :error="card.error"
+                    @input-section="value => handlePriceCards('prices', 'price', index, value)"
+                  ></input-field>
+
+                  <input-field
+                    :id="'description-' + index"
+                    label="Описание"
+                    type="textarea"
+                    :value="card.description"
+                    :maxlength="200"
+                    :required="true"
+                    :error="card.error"
+                    @input-section="value => handlePriceCards('prices', 'description', index, value)"
+                  ></input-field>
+                  <div
+                    v-if="card.error && isSubmitAttempted"
+                    class="error-message"
+                  >
+                    Все поля должны быть заполнены или пустыми.
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  @click="addCard('prices')"
+                  class="add-achievement"
+                >
+                  + Добавить карточку
+                </button>
+              </div>
+
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div v-if="id === 'reviews'">
+          <div class="header-with-toggle">
+            <h3>Отзывы</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input type="checkbox" v-model="sections.reviews.editable" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div :class="{ 'disabled-block': !sections.reviews.editable }">
+            <form @submit.prevent="validateAndSubmit('reviews')">
+              <input-field
+                v-for="input in sections.reviews.inputs"
+                :key="input.id"
+                v-bind="input"
+                :is-submit-attempted="isSubmitAttempted"
+                @input-section="handleInputSection"
+                section-name="reviews"
+              ></input-field>
+              <p class="hint">
+                Выберите отзывы для отображения со своей страницы тренера на
+                RTTF, выбрав “Показать на персональной странице” рядом с
+                отзывом.
+              </p>
+              <!-- Переключатель "Показать мои тренировки с RTTF" -->
+              <div class="toggle-container mg-top-32">
+                <span>Показать средний рейтинг</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    v-model="sections.reviews.showAverageRating"
+                  />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div v-if="id === 'clubs'">
+          <div class="header-with-toggle">
+            <h3>Клубы</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input type="checkbox" v-model="sections.clubs.editable" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div :class="{ 'disabled-block': !sections.clubs.editable }">
+            <form @submit.prevent="validateAndSubmit('clubs')">
+              <div
+                class="input-wrapper"
+                v-for="(club, index) in sections.clubs.list"
+                :key="club.id || index"
+              >
+                <label class="club-label" :for="'club-' + index"
+                  >Клуб {{ index + 1 }}</label
+                >
+                <div class="autocomplete-wrapper">
+                  <input
+                    :id="'club-' + index"
+                    type="text"
+                    v-model="club.name"
+                    autocomplete="off"
+                    @input="filterClubs($event.target.value, index)"
+                    class="input-club"
+                    @keydown="handleKeyDown"
+                    @blur="handleSuggestionsInteraction"
+                  />
+                  <ul
+                    v-if="currentSuggestions.length && currentSuggestionIndex === index"
+                    class="suggestions"
+                    ref="suggestionsList"
+                  >
+                    <li
+                      v-for="(suggestion, suggestionIndex) in currentSuggestions"
+                      :key="suggestion.id"
+                      @click="selectClub(suggestion)"
+                      :class="{ 'highlighted': suggestionIndex === highlightedSuggestion }"
+                    >
+                      {{ suggestion.name }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <button @click="addClub" type="button" class="add-button">
+                + Добавить клуб
+              </button>
+
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Преимущества НТ -->
+        <div v-if="id === 'benefitsTT'">
+          <div class="header-with-toggle">
+            <h3>Преимущества настольного тенниса</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input type="checkbox" v-model="sections.benefitsTT.editable" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <div :class="{ 'disabled-block': !sections.benefitsTT.editable }">
+            <form @submit.prevent="validateAndSubmit('benefitsTT')">
+              <input-field
+                v-for="input in sections.benefitsTT.inputs"
+                :key="input.id"
+                v-bind="input"
+                section-name="benefitsTT"
+                :is-submit-attempted="isSubmitAttempted"
+                @input-section="handleInputSection"
+              ></input-field>
+
+              <!-- Форма загрузки картинки -->
+              <photo-upload
+                :label="'Фотография'"
+                v-model="sections.benefitsTT.imageData"
+                :is-avatar="false"
+                :section-id="'benefitsTT'"
+                @image-uploaded="handleImageUpload"
+              ></photo-upload>
+
+              <!-- Достижения с эмодзи и текстом -->
+              <feature-list
+                v-if="sections.benefitsTT.featuresList"
+                :initial-features="sections.benefitsTT.featuresList"
+                :include-title="false"
+                :is-submit-attempted="isSubmitAttempted"
+                @updateFeatures="handleFeatureUpdate"
+                list-title="Достижения (не более 10)"
+              ></feature-list>
+
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div v-if="id === 'faq'">
+          <div class="header-with-toggle">
+            <h3>Часто задаваемые вопросы</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input type="checkbox" v-model="sections.faq.editable" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div :class="{ 'disabled-block': !sections.faq.editable }">
+            <!-- Заголовок FAQ -->
+            <form @submit.prevent="validateAndSubmit('faq')">
+              <input-field
+                v-for="input in sections.faq.inputs"
+                :key="input.id"
+                v-bind="input"
+                section-name="faq"
+                :is-submit-attempted="isSubmitAttempted"
+                @input-section="handleInputSection"
+                class="mg-bottom-16"
+              ></input-field>
+
+              <!-- Вопросы и ответы -->
+              <div
+                v-for="(qa, index) in sections.faq.qas"
+                :key="index"
+                class="faq-block"
+                :class="{'fade-out': qa.fadeOut}"
+              >
+                <div class="input-wrapper">
+                  <label :for="'question-' + index"
+                    >Вопрос {{ index + 1 }}</label
+                  >
+                  <div class="input-and-error">
+                    <textarea
+                      :id="'question-' + index"
+                      v-model="qa.question"
+                      rows="3"
+                      :maxlength="200"
+                      @input="updateCharsLeftAndValidateFAQ(qa, index)"
+                      :class="{ 'input-error': qa.questionError }"
+                    ></textarea>
+                    <div class="input-feedback">
+                      <div
+                        class="error-message"
+                        v-if="qa.questionError && isSubmitAttempted"
+                      >
+                        {{ qa.questionErrorMessage }}
+                      </div>
+                      <div
+                        class="character-count"
+                        v-if="qa.questionCharsLeft < 10"
+                      >
+                        {{ qa.questionCharsLeft }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="input-wrapper">
+                  <label :for="'answer-' + index">Ответ {{ index + 1 }}</label>
+                  <div class="input-and-error">
+                    <textarea
+                      :id="'answer-' + index"
+                      v-model="qa.answer"
+                      rows="3"
+                      :maxlength="500"
+                      @input="updateCharsLeftAndValidateFAQ(qa, index)"
+                      :class="{ 'input-error': qa.answerError }"
+                    ></textarea>
+                    <div class="input-feedback">
+                      <div
+                        class="error-message"
+                        v-if="qa.answerError && isSubmitAttempted"
+                      >
+                        {{ qa.answerErrorMessage }}
+                      </div>
+                      <div
+                        class="character-count"
+                        v-if="qa.answerCharsLeft < 10"
+                      >
+                        {{ qa.answerCharsLeft }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="remove-button" @click="removeQA(index)">
+                  <img src="delete.svg" alt="Удалить" class="remove-icon" />
+                  Удалить
+                </div>
+              </div>
+
+              <button
+                @click="addQA"
+                type="button"
+                class="add-button"
+                v-if="sections.faq.qas.length < 10"
+              >
+                + Добавить вопрос и ответ
+              </button>
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div v-if="id === 'videos'">
+          <div class="header-with-toggle">
+            <h3>Видео со мной</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input type="checkbox" v-model="sections.videos.editable" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div :class="{ 'disabled-block': !sections.videos.editable }">
+            <form @submit.prevent="validateAndSubmit('videos')">
+              <input-field
+                v-for="input in sections.videos.inputs"
+                :key="input.id"
+                section-name="videos"
+                v-bind="input"
+                :is-submit-attempted="isSubmitAttempted"
+                @input-section="handleInputSection"
+              ></input-field>
+              <p class="hint">
+                Показываются все видео со страницы тренера на RTTF.
+              </p>
+
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div v-if="activeTab === 'contacts'">
+          <div class="header-with-toggle">
+            <h3>Контакты</h3>
+            <div class="toggle-container">
+              <label class="switch">
+                <input type="checkbox" v-model="sections.contacts.editable" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div :class="{ 'disabled-block': !sections.contacts.editable }">
+            <form @submit.prevent="validateAndSubmit('contacts')">
+              <input-field
+                v-for="input in sections.contacts.inputs"
+                :key="input.id"
+                section-name="contacts"
+                v-bind="input"
+                :is-submit-attempted="isSubmitAttempted"
+                @input-section="handleInputSection"
+              ></input-field>
+              <div class="button-container">
+                <button type="submit" class="save-button">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div v-if="saveSuccessful" class="save-success-message">
+        Изменения сохранены
+      </div>
     </div>
 
-    <div id="MainInfo" class="tabcontent">
-      <h2>Основная информация</h2>
-    </div>
-    <div id="AboutMe" class="tabcontent">
-      <h2>Обо мне</h2>
-    </div>
-    <div id="GroupTraining" class="tabcontent">
-      <h2>Групповые тренировки</h2>
-    </div>
-    <div id="IndividualTraining" class="tabcontent">
-      <h2>Индивидуальные тренировки</h2>
-    </div>
-    <div id="Prices" class="tabcontent">
-      <h2>Цены</h2>
-    </div>
-    <div id="FeedbackRTTF" class="tabcontent">
-      <h2>Отзывы с RTTF</h2>
-    </div>
-    <div id="Clubs" class="tabcontent">
-      <h2>Клубы</h2>
-    </div>
-    <div id="BenefitsTT" class="tabcontent">
-      <h2>Польза настольного тенниса</h2>
-    </div>
-    <div id="FAQ" class="tabcontent">
-      <h2>Часто задаваемые вопросы</h2>
-    </div>
-    <div id="Videos" class="tabcontent">
-      <h2>Видео со мной</h2>
-    </div>
-    <div id="Contacts" class="tabcontent">
-      <h2>Контакты</h2>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
