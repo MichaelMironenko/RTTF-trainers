@@ -137,60 +137,44 @@ Vue.component("feature-list", {
     listTitle: String,
     sectionId: String,
   },
-  data: function () {
+  data() {
     return {
       features: this.initialFeatures || [],
     };
   },
-  created() {
-    this.features = this.initialFeatures || [];
-  },
-
   methods: {
-    addFeature: function () {
-      this.features.push({
-        emoji: "",
-        title: "",
-        description: "",
-        error: false,
-        errorMessage: "",
-      });
+    addFeature() {
+      if (this.features.length < 10) {
+        this.features.push({
+          emoji: "",
+          title: "",
+          description: "",
+          error: false,
+        });
+      }
     },
-    emitUpdate() {
-      console.log("Emitting updateFeatures with features:", this.features);
-
-      this.$emit("update-features", {
-        sectionId: this.sectionId,
-        features: this.features,
-      });
-    },
-    removeFeature: function (index) {
+    removeFeature(index) {
       this.features.splice(index, 1);
     },
     validateFeature(index) {
       const feature = this.features[index];
-      const isInvalid =
-        !feature.emoji ||
-        !feature.description ||
-        (this.includeTitle && !feature.title);
-
-      feature.error = isInvalid;
-      feature.errorMessage = isInvalid
-        ? "Заполните все поля или удалите лишние"
-        : "";
-      this.emitUpdate();
+      feature.error = this.isFeatureIncomplete(feature);
     },
-    validateAllFeatures: function () {
-      let isValid = true;
-      this.features.forEach((feature, index) => {
-        this.validateFeature(index);
-        if (feature.error) {
-          isValid = false;
-        }
-      });
-      console.log("validateAllFeatures result:", isValid);
-
-      return isValid;
+    isFeatureIncomplete(feature) {
+      return this.includeTitle
+        ? !feature.emoji || !feature.title || !feature.description
+        : !feature.emoji || !feature.description;
+    },
+    validateAllFeatures() {
+      this.features = this.features.filter(
+        (feature) => !this.isFeatureEmpty(feature)
+      );
+      return this.features.every(
+        (feature) => !this.isFeatureIncomplete(feature)
+      );
+    },
+    isFeatureEmpty(feature) {
+      return !feature.emoji && !feature.title && !feature.description;
     },
   },
   template: `
@@ -562,7 +546,6 @@ new Vue({
       },
       contacts: {
         title: "Контакты",
-        editable: true,
         inputs: [
           {
             id: "phone",
@@ -607,6 +590,7 @@ new Vue({
     highlightedSuggestion: -1,
     currentSuggestionListElement: null,
     saveSuccessful: false,
+    isValid: false,
   },
   created() {
     this.$on("input-section", this.handleInputSection);
@@ -639,10 +623,9 @@ new Vue({
     },
 
     handleFeatureUpdate({ sectionId, features }) {
-      console.log("hey", sectionId, features);
       if (this.sections[sectionId]) {
         this.sections[sectionId].featuresList = features;
-        this.saveToLocalStorage();
+        console.log("Updated features for section", sectionId, features);
       }
     },
     handleImageUpload(data) {
@@ -667,99 +650,79 @@ new Vue({
         console.log(this.saveSuccessful);
       }, 2000);
     },
-    updateCharsLeftAndValidate(section, inputId) {
-      const sectionData = this.sections[section];
-      if (sectionData.inputs) {
-        const input = sectionData.inputs.find((i) => i.id === inputId);
-        if (input) {
-          input.charsLeft = input.maxlength - input.value.length;
+    // updateCharsLeftAndValidate(section, inputId) {
+    //   const sectionData = this.sections[section];
+    //   if (sectionData.inputs) {
+    //     const input = sectionData.inputs.find((i) => i.id === inputId);
+    //     if (input) {
+    //       input.charsLeft = input.maxlength - input.value.length;
 
-          if (this.isSubmitAttempted) {
-            input.error = input.required && !input.value;
-          }
-        }
-      }
-    },
+    //       if (this.isSubmitAttempted) {
+    //         input.error = input.required && !input.value;
+    //       }
+    //     }
+    //   }
+    // },
     validateAndSubmit(sectionId) {
       this.isSubmitAttempted = true;
-      let isValid = true;
       const section = this.sections[sectionId];
 
-      if (!this.sections[sectionId].editable) {
-        // Сохраняем только значение editable, если блок выключен
-        this.saveToLocalStorage();
-        return;
-      }
+      if (section.editable === undefined || section.editable) {
+        let isValid = true;
 
-      if (section.inputs) {
-        section.inputs.forEach((input) => {
-          this.updateCharsLeftAndValidate(sectionId, input.id);
-          if (input.required && !input.value) {
-            input.error = true;
-            isValid = false;
-            console.log(isValid);
-          } else {
-            input.error = false;
-          }
-        });
-      }
-
-      if (
-        sectionId === "aboutMe" &&
-        this.$refs.featureList &&
-        this.$refs.featureList.length > 0
-      ) {
-        const featureListComponent = this.$refs.featureList[0];
-        if (typeof featureListComponent.validateAllFeatures === "function") {
-          const isFeaturesValid = featureListComponent.validateAllFeatures();
-
-          if (!isFeaturesValid) {
-            isValid = false;
-          }
+        // Валидация обычных полей ввода
+        if (section.inputs) {
+          console.log("section.inputs", section.inputs);
+          section.inputs.forEach((input) => {
+            // this.updateCharsLeftAndValidate(sectionId, input.id);
+            if (input.required && !input.value) {
+              input.error = true;
+              isValid = false;
+            } else {
+              input.error = false;
+            }
+          });
         }
-      }
 
-      // if (section.trainingElements) {
-      //   section.trainingElements.forEach((element) => {
-      //     if (!element.emoji || !element.title || !element.description) {
-      //       element.error = true;
-      //       element.errorMessage =
-      //         "Пожалуйста, заполните все поля или удалите элемент";
-      //       isValid = false;
-      //     } else {
-      //       element.error = false;
-      //     }
-      //   });
-      // }
+        // Валидация feature-list
+        const featureListRef = `featureList-${sectionId}`;
+        const featureListComponent = this.$refs[featureListRef];
+        if (featureListComponent && featureListComponent.length) {
+          // Предполагаем, что $refs возвращает массив, берем первый элемент
+          isValid = isValid && featureListComponent[0].validateAllFeatures();
+        }
 
-      if (section.qas) {
-        console.log("hey hey");
-        section.qas.forEach((qa, index) => {
-          this.updateCharsLeftAndValidateFAQ(qa, index);
-          if (qa.question && !qa.answer) {
-            qa.answerError = true;
-            isValid = false;
-          } else if (!qa.question && qa.answer) {
-            qa.questionError = true;
-            isValid = false;
-          } else {
-            qa.questionError = false;
-            qa.answerError = false;
-          }
-        });
-      }
+        if (section.qas) {
+          console.log("hey hey");
+          section.qas.forEach((qa, index) => {
+            this.updateCharsLeftAndValidateFAQ(qa, index);
+            if (qa.question && !qa.answer) {
+              qa.answerError = true;
+              isValid = false;
+            } else if (!qa.question && qa.answer) {
+              qa.questionError = true;
+              isValid = false;
+            } else {
+              qa.questionError = false;
+              qa.answerError = false;
+            }
+          });
+        }
 
-      if (sectionId === "prices" && section.cards) {
-        section.cards.forEach((card, index) => {
-          this.validateCardFields(sectionId, index);
-          if (card.error) isValid = false;
-        });
-      }
+        if (sectionId === "prices" && section.cards) {
+          section.cards.forEach((card, index) => {
+            this.validateCardFields(sectionId, index);
+            if (card.error) isValid = false;
+          });
+        }
 
-      if (isValid) {
+        if (isValid) {
+          this.saveToLocalStorage();
+          this.isSubmitAttempted = false;
+        }
+      } else {
+        // Если editable определен и равен false, сохраняем без валидации
         this.saveToLocalStorage();
-
-        this.isSubmitAttempted = false;
       }
     },
 

@@ -579,6 +579,10 @@ input:checked + .slider:before {
   font-weight: bold;
 }
 
+.card-header .remove-button {
+  padding: 0;
+}
+
 .cards-container {
   margin-top: 16px;
   gap: 16px;
@@ -707,6 +711,12 @@ input:checked + .slider:before {
   }
 }
 
+.save-button:disabled {
+  background-color: lightgray; /* Измените цвет фона на серый для отключенной кнопки */
+  cursor: not-allowed; /* Измените курсор на "не доступно" для отключенной кнопки */
+  /* Другие стили для отключенной кнопки, если необходимо */
+}
+
 .save-success-message {
   color: #155724;
   background-color: #d4edda;
@@ -726,6 +736,6 @@ input:checked + .slider:before {
 }
 
 .fade-out {
-  transition: transform 0.1s ease-out;
-  transform: scale(0);
+  transition: transform 0.3s ease-out;
+  transform: scaleY(0);
 }

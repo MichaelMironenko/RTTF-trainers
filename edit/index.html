@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="vue-app">
+    <div id="vue-app" v-cloak>
       <div class="tab-container">
         <div class="tab">
           <button
@@ -85,8 +85,8 @@
                 :initial-features="sections.aboutMe.featuresList"
                 :include-title="false"
                 :section-id="'aboutMe'"
-                ref="featureList"
-                @update-features="handleFeatureUpdate"
+                :ref="'featureList-aboutMe'"
+                @updateFeatures="handleFeatureUpdate"
                 list-title="Достижения (не более 10)"
               ></feature-list>
 
@@ -195,9 +195,10 @@
                   v-if="sections.individualTraining.featuresList"
                   :initial-features="sections.individualTraining.featuresList"
                   :include-title="true"
+                  :ref="'featureList-individualTraining'"
                   :is-submit-attempted="isSubmitAttempted"
                   @updateFeatures="handleFeatureUpdate"
-                  list-title="Достижения (не более 10)"
+                  list-title="Элементы тренировок"
                 ></feature-list>
               </form>
             </div>
@@ -240,10 +241,12 @@
                   >
                     <div class="card-header">
                       <span>Карточка {{ index + 1 }}</span>
+
                       <div
+                        class="remove-button"
                         @click="removeCard('prices', index)"
-                        class="delete-text"
                       >
+                        <img src="delete.svg" alt="Удалить" />
                         Удалить
                       </div>
                     </div>
@@ -461,9 +464,10 @@
                   v-if="sections.benefitsTT.featuresList"
                   :initial-features="sections.benefitsTT.featuresList"
                   :include-title="false"
+                  :ref="'featureList-benefitsTT'"
                   :is-submit-attempted="isSubmitAttempted"
                   @updateFeatures="handleFeatureUpdate"
-                  list-title="Достижения (не более 10)"
+                  list-title="Преимущества настольного тенниса"
                 ></feature-list>
               </form>
             </div>
@@ -626,15 +630,8 @@
           </div>
 
           <div v-if="activeTab === 'contacts'">
-            <div class="header-with-toggle">
-              <h3>Контакты</h3>
-              <div class="toggle-container">
-                <label class="switch">
-                  <input type="checkbox" v-model="sections.contacts.editable" />
-                  <span class="slider round"></span>
-                </label>
-              </div>
-            </div>
+            <h3>Контакты</h3>
+
             <div :class="{ 'disabled-block': !sections.contacts.editable }">
               <form @submit.prevent="validateAndSubmit('contacts')">
                 <input-field
