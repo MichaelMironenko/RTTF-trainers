@@ -5,6 +5,7 @@
   --black30: #08274d4c;
   --white50: #ffffff7d;
   --ping-pong-green: #408053;
+  --page-background: #cde4e7;
 }
 
 *:target {
@@ -13,16 +14,6 @@
 
 [v-cloak] {
   display: none;
-}
-
-.trainings-block {
-  background-color: #e7f3e4;
-  padding: 16px 0px;
-}
-
-.personal-trainings-block {
-  background-color: #f9f9f9;
-  padding: 16px 0px;
 }
 
 * {
@@ -52,6 +43,7 @@ h2 {
   font-size: 30px;
   font-style: normal;
   font-weight: 800;
+  margin-top: 8px;
 }
 
 ul {
@@ -107,6 +99,7 @@ a {
     #3783d7 100%
   );
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   font-weight: bold;
   line-height: 1.3;
@@ -223,7 +216,7 @@ a {
 
 .main-section {
   display: flex;
-  padding: 100px 50px 0px 50px;
+  padding: 100px 50px 32px 50px;
   justify-content: center;
   align-items: center;
   align-content: center;
@@ -260,7 +253,7 @@ h1 {
   font-size: 40px;
   line-height: 1.2;
   color: white;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .trainer-name {
@@ -312,7 +305,7 @@ h1 {
   justify-content: center;
   gap: 32px;
   width: 100%;
-  min-height: 300px;
+  /* min-height: 300px; */
 }
 
 .photo {
@@ -383,7 +376,7 @@ h1 {
 
 @media (max-width: 700px) {
   .container {
-    padding: 0 16px;
+    padding: 16px;
   }
 
   .photo {
@@ -631,7 +624,7 @@ h1 {
   flex-wrap: wrap;
   gap: 32px;
   justify-content: center;
-  padding: 16px;
+  /* padding: 16px; */
 }
 
 .personal-training-card {
@@ -666,6 +659,7 @@ h1 {
     #3783d7 100%
   );
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   font-size: 30px;
   font-weight: bold;
@@ -832,18 +826,17 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center; /* Выравниваем элементы по верхнему краю */
+  justify-content: center;
   gap: 32px;
-  padding: 20px;
-  /* Цвет фона, соответствующий вашему дизайну */
+  padding: 0 20px;
 }
 
 .clubs-container {
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-width: 500px; /* Максимальная ширина блока с адресами клубов */
-  margin-right: 20px; /* Добавим отступ справа */
+  max-width: 500px;
+  margin-right: 20px;
   gap: 32px;
 }
 
@@ -882,10 +875,6 @@ h1 {
   overflow: hidden;
   max-width: 400px;
   height: 320px;
-}
-
-.tennis-features {
-  padding: 16px;
 }
 
 .benefit {
@@ -1041,7 +1030,6 @@ h1 {
 }
 
 .contacts-block {
-  background-color: #e6f7ff;
   padding: 16px;
 }
 
@@ -1054,6 +1042,29 @@ h1 {
   align-items: center;
   gap: 16px;
   flex: 1 0 0;
+}
+
+.block-bg {
+  padding: 32px;
+}
+
+#trainings,
+#reviews * {
+  padding: 0;
+}
+
+.block-bg:nth-child(odd) {
+  background-color: white;
+}
+
+.block-bg:nth-child(even) {
+  background: var(--page-background);
+}
+
+@media (max-width: 700px) {
+  .block-bg {
+    padding: 20px;
+  }
 }
 
 .contact-section {

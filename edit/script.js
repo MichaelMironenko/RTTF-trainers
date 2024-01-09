@@ -1,73 +1,59 @@
-Vue.component("input-field", {
+const { createApp } = Vue;
+
+const InputField = {
   props: {
     id: String,
     label: String,
     type: { type: String, default: "text" },
-    value: String,
     rows: { type: Number, default: 3 },
     maxlength: Number,
     required: Boolean,
     error: Boolean,
     errorMessage: String,
-    largeTextarea: Boolean,
     isSubmitAttempted: Boolean,
     sectionName: String,
+    placeholder: String,
+    modelValue: String,
   },
-  data() {
-    return {
-      userHasInput: false,
-      inputValue: this.value || "",
-    };
-  },
+
   computed: {
     charsLeft() {
-      return this.maxlength - this.inputValue.length;
-    },
-    inputClass() {
-      return this.largeTextarea ? "large-textarea-wrapper" : "";
+      return this.maxlength - this.modelValue.length;
     },
     effectiveErrorMessage() {
       return this.errorMessage || "Введите текст";
     },
     shouldShowError() {
       return (
-        this.error &&
-        (this.isSubmitAttempted || this.userHasInput) &&
-        this.inputValue === ""
+        this.required &&
+        !this.modelValue &&
+        (this.isSubmitAttempted || this.modelValue !== "")
       );
     },
   },
   methods: {
-    handleInput() {
-      this.userHasInput = true;
-      this.$emit("input-section", {
-        sectionName: this.sectionName,
-        inputData: { id: this.id, value: this.inputValue },
-      });
+    updateValue(event) {
+      this.$emit("update:modelValue", event.target.value);
     },
   },
-  watch: {
-    value(newValue) {
-      this.inputValue = newValue;
-    },
-  },
+
   template: `
-    <div class="input-wrapper">
+  <div class="input-wrapper">
       <label :for="id" :class="{ 'required-label': required }">{{ label }}</label>
       <div class="input-and-error">
-        <input v-if="type !== 'textarea'" :type="type" :id="id" :class="{ 'error-border': shouldShowError }"  v-model="inputValue" :maxlength="maxlength"
-            @input="handleInput" />
-        <textarea v-else :id="id" v-model="inputValue" :class="{ 'error-border': shouldShowError }"   :maxlength="maxlength" :rows="rows"
-            @input="handleInput"></textarea>
-        <div class="input-feedback">
+        <input v-if="type !== 'textarea'" :type="type" :placeholder="placeholder" :id="id" :class="{ 'error-border': shouldShowError }" :value="modelValue" :maxlength="maxlength"
+            @input="updateValue"/>
+        <textarea v-else :id="id" :value="modelValue" :placeholder="placeholder" :class="{ 'error-border': shouldShowError }"   :maxlength="maxlength" :rows="rows"
+            @input="updateValue"></textarea>
+        <div class="input-feedback"> 
           <div class="error-message" v-if="shouldShowError">{{ effectiveErrorMessage }}</div>
           <div class="character-count" v-if="charsLeft <= 10">{{ charsLeft }}</div>
         </div>
       </div>
     </div>`,
-});
+};
 
-Vue.component("photo-upload", {
+const PhotoUpload = {
   data() {
     return {
       imageData: null,
@@ -75,7 +61,7 @@ Vue.component("photo-upload", {
   },
   props: {
     label: String,
-    value: String,
+    modelValue: String,
     isAvatar: Boolean,
     sectionId: String,
   },
@@ -91,7 +77,7 @@ Vue.component("photo-upload", {
       if (file && file.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.$emit("input", e.target.result);
+          this.$emit("update:modelValue", e.target.result);
         };
         reader.readAsDataURL(file);
       }
@@ -115,7 +101,7 @@ Vue.component("photo-upload", {
       <label class="avatar-label">{{ label }}</label>
       <div class="upload-container">
         <div  :class="{ 'avatar-container': isAvatar }" >
-          <img v-if="value" :src="value" :alt="label + ' preview'" class="avatar-placeholder" />
+          <img v-if="modelValue" :src="modelValue" :alt="label + ' preview'" class="avatar-placeholder" />
           <img v-else src="user-photo.svg" alt="label + ' placeholder'" class="avatar-placeholder" />
         </div>
         <div class="upload-area" @click="triggerUpload" @dragover="dragOverHandler" 
@@ -127,9 +113,9 @@ Vue.component("photo-upload", {
       </div>
     </div>
   `,
-});
+};
 
-Vue.component("feature-list", {
+const featureList = {
   props: {
     initialFeatures: Array,
     includeTitle: Boolean,
@@ -144,7 +130,7 @@ Vue.component("feature-list", {
   },
   methods: {
     addFeature() {
-      if (this.features.length < 10) {
+      if (this.features.length < 12) {
         this.features.push({
           emoji: "",
           title: "",
@@ -156,6 +142,7 @@ Vue.component("feature-list", {
     removeFeature(index) {
       this.features.splice(index, 1);
     },
+
     validateFeature(index) {
       const feature = this.features[index];
       feature.error = this.isFeatureIncomplete(feature);
@@ -225,376 +212,188 @@ Vue.component("feature-list", {
         <button @click="addFeature"  type="button" class="add-button" v-if="features.length < 10">+ Добавить еще</button>
     </div>
   `,
-});
+};
 
-new Vue({
+const App = {
   el: "#vue-app",
-  data: {
-    sections: {
-      mainInfo: {
-        title: "Основная информация",
-        inputs: [
-          {
-            id: "surname",
-            label: "Фамилия",
-            type: "text",
-            value: "",
-            maxlength: 20,
-            required: true,
-            charsLeft: 20,
-            error: false,
-            errorMessage: "Введите фамилию",
-          },
-          {
-            id: "name",
-            label: "Имя",
-            type: "text",
-            value: "",
-            maxlength: 20,
-            required: true,
-            charsLeft: 20,
-            error: false,
-            errorMessage: "Введите имя",
-          },
-          {
-            id: "profile",
-            label: "Логин на RTTF",
-            type: "text",
-            value: "",
-            maxlength: 30,
-            required: true,
-            charsLeft: 30,
-            error: false,
-            errorMessage: "Введите ваш логин",
-          },
-          {
-            id: "subtitle",
-            label: "Подзаголовок",
-            type: "text",
-            value: "",
-            maxlength: 50,
-            required: true,
-            charsLeft: 50,
-            error: false,
-            errorMessage: "Введите подзаголовок сайта",
-          },
-          {
-            id: "title",
-            label: "Заголовок",
-            type: "textarea",
-            value: "",
-            maxlength: 100,
-            required: true,
-            charsLeft: 100,
-            error: false,
-            errorMessage: "Введите заголовок сайта",
-          },
-        ],
-        imageData: null,
+  data() {
+    return {
+      sections: {
+        //   mainInfo: {
+        //     title: "Основная информация",
+        //     surname: "",
+        //     name: "",
+        //     profile: "",
+        //     subtitle: "",
+        //     displayedTitle: "",
+        //     imageData: null,
+        //   },
+        //   aboutMe: {
+        //     title: "Обо мне",
+        //     displayedTitle: "Обо мне",
+        //     description: "",
+        //     imageData: null,
+        //     featuresList: [
+        //       {
+        //         emoji: "🛺",
+        //         description: "hheyt",
+        //         error: false,
+        //         errorMessage: "Введите текст достижения",
+        //         emojiErrorMessage: "Добавьте эмодзи",
+        //       },
+        //     ],
+        //   },
+        //   groupTraining: {
+        //     title: "Групповые тренировки",
+        //     showBlock: true,
+        //     showRTTF: false,
+        //     displayedTitle: "Групповые тренировки",
+        //     description: "",
+        //   },
+        //   individualTraining: {
+        //     title: "Индивидуальные тренировки",
+        //     showBlock: true,
+        //     showRTTF: false,
+        //     displayedTitle: "Индивидуальные тренировки",
+        //     description: "",
+        //     featuresList: [
+        //       {
+        //         emoji: "1",
+        //         title: "2",
+        //         description: "3",
+        //         error: false,
+        //         errorMessage: "Введите текст достижения",
+        //         emojiErrorMessage: "Добавьте эмодзи",
+        //       },
+        //     ],
+        //   },
+        //   prices: {
+        //     title: "Цены",
+        //     displayedTitle: "Цены",
+        //     showBlock: true,
+        //     cards: [
+        //       {
+        //         title: "",
+        //         price: "",
+        //         description: "",
+        //         error: false,
+        //         errorMessage: "Заполните все поля карточки",
+        //       },
+        //     ],
+        //   },
+        //   reviews: {
+        //     title: "Отзывы с RTTF",
+        //     showBlock: true,
+        //     showAverageRating: true,
+        //     displayedTitle: "Цены",
+        //   },
+        //   clubs: {
+        //     title: "Клубы",
+        //     showBlock: true,
+        //     displayedTitle: "Клубы",
+        //     list: [],
+        //     clubnames: [
+        //       { id: 1, name: "Ассоциация Спин" },
+        //       { id: 2, name: "Быстрые Лупы" },
+        //       { id: 3, name: "Ракетка и Мяч" },
+        //       { id: 4, name: "Пинг-Понг Мастеры" },
+        //       { id: 5, name: "СпортМастер ТТ" },
+        //       { id: 6, name: "Гранд Слам ТТ" },
+        //       { id: 7, name: "Турбо Теннис" },
+        //       { id: 8, name: "ТТ Шторм" },
+        //       { id: 9, name: "Теннисный Вихрь" },
+        //       { id: 10, name: "Академия ТТ" },
+        //       { id: 11, name: "Spin Masters" },
+        //       { id: 12, name: "Rapid Rackets" },
+        //       { id: 13, name: "Ball & Paddle" },
+        //       { id: 14, name: "Ping-Pong Club" },
+        //       { id: 15, name: "SportElite TT" },
+        //       { id: 16, name: "Slam Champions TT" },
+        //       { id: 17, name: "Turbo Spin Club" },
+        //       { id: 18, name: "TT Cyclone" },
+        //       { id: 19, name: "Tennis Tornado" },
+        //       { id: 20, name: "Table Tennis Scholars" },
+        //     ],
+        //   },
+        //   benefitsTT: {
+        //     title: "Польза настольного тенниса",
+        //     displayedTitle: "Польза настольного тенниса",
+        //     showBlock: true,
+        //     featuresList: [
+        //       {
+        //         emoji: "",
+        //         description: "",
+        //         error: false,
+        //         errorMessage: "Введите текст достижения",
+        //         emojiErrorMessage: "Добавьте эмодзи",
+        //       },
+        //     ],
+        //   },
+        //   faq: {
+        //     title: "Часто задаваемые вопросы",
+        //     showBlock: true,
+        //     displayedTitle: "Часто задаваемые вопросы",
+        //     qas: [
+        //       {
+        //         question: "",
+        //         answer: "",
+        //         questionCharsLeft: 200,
+        //         answerCharsLeft: 500,
+        //         questionError: false,
+        //         answerError: false,
+        //         questionErrorMessage: "Вопрос обязателен к заполнению",
+        //         answerErrorMessage: "Ответ обязателен к заполнению",
+        //       },
+        //     ],
+        //   },
+        //   videos: {
+        //     title: "Видео со мной",
+        //     showBlock: true,
+        //     displayedTitle: "Видео со мной",
+        //   },
+        //   contacts: {
+        //     title: "Контакты",
+        //     phone: "",
+        //     whatsapp: "",
+        //     telegram: "",
+        //   },
       },
-      aboutMe: {
-        title: "Обо мне",
-        inputs: [
-          {
-            id: "displayedTitle",
-            label: "Заголовок",
-            type: "text",
-            value: "",
-            maxlength: 30,
-            required: true,
-            charsLeft: 30,
-            error: false,
-            errorMessage: "Введите отображаемый заголовок",
-          },
-          {
-            id: "description",
-            label: "Краткое описание",
-            type: "textarea",
-            value: "",
-            maxlength: 1000,
-            required: true,
-            largeTextarea: true,
-            charsLeft: 1000,
-            error: false,
-            errorMessage: "Введите краткое описание",
-          },
-        ],
-        imageData: null,
-        featuresList: [
-          {
-            emoji: "🛺",
-            description: "hheyt",
-            error: false,
-            errorMessage: "Введите текст достижения",
-            emojiErrorMessage: "Добавьте эмодзи",
-          },
-        ],
-      },
-      groupTraining: {
-        title: "Групповые тренировки",
-        editable: true,
-        showRTTF: false,
-        inputs: [
-          {
-            id: "displayedTitle",
-            label: "Заголовок",
-            type: "text",
-            value: "",
-            maxlength: 30,
-            required: true,
-            charsLeft: 30,
-            error: false,
-            errorMessage: "Введите отображаемый заголовок",
-          },
-          {
-            id: "description",
-            label: "Краткое описание (не более 1000 символов)",
-            type: "textarea",
-            value: "",
-            maxlength: 1000,
-            required: true,
-            largeTextarea: true,
-            charsLeft: 1000,
-            error: false,
-            errorMessage: "Введите краткое описание",
-          },
-        ],
-      },
-      individualTraining: {
-        title: "Индивидуальные тренировки",
-        editable: true,
-        showRTTF: false,
-        inputs: [
-          {
-            id: "displayedTitle",
-            label: "Заголовок",
-            type: "text",
-            value: "",
-            maxlength: 30,
-            required: true,
-            charsLeft: 30,
-            error: false,
-            errorMessage: "Введите отображаемый заголовок",
-          },
-          {
-            id: "description",
-            label: "Краткое описание (не более 1000 символов)",
-            type: "textarea",
-            value: "",
-            maxlength: 1000,
-            required: true,
-            largeTextarea: true,
-            charsLeft: 1000,
-            error: false,
-            errorMessage: "Введите краткое описание",
-          },
-        ],
-        featuresList: [
-          {
-            emoji: "1",
-            title: "2",
-            description: "3",
-            error: false,
-            errorMessage: "Введите текст достижения",
-            emojiErrorMessage: "Добавьте эмодзи",
-          },
+      activeTab: "mainInfo",
+      isSubmitAttempted: false,
+      currentSuggestions: [],
+      currentSuggestionIndex: -1,
+      highlightedSuggestion: -1,
+      currentSuggestionListElement: null,
+      saveSuccessful: false,
+      isValid: false,
+      requiredFields: {
+        mainInfo: ["surname", "name", "subtitle", "displayedTitle"],
+        aboutMe: ["displayedTitle", "description"],
+        groupTraining: ["displayedTitle", "description"],
+        individualTraining: ["displayedTitle", "description"],
+        prices: ["displayedTitle"],
+        reviews: ["displayedTitle"],
+        contacts: [
+          "address",
+          "workingHoursWeekdays",
+          "workingHoursWeekend",
+          "phone",
+          "email",
         ],
       },
-      prices: {
-        title: "Цены",
-        editable: true,
-        inputs: [
-          {
-            id: "pricesTitle",
-            label: "Заголовок",
-            type: "text",
-            value: "",
-            maxlength: 50,
-            required: true,
-            charsLeft: 50,
-            error: false,
-            errorMessage: "Введите заголовок раздела",
-          },
-        ],
-        cards: [
-          {
-            title: "",
-            price: "",
-            description: "",
-            error: false,
-            errorMessage: "Заполните все поля карточки",
-          },
-        ],
-      },
-      reviews: {
-        title: "Отзывы с RTTF",
-        editable: true,
-        showAverageRating: true,
-        inputs: [
-          {
-            id: "reviewsTitle",
-            label: "Заголовок",
-            type: "text",
-            value: "",
-            maxlength: 50,
-            required: true,
-            charsLeft: 50,
-            error: false,
-            errorMessage: "Введите заголовок раздела",
-          },
-        ],
-      },
-      clubs: {
-        title: "Клубы",
-        editable: true,
-
-        list: [],
-        clubnames: [
-          { id: 1, name: "Ассоциация Спин" },
-          { id: 2, name: "Быстрые Лупы" },
-          { id: 3, name: "Ракетка и Мяч" },
-          { id: 4, name: "Пинг-Понг Мастеры" },
-          { id: 5, name: "СпортМастер ТТ" },
-          { id: 6, name: "Гранд Слам ТТ" },
-          { id: 7, name: "Турбо Теннис" },
-          { id: 8, name: "ТТ Шторм" },
-          { id: 9, name: "Теннисный Вихрь" },
-          { id: 10, name: "Академия ТТ" },
-          { id: 11, name: "Spin Masters" },
-          { id: 12, name: "Rapid Rackets" },
-          { id: 13, name: "Ball & Paddle" },
-          { id: 14, name: "Ping-Pong Club" },
-          { id: 15, name: "SportElite TT" },
-          { id: 16, name: "Slam Champions TT" },
-          { id: 17, name: "Turbo Spin Club" },
-          { id: 18, name: "TT Cyclone" },
-          { id: 19, name: "Tennis Tornado" },
-          { id: 20, name: "Table Tennis Scholars" },
-        ],
-      },
-      benefitsTT: {
-        title: "Польза настольного тенниса",
-        featuresList: [
-          {
-            emoji: "",
-            description: "",
-            error: false,
-            errorMessage: "Введите текст достижения",
-            emojiErrorMessage: "Добавьте эмодзи",
-          },
-        ],
-        editable: true,
-        inputs: [
-          {
-            id: "reviewsTitle",
-            label: "Заголовок",
-            type: "text",
-            value: "",
-            maxlength: 50,
-            required: true,
-            charsLeft: 50,
-            error: false,
-            errorMessage: "Введите заголовок раздела",
-          },
-        ],
-      },
-      faq: {
-        title: "Часто задаваемые вопросы",
-        editable: true,
-        inputs: [
-          {
-            id: "faqTitle",
-            label: "Заголовок",
-            type: "text",
-            value: "",
-            maxlength: 50,
-            required: true,
-            charsLeft: 50,
-            error: false,
-            errorMessage: "Введите заголовок раздела",
-          },
-        ],
-        qas: [
-          {
-            question: "",
-            answer: "",
-            questionCharsLeft: 200,
-            answerCharsLeft: 500,
-            questionError: false,
-            answerError: false,
-            questionErrorMessage: "Вопрос обязателен к заполнению",
-            answerErrorMessage: "Ответ обязателен к заполнению",
-          },
-        ],
-      },
-      videos: {
-        title: "Видео со мной",
-        editable: true,
-        inputs: [
-          {
-            id: "videosTitle",
-            label: "Заголовок",
-            type: "text",
-            value: "",
-            maxlength: 50,
-            required: true,
-            charsLeft: 50,
-            error: false,
-            errorMessage: "Введите заголовок раздела",
-          },
-        ],
-      },
-      contacts: {
-        title: "Контакты",
-        inputs: [
-          {
-            id: "phone",
-            label: "Телефон",
-            type: "text",
-            value: "",
-            maxlength: 20,
-            required: true,
-            charsLeft: 20,
-            error: false,
-            errorMessage: "Телефон обязателен к заполнению",
-          },
-          {
-            id: "whatsapp",
-            label: "WhatsApp",
-            type: "text",
-            value: "",
-            maxlength: 20,
-            required: false,
-            charsLeft: 20,
-            error: false,
-            errorMessage: "",
-          },
-          {
-            id: "telegram",
-            label: "Telegram",
-            type: "text",
-            value: "",
-            maxlength: 20,
-            required: false,
-            charsLeft: 20,
-            error: false,
-            errorMessage: "",
-          },
-        ],
-      },
-    },
-    activeTab: "mainInfo",
-    isSubmitAttempted: false,
-    currentSuggestions: [],
-    currentSuggestionIndex: -1,
-    highlightedSuggestion: -1,
-    currentSuggestionListElement: null,
-    saveSuccessful: false,
-    isValid: false,
+    };
   },
-  created() {
-    this.$on("input-section", this.handleInputSection);
-    this.loadFromLocalStorage();
+  async created() {
+    try {
+      const response = await fetch("data.json");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const jsonData = await response.json();
+      this.sections = jsonData.sections;
+    } catch (e) {
+      console.error("Ошибка при загрузке данных из data.json:", e);
+    }
   },
 
   mounted() {
@@ -609,23 +408,9 @@ new Vue({
     document.removeEventListener("keydown", this.handleSuggestionsInteraction);
   },
   methods: {
-    handleInput(data) {},
-    handleInputSection(event) {
-      console.log(event);
-      const { sectionName, inputData } = event;
-      const section = this.sections[sectionName];
-      if (section && section.inputs) {
-        const input = section.inputs.find((i) => i.id === inputData.id);
-        if (input) {
-          input.value = inputData.value;
-        }
-      }
-    },
-
     handleFeatureUpdate({ sectionId, features }) {
       if (this.sections[sectionId]) {
         this.sections[sectionId].featuresList = features;
-        console.log("Updated features for section", sectionId, features);
       }
     },
     handleImageUpload(data) {
@@ -638,51 +423,43 @@ new Vue({
       }
     },
     saveToLocalStorage() {
-      console.log("Saving sections to localStorage", this.sections);
-
       localStorage.setItem("sections", JSON.stringify(this.sections));
-      console.log("kek");
+
       this.saveSuccessful = true;
-      console.log(this.saveSuccessful);
 
       setTimeout(() => {
         this.saveSuccessful = false;
-        console.log(this.saveSuccessful);
       }, 2000);
     },
-    // updateCharsLeftAndValidate(section, inputId) {
-    //   const sectionData = this.sections[section];
-    //   if (sectionData.inputs) {
-    //     const input = sectionData.inputs.find((i) => i.id === inputId);
-    //     if (input) {
-    //       input.charsLeft = input.maxlength - input.value.length;
+    removeItem(itemIndex, itemsArray) {
+      if (itemsArray[itemIndex]) {
+        itemsArray[itemIndex].isDeleted = true;
+      }
+    },
 
-    //       if (this.isSubmitAttempted) {
-    //         input.error = input.required && !input.value;
-    //       }
-    //     }
-    //   }
-    // },
+    // Метод для восстановления элемента
+    restoreItem(itemIndex, itemsArray) {
+      if (itemsArray[itemIndex]) {
+        itemsArray[itemIndex].isDeleted = false;
+      }
+    },
     validateAndSubmit(sectionId) {
       this.isSubmitAttempted = true;
       const section = this.sections[sectionId];
+      const requiredFields = this.requiredFields[sectionId] || [];
 
-      if (section.editable === undefined || section.editable) {
+      if (section.showBlock === undefined || section.showBlock) {
         let isValid = true;
+        let firstErrorElementId = null;
 
-        // Валидация обычных полей ввода
-        if (section.inputs) {
-          console.log("section.inputs", section.inputs);
-          section.inputs.forEach((input) => {
-            // this.updateCharsLeftAndValidate(sectionId, input.id);
-            if (input.required && !input.value) {
-              input.error = true;
-              isValid = false;
-            } else {
-              input.error = false;
+        requiredFields.forEach((fieldId) => {
+          if (!section[fieldId]) {
+            isValid = false;
+            if (!firstErrorElementId) {
+              firstErrorElementId = fieldId; // Присваиваем идентификатор первого элемента с ошибкой
             }
-          });
-        }
+          }
+        });
 
         // Валидация feature-list
         const featureListRef = `featureList-${sectionId}`;
@@ -692,63 +469,83 @@ new Vue({
           isValid = isValid && featureListComponent[0].validateAllFeatures();
         }
 
-        if (section.qas) {
-          console.log("hey hey");
-          section.qas.forEach((qa, index) => {
-            this.updateCharsLeftAndValidateFAQ(qa, index);
-            if (qa.question && !qa.answer) {
-              qa.answerError = true;
-              isValid = false;
-            } else if (!qa.question && qa.answer) {
-              qa.questionError = true;
-              isValid = false;
-            } else {
-              qa.questionError = false;
-              qa.answerError = false;
+        this.sections.faq.qas = this.sections.faq.qas.filter(
+          (qa) => !qa.isDeleted
+        );
+
+        this.sections.faq.qas = this.sections.faq.qas.filter(
+          (qa) => qa.question.trim() || qa.answer.trim()
+        );
+        this.sections.faq.qas = this.sections.faq.qas.filter(
+          (qa) => !qa.isDeleted
+        );
+
+        this.sections.faq.qas.forEach((qa, index) => {
+          // Сброс ошибок перед проверкой
+          qa.questionError = false;
+          qa.answerError = false;
+
+          // Проверка вопроса и ответа
+          if (!qa.question.trim()) {
+            qa.questionError = true;
+            if (!firstErrorElementId) {
+              firstErrorElementId = "question-" + index;
             }
-          });
-        }
+            isValid = false;
+          }
+          if (!qa.answer.trim()) {
+            qa.answerError = true;
+            if (!firstErrorElementId) {
+              firstErrorElementId = "answer-" + index;
+            }
+            isValid = false;
+          }
+        });
 
         if (sectionId === "prices" && section.cards) {
+          section.cards = section.cards.filter((card) => !card.isDeleted);
+
           section.cards.forEach((card, index) => {
             this.validateCardFields(sectionId, index);
             if (card.error) isValid = false;
           });
         }
 
+        if (sectionId === "clubs") {
+          // Remove clubs with empty names
+          this.sections.clubs.list = this.sections.clubs.list.filter((club) =>
+            club.name.trim()
+          );
+          const hasClubError = this.sections.clubs.list.some(
+            (club) => club.error
+          );
+          if (hasClubError) {
+            isValid = false;
+          }
+        }
+
         if (isValid) {
           this.saveToLocalStorage();
           this.isSubmitAttempted = false;
+        } else if (firstErrorElementId) {
+          this.$nextTick(() => {
+            this.scrollToElement(firstErrorElementId);
+          });
         }
       } else {
-        // Если editable определен и равен false, сохраняем без валидации
+        // Если showBlock определен и равен false, сохраняем без валидации
         this.saveToLocalStorage();
       }
     },
 
-    handlePriceCards(section, field, index, eventData) {
-      console.log(section, field, index, eventData);
-      const value = eventData.inputData.value;
-      if (section === "prices") {
-        let card = this.sections.prices.cards[index];
-        if (card) {
-          card[field] = value;
-          this.validateCardFields(section, index);
-        }
-      }
-    },
     addCard(section) {
       this.sections[section].cards.push({
         title: "",
         price: "",
         description: "",
-        error: false,
-        errorMessage: "",
       });
     },
-    removeCard(section, index) {
-      this.sections[section].cards.splice(index, 1);
-    },
+
     validateCardFields(sectionName, index) {
       if (sectionName === "prices") {
         let card = this.sections.prices.cards[index];
@@ -768,13 +565,39 @@ new Vue({
       const activeTab = this.$el.querySelector(".tablinks.active");
       if (activeTab) {
         const scrollContainer = this.$el.querySelector(".tab");
-        const scrollAmount = activeTab.offsetLeft - scrollContainer.offsetLeft;
-        scrollContainer.scrollLeft =
-          scrollAmount -
+        const targetScrollLeft =
+          activeTab.offsetLeft -
+          scrollContainer.offsetLeft -
           (scrollContainer.offsetWidth / 2 - activeTab.offsetWidth / 2);
+        this.smoothScroll(scrollContainer, targetScrollLeft, 300);
       }
     },
 
+    smoothScroll(element, target, duration) {
+      const start = element.scrollLeft,
+        change = target - start,
+        startTime = performance.now();
+
+      function animateScroll(timestamp) {
+        const elapsed = timestamp - startTime;
+        const fraction = Math.min(elapsed / duration, 1);
+
+        element.scrollLeft = start + change * fraction;
+
+        if (elapsed < duration) {
+          requestAnimationFrame(animateScroll);
+        }
+      }
+
+      requestAnimationFrame(animateScroll);
+    },
+
+    scrollToElement(elementId) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    },
     addClub() {
       this.sections.clubs.list.push({ id: null, name: "" });
     },
@@ -795,6 +618,9 @@ new Vue({
       }
       this.currentSuggestionIndex = index;
       this.highlightedSuggestion = -1;
+      if (this.sections.clubs.list[index]) {
+        this.sections.clubs.list[index].error = false;
+      }
     },
 
     selectClub(selectedClub) {
@@ -849,17 +675,28 @@ new Vue({
     },
 
     handleSuggestionsInteraction(event) {
+      if (this.currentSuggestionIndex < 0 || !this.$refs.suggestionsList) {
+        this.closeSuggestions();
+        return;
+      }
+
+      const suggestionList =
+        this.$refs.suggestionsList[this.currentSuggestionIndex];
+
+      // Check if the suggestion list or the event target is not defined
+      if (!suggestionList || !event.target) {
+        this.closeSuggestions();
+        return;
+      }
+
       if (event.type === "blur") {
         setTimeout(() => this.closeSuggestions(), 100);
-      } else if (event.type === "click" && this.currentSuggestionIndex >= 0) {
-        const suggestionList =
-          this.$refs.suggestionsList[this.currentSuggestionIndex];
-        if (suggestionList && !suggestionList.contains(event.target)) {
+      } else if (event.type === "click") {
+        if (!suggestionList.contains(event.target)) {
           this.closeSuggestions();
         }
       }
     },
-
     closeSuggestions() {
       if (this.currentSuggestionIndex === -1) {
         this.currentSuggestions = [];
@@ -872,8 +709,11 @@ new Vue({
       );
 
       if (!clubExists && currentClub.name) {
-        this.sections.clubs.list[this.currentSuggestionIndex].name =
-          "Не выбран";
+        // Keep the entered text but add an error state
+        this.sections.clubs.list[this.currentSuggestionIndex].error = true;
+      } else {
+        // Clear the error state if the club exists
+        this.sections.clubs.list[this.currentSuggestionIndex].error = false;
       }
 
       this.currentSuggestions = [];
@@ -885,48 +725,16 @@ new Vue({
         this.sections.faq.qas.push({
           question: "",
           answer: "",
-          questionCharsLeft: 200,
-          answerCharsLeft: 500,
-          questionError: false,
-          answerError: false,
-          questionErrorMessage: "Вопрос обязателен к заполнению",
-          answerErrorMessage: "Ответ обязателен к заполнению",
         });
       }
     },
-    removeQA(index) {
-      // Добавляем класс для анимации исчезновения
-      this.$set(this.sections.faq.qas[index], "fadeOut", true);
-
-      // После задержки удаляем элемент из массива
-      setTimeout(() => {
-        this.sections.faq.qas.splice(index, 1);
-      }, 500); // 500 мс - время анимации
-    },
-    updateCharsLeftAndValidateFAQ(qa, index) {
-      qa.questionCharsLeft = 200 - qa.question.length;
-      qa.answerCharsLeft = 500 - qa.answer.length;
-
-      if (this.isSubmitAttempted) {
-        qa.questionError = !qa.question && qa.answer;
-        qa.answerError = !qa.answer && qa.question;
-      }
-    },
-    validateAndSubmitFAQ() {
-      console.log("validateandsubmitFAQ");
-      this.sections.faq.qas.forEach((qa, index) => {
-        this.updateCharsLeftAndValidateFAQ(index);
-      });
-
-      let isValid = true;
-      this.sections.faq.qas.forEach((qa) => {
-        if (!qa.question || !qa.answer) {
-          isValid = false;
-        }
-      });
-
-      if (isValid) {
-      }
-    },
   },
-});
+};
+
+const app = createApp(App);
+app.component("input-field", InputField);
+app.component("photo-upload", PhotoUpload);
+app.component("feature-list", featureList);
+
+// Монтирование приложения
+app.mount("#vue-app");
