@@ -68,7 +68,7 @@
               ></input-field>
               <input-field
                 id="subtitle"
-                label="Подзаголовок"
+                label="Подзаголовок (имя и статус тренера)"
                 type="text"
                 :maxlength="50"
                 :required="true"
@@ -79,7 +79,7 @@
               ></input-field>
               <input-field
                 id="displayedTitle"
-                label="Заголовок"
+                label="Заголовок (онсновной текст в верхнем блоке)"
                 type="textarea"
                 :maxlength="100"
                 :required="true"
@@ -90,7 +90,7 @@
               ></input-field>
 
               <photo-upload
-                :label="'Аватар'"
+                :label="'Аватар (показывается в шапке сайта и контактах)'"
                 v-model="sections.mainInfo.imageData"
                 :is-avatar="true"
                 :section-id="'mainInfo'"
@@ -131,7 +131,7 @@
 
               <!-- Форма загрузки картинки -->
               <photo-upload
-                :label="'Фотография'"
+                :label="'Фотография тренера для раздела (JPG, PNG, WebP, не более 10мб,)'"
                 v-model="sections.aboutMe.imageData"
                 :is-avatar="false"
                 :section-id="'aboutMe'"
@@ -722,7 +722,9 @@
                   v-model="sections.videos.displayedTitle"
                 ></input-field>
                 <p class="hint">
-                  Показываются все видео со страницы тренера на RTTF.
+                  Показываются видео со страницы тренера на RTTF. Вы можете
+                  выбрать их в разделе видео, нажав на значок "Показать на
+                  личном сайте"
                 </p>
               </form>
             </div>
