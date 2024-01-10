@@ -111,7 +111,9 @@ const app = createApp({
     async loadData() {
       this.isLoading = true;
       try {
-        const response = await fetch("edit/data.json");
+        const subdomain = window.location.hostname.split(".")[0];
+        const dataUrl = `/json/${subdomain}.json`;
+        const response = await fetch(dataUrl);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
