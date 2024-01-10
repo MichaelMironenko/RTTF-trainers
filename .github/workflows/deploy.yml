@@ -16,7 +16,7 @@ jobs:
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@4.1.0
         with:
-          server: abelmasov.ru
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          server: ftp.abelmasov.ru
+          username: mm
+          password: v13o7#5Iu
           protocol: ftps
