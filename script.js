@@ -98,6 +98,7 @@ const app = createApp({
       expandedComment: null,
       isLoading: false,
       activeIndex: null,
+      subdomain: null,
     };
   },
 
@@ -112,7 +113,7 @@ const app = createApp({
     async loadData() {
       this.isLoading = true;
       try {
-        const subdomain = window.location.hostname.split(".")[0];
+        this.subdomain = window.location.hostname.split(".")[0];
         console.log(subdomain);
         const dataUrl = `/json/${subdomain}.json`;
         const response = await fetch(dataUrl);
@@ -287,6 +288,7 @@ const app = createApp({
     async submitForm() {
       // Сохраняем данные формы
       const formData = new FormData();
+      formData.append("trainer", this.subdomain);
       formData.append("name", this.form.name);
       formData.append("phone", this.form.phone);
       formData.append("message", this.form.message);
