@@ -1,3 +1,4 @@
+console.log("start loading");
 const { createApp } = Vue;
 
 const app = createApp({
