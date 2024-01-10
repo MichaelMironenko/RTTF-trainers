@@ -112,6 +112,7 @@ const app = createApp({
       this.isLoading = true;
       try {
         const subdomain = window.location.hostname.split(".")[0];
+        console.log(subdomain);
         const dataUrl = `/json/${subdomain}.json`;
         const response = await fetch(dataUrl);
 
