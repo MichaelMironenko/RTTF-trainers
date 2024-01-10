@@ -22,4 +22,4 @@ jobs:
           protocol: ftps
           local-dir: ./
           server-dir: /
-          exclude: "[/**/php/**, **/.git*/**]"
+          exclude: "[**/php/**, **/.git*/**]"
