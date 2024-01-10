@@ -22,3 +22,4 @@ jobs:
           protocol: ftps
           local-dir: ./
           server-dir: /
+          log-level: verbose
