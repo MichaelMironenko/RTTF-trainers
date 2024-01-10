@@ -291,7 +291,7 @@ const app = createApp({
       formData.append("phone", this.form.phone);
       formData.append("message", this.form.message);
       formData.append("contact_method", this.form.contact_method);
-
+      console.log(formData);
       try {
         // Отправляем данные на сервер
         const response = await fetch("php/request.php", {
