@@ -284,20 +284,50 @@ const app = createApp({
     playVideo(videoID) {
       this.videos.activeVideoID = videoID;
     },
-    submitForm() {
-      // Показываем модальное окно
-      this.submitted = true;
+    async submitForm() {
+      // Сохраняем данные формы
+      const formData = {
+        name: this.form.name,
+        phone: this.form.phone,
+        message: this.form.message,
+        contact_method: this.form.contact_method,
+      };
 
-      // Очищаем форму
-      this.form.name = "";
-      this.form.phone = "";
-      this.form.message = "";
-      this.form.contact_method = "";
+      try {
+        // Отправляем данные на сервер
+        const response = await fetch("php/request.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
 
-      // Скрываем модальное окно через 3 секунды
-      setTimeout(() => {
-        this.submitted = false;
-      }, 3000);
+        const responseData = await response.json();
+
+        if (responseData.err) {
+          // Обработка ошибок, если они есть
+          console.error(responseData.err);
+          // Показать сообщение об ошибке пользователю
+        } else {
+          // Успешная отправка данных
+          this.submitted = true; // Показываем сообщение об успешной отправке
+
+          // Очищаем форму
+          this.form.name = "";
+          this.form.phone = "";
+          this.form.message = "";
+          this.form.contact_method = "";
+
+          // Скрываем сообщение об успешной отправке через 3 секунды
+          setTimeout(() => {
+            this.submitted = false;
+          }, 3000);
+        }
+      } catch (error) {
+        console.error("Ошибка отправки формы:", error);
+        // Показать сообщение об ошибке пользователю
+      }
     },
     toggleNav() {
       this.isNavOpen = !this.isNavOpen;
