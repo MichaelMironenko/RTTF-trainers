@@ -286,21 +286,17 @@ const app = createApp({
     },
     async submitForm() {
       // Сохраняем данные формы
-      const formData = {
-        name: this.form.name,
-        phone: this.form.phone,
-        message: this.form.message,
-        contact_method: this.form.contact_method,
-      };
+      const formData = new FormData();
+      formData.append("name", this.form.name);
+      formData.append("phone", this.form.phone);
+      formData.append("message", this.form.message);
+      formData.append("contact_method", this.form.contact_method);
 
       try {
         // Отправляем данные на сервер
         const response = await fetch("php/request.php", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+          body: formData,
         });
 
         const responseData = await response.json();
