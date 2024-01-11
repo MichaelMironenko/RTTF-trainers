@@ -523,9 +523,9 @@
                         @click="selectClub(suggestion)"
                         :class="{ 'highlighted': suggestionIndex === highlightedSuggestion }"
                       >
-                        <span class="club-name">{{ suggestion.title }} </span>
-                        <span class="club-address"
-                          >{{ suggestion.address }}</span
+                        {{ suggestion.title }}
+                        <span class="club-address">
+                          {{ suggestion.city }} {{ suggestion.address }}</span
                         >
                       </li>
                     </ul>
