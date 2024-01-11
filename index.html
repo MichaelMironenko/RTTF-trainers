@@ -56,8 +56,8 @@
           </ul>
           <div class="nav-phone">
             <a
-              v-if="contacts.phoneLink"
-              :href="contacts.phoneLink"
+              v-if="contacts.phone"
+              :href="contacts.phone"
               target="_blank"
               class="nav-icon"
             >
@@ -65,15 +65,15 @@
             </a>
 
             <a
-              v-if="contacts.telegramLink"
-              :href="contacts.telegramLink"
+              v-if="contacts.telegram"
+              :href="contacts.telegram"
               target="_blank"
               class="nav-icon"
             >
               <img src="images/logo-telegram.svg" alt="Telegram" />
             </a>
-            <a v-if="contacts.phoneNumber" :href="`tel:${contacts.phoneNumber}`"
-              >{{ contacts.phoneNumber }}</a
+            <a v-if="contacts.phone" :href="`tel:${contacts.phoneNumber}`"
+              >{{ contacts.phone }}</a
             >
           </div>
 

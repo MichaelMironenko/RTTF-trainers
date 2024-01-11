@@ -114,8 +114,8 @@ const app = createApp({
       this.isLoading = true;
       try {
         this.subdomain = window.location.hostname.split(".")[0];
-        console.log(subdomain);
-        const dataUrl = `/json/${subdomain}.json`;
+        console.log(this.subdomain);
+        const dataUrl = `/json/${this.subdomain}.json`;
         const response = await fetch(dataUrl);
 
         if (!response.ok) {

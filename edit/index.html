@@ -763,6 +763,7 @@
                 :is-submit-attempted="isSubmitAttempted"
                 v-model="sections.contacts.whatsapp"
               ></input-field>
+
               <input-field
                 id="telegram"
                 label="Telegram"
@@ -772,6 +773,10 @@
                 :is-submit-attempted="isSubmitAttempted"
                 v-model="sections.contacts.telegram"
               ></input-field>
+              <p>
+                Для получения оповещений в телеграм, заполните telegram_ID в
+                своём профиле на RTTF.ru
+              </p>
               <div class="button-container">
                 <button type="submit" class="save-button">Сохранить</button>
               </div>

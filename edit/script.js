@@ -401,6 +401,7 @@ const App = {
   mounted() {
     this.$nextTick(() => {
       this.scrollToActiveTab();
+      this.fetchClubs();
     });
     document.addEventListener("click", this.handleSuggestionsInteraction);
     document.addEventListener("keydown", this.handleSuggestionsInteraction);
@@ -602,6 +603,14 @@ const App = {
     },
     addClub() {
       this.sections.clubs.list.push({ id: null, name: "" });
+    },
+    fetchClubs() {
+      fetch(`https://coach.rttf.ru/php/getDataEdit.php?trainer=annet`)
+        .then((response) => response.json())
+        .then((data) => {
+          this.sections.clubs.clubnames = data.halls;
+        })
+        .catch((error) => console.error("Ошибка:", error));
     },
     filterClubs(value, index) {
       const selectedClubs = this.sections.clubs.list.map((club) => club.name);
