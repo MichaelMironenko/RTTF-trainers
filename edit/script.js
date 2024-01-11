@@ -620,12 +620,14 @@ const App = {
     },
     filterClubs(value, index) {
       const selectedClubs = this.sections.clubs.list.map((club) => club.name);
-      if (value) {
+      const inputValue = value.toLowerCase().trim();
+
+      if (inputValue) {
         this.currentSuggestions = this.sections.clubs.clubnames
           .filter((club) => {
-            const words = club.title.toLowerCase().split(" ");
+            const clubName = club.title.toLowerCase();
             return (
-              words.some((word) => word.startsWith(value.toLowerCase())) &&
+              clubName.includes(inputValue) &&
               !selectedClubs.includes(club.title)
             );
           })
