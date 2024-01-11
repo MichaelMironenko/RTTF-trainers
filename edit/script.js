@@ -359,6 +359,7 @@ const App = {
         //   },
       },
       activeTab: "mainInfo",
+      trainerName: null,
       isClubsDataFetched: false,
       isSubmitAttempted: false,
       currentSuggestions: [],
@@ -387,6 +388,7 @@ const App = {
   async created() {
     try {
       const subdomain = window.location.hostname.split(".")[0];
+      this.trainerName = subdomain;
       const dataUrl = `/json/${subdomain}.json`;
       const response = await fetch(dataUrl);
       if (!response.ok) {
@@ -426,13 +428,35 @@ const App = {
       }
     },
     saveToLocalStorage() {
-      localStorage.setItem("sections", JSON.stringify(this.sections));
+      // localStorage.setItem("sections", JSON.stringify(this.sections));
 
-      this.saveSuccessful = true;
+      const trainer = this.trainerName;
+      const pwd = document.cookie.match(
+        /^(.*;)?\s*user_pass\s*=\s*[^;]+(.*)?$/
+      )[0];
+      const json = JSON.stringify(this.sections);
 
-      setTimeout(() => {
-        this.saveSuccessful = false;
-      }, 2000);
+      fetch("/php/getDataEdit.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `trainer=${encodeURIComponent(trainer)}&pwd=${encodeURIComponent(
+          pwd
+        )}&json=${encodeURIComponent(json)}`,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          this.saveSuccessful = true;
+          setTimeout(() => {
+            this.saveSuccessful = false;
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error("Ошибка:", error);
+          this.saveSuccessful = false;
+        });
     },
     removeItem(itemIndex, itemsArray) {
       if (itemsArray[itemIndex]) {
