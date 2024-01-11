@@ -605,7 +605,9 @@ const App = {
       this.sections.clubs.list.push({ id: null, name: "" });
     },
     fetchClubs() {
-      fetch(`https://coach.rttf.ru/php/getDataEdit.php?trainer=annet`)
+      fetch(`https://coach.rttf.ru/php/getDataEdit.php?trainer=annet`, {
+        mode: "no-cors",
+      })
         .then((response) => response.json())
         .then((data) => {
           this.sections.clubs.clubnames = data.halls;
