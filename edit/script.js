@@ -436,7 +436,7 @@ const App = {
       )[0];
       const json = JSON.stringify(this.sections);
 
-      fetch("/php/getDataEdit.php", {
+      fetch("/php/edit.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
