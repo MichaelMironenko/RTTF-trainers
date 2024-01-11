@@ -359,6 +359,7 @@ const App = {
         //   },
       },
       activeTab: "mainInfo",
+      isClubsDataFetched: false,
       isSubmitAttempted: false,
       currentSuggestions: [],
       currentSuggestionIndex: -1,
@@ -401,7 +402,6 @@ const App = {
   mounted() {
     this.$nextTick(() => {
       this.scrollToActiveTab();
-      this.fetchClubs();
     });
     document.addEventListener("click", this.handleSuggestionsInteraction);
     document.addEventListener("keydown", this.handleSuggestionsInteraction);
@@ -560,6 +560,9 @@ const App = {
 
     selectTab(tabId) {
       this.activeTab = tabId;
+      if (tabId === "clubs") {
+        this.fetchClubs();
+      }
       this.$nextTick(() => {
         this.scrollToActiveTab();
       });
@@ -605,12 +608,15 @@ const App = {
       this.sections.clubs.list.push({ id: null, name: "" });
     },
     fetchClubs() {
-      fetch(`https://coach.rttf.ru/php/getDataEdit.php?trainer=annet`)
-        .then((response) => response.json())
-        .then((data) => {
-          this.sections.clubs.clubnames = data.halls;
-        })
-        .catch((error) => console.error("Ошибка:", error));
+      if (!this.isClubsDataFetched) {
+        fetch(`/php/getDataEdit.php?trainer=annet`)
+          .then((response) => response.json())
+          .then((data) => {
+            this.sections.clubs.clubnames = data.halls;
+            this.isClubsDataFetched = true;
+          })
+          .catch((error) => console.error("Ошибка:", error));
+      }
     },
     filterClubs(value, index) {
       const selectedClubs = this.sections.clubs.list.map((club) => club.name);
