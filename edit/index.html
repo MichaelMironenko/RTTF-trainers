@@ -521,9 +521,11 @@
                         v-for="(suggestion, suggestionIndex) in currentSuggestions"
                         :key="suggestion.id"
                         @click="selectClub(suggestion)"
-                        v-html="suggestion.formattedName"
                         :class="{ 'highlighted': suggestionIndex === highlightedSuggestion }"
-                      ></li>
+                      >
+                        <span class="club-name">${club.title}</span>
+                        <span class="club-address">${club.address}</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
