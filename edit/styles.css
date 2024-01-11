@@ -220,6 +220,7 @@ label {
   max-width: 480px;
   height: 100px;
   gap: 24px;
+  block-size: auto;
 }
 
 .avatar-container {
@@ -636,6 +637,7 @@ input:checked + .slider:before {
 
 .suggestions {
   border: 1px solid #ddd;
+  border-radius: 8px;
   border-top: none;
   list-style-type: none;
   padding-left: 0;
