@@ -501,7 +501,7 @@
                     <input
                       :id="'club-' + index"
                       type="text"
-                      v-model="club.name"
+                      v-model="club.title"
                       :class="{'input-club': true, 'error-border': club.error}"
                       autocomplete="off"
                       @input="filterClubs($event.target.value, index)"
@@ -523,7 +523,7 @@
                         @click="selectClub(suggestion)"
                         :class="{ 'highlighted': suggestionIndex === highlightedSuggestion }"
                       >
-                        {{ suggestion.name }}
+                        {{ suggestion.title }}
                       </li>
                     </ul>
                   </div>

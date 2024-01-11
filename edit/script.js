@@ -517,7 +517,7 @@ const App = {
         if (sectionId === "clubs") {
           // Remove clubs with empty names
           this.sections.clubs.list = this.sections.clubs.list.filter((club) =>
-            club.name.trim()
+            club.title.trim()
           );
           const hasClubError = this.sections.clubs.list.some(
             (club) => club.error
@@ -605,7 +605,7 @@ const App = {
       }
     },
     addClub() {
-      this.sections.clubs.list.push({ id: null, name: "" });
+      this.sections.clubs.list.push({ id: null, title: "" });
     },
     fetchClubs() {
       if (!this.isClubsDataFetched) {
@@ -623,10 +623,10 @@ const App = {
       if (value) {
         this.currentSuggestions = this.sections.clubs.clubnames
           .filter((club) => {
-            const words = club.name.toLowerCase().split(" ");
+            const words = club.title.toLowerCase().split(" ");
             return (
               words.some((word) => word.startsWith(value.toLowerCase())) &&
-              !selectedClubs.includes(club.name)
+              !selectedClubs.includes(club.title)
             );
           })
           .slice(0, 6);
@@ -644,8 +644,8 @@ const App = {
       if (this.currentSuggestionIndex >= 0) {
         this.sections.clubs.list[this.currentSuggestionIndex].id =
           selectedClub.id;
-        this.sections.clubs.list[this.currentSuggestionIndex].name =
-          selectedClub.name;
+        this.sections.clubs.list[this.currentSuggestionIndex].title =
+          selectedClub.title;
       }
 
       this.currentSuggestions = [];
@@ -722,10 +722,10 @@ const App = {
 
       const currentClub = this.sections.clubs.list[this.currentSuggestionIndex];
       const clubExists = this.sections.clubs.clubnames.some(
-        (club) => club.name === currentClub.name
+        (club) => club.title === currentClub.title
       );
 
-      if (!clubExists && currentClub.name) {
+      if (!clubExists && currentClub.title) {
         // Keep the entered text but add an error state
         this.sections.clubs.list[this.currentSuggestionIndex].error = true;
       } else {
