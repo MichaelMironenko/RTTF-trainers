@@ -515,16 +515,13 @@
                     <ul
                       v-if="currentSuggestions.length && currentSuggestionIndex === index"
                       class="suggestions"
-                      ref="suggestionsList"
                     >
                       <li
                         v-for="(suggestion, suggestionIndex) in currentSuggestions"
                         :key="suggestion.id"
                         @click="selectClub(suggestion)"
-                        :class="{ 'highlighted': suggestionIndex === highlightedSuggestion }"
-                      >
-                        {{ suggestion.title }}
-                      </li>
+                        v-html="suggestion.formattedName"
+                      ></li>
                     </ul>
                   </div>
                 </div>

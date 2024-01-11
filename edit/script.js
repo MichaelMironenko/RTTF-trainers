@@ -629,6 +629,10 @@ const App = {
               !selectedClubs.includes(club.title)
             );
           })
+          .map((club) => ({
+            ...club,
+            formattedName: `<span class="club-name">${club.title}</span> <span class="club-address">${club.address}</span>`,
+          }))
           .slice(0, 6);
       } else {
         this.currentSuggestions = [];

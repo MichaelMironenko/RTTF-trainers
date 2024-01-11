@@ -362,6 +362,14 @@ label {
   font-size: 16px;
 }
 
+.club-name {
+}
+.club-address {
+  font-size: smaller;
+  color: grey;
+  /* другие стили для адреса клуба */
+}
+
 .description-group {
   display: flex;
   flex-direction: column;
