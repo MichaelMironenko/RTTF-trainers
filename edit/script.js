@@ -625,9 +625,11 @@ const App = {
       if (inputValue) {
         this.currentSuggestions = this.sections.clubs.clubnames
           .filter((club) => {
-            const clubName = club.title.toLowerCase();
             return (
-              clubName.includes(inputValue) &&
+              club.title
+                .toLowerCase()
+                .split(/\s+/)
+                .some((word) => word.startsWith(inputValue)) &&
               !selectedClubs.includes(club.title)
             );
           })
