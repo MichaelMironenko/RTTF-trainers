@@ -131,7 +131,7 @@
 
               <!-- Форма загрузки картинки -->
               <photo-upload
-                :label="'Фотография тренера для раздела (JPG, PNG, WebP, не более 10мб,)'"
+                :label="'Фотография тренера для раздела (JPG, PNG, WebP, не более 10мб.)'"
                 v-model="sections.aboutMe.imageData"
                 :is-avatar="false"
                 :section-id="'aboutMe'"
@@ -524,7 +524,7 @@
                         :class="{ 'highlighted': suggestionIndex === highlightedSuggestion }"
                       >
                         {{ suggestion.title }}
-                        <span class="club-address">
+                        <span class="club-address"></span>
                           {{ suggestion.city }} {{ suggestion.address }}</span
                         >
                       </li>

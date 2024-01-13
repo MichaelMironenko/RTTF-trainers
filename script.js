@@ -4,88 +4,10 @@ const { createApp } = Vue;
 const app = createApp({
   data() {
     return {
-      trainingsData: [
-        {
-          date: "Сегодня, 15 ноября",
-          trainings: [
-            {
-              time: "10:30",
-              duration: "1,5 ч",
-              name: "Групповая тренировка",
-              location: "Люблино",
-              participants: 2,
-              price: "900₽",
-            },
-            {
-              time: "11:00",
-              duration: "1,5 ч",
-              name: "Боковые подачи и их прием. Топ-спин справа со всего стола",
-              location: "HurricaneTT",
-              participants: 0,
-              price: "700₽",
-            },
-            {
-              time: "13:30",
-              duration: "1,5 ч",
-              name: "Групповая тренировка",
-              location: "Люблино",
-              participants: 0,
-              price: "800₽",
-            },
-          ],
-        },
-        {
-          date: "Завтра, 16 ноября",
-          trainings: [
-            {
-              time: "19:00",
-              duration: "2 ч",
-              name: "Топ-спины справа с продолжением (двух и трехходовки)",
-              location: "ЛуЦентр",
-              participants: 2,
-              price: "1000₽",
-            },
-            {
-              time: "20:00",
-              duration: "1,5 ч",
-              name: "Отработка подач в сочетании с топ-спином",
-              location: "Люблино",
-              participants: "0/12",
-              price: "1000₽",
-            },
-          ],
-        },
-        {
-          date: "Четверг, 17 ноября",
-          trainings: [
-            {
-              time: "15:00",
-              duration: "1,5 ч",
-              name: "Отработка базовых элементов",
-              location: "HurricaneTT",
-              participants: 6,
-              price: "500₽",
-            },
-            {
-              time: "17:00",
-              duration: "2 ч",
-              name: "Индивидуальная тренировка",
-              location: "TTL-Savel",
-              participants: 4,
-              price: "800₽",
-            },
-            {
-              time: "18:30",
-              duration: "1,5 ч",
-              name: "Группа повышения мастерства",
-              location: "HurricaneTT",
-              participants: "3/12",
-              price: "1000₽",
-            },
-          ],
-        },
-      ],
-
+      isContainerCentered: false,
+      isReviewsContainerCentered: false,
+      isVideosContainerCentered: false,
+      reviews: [],
       submitted: false,
       form: {
         name: "",
@@ -99,6 +21,7 @@ const app = createApp({
       isLoading: false,
       activeIndex: null,
       subdomain: null,
+      activeVideoID: null,
     };
   },
 
@@ -108,6 +31,27 @@ const app = createApp({
     // Устанавливаем заголовок страницы после того, как данные загружены
 
     setTimeout(this.loadMapScript, 4000); // Задержка в 1 секунду после полной загрузки страницы
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.adjustAlignment();
+      window.addEventListener("resize", this.adjustAlignment);
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.adjustAlignment);
+  },
+  watch: {
+    trainingsData(newVal) {
+      if (newVal && newVal.length) {
+        this.$nextTick(this.adjustAlignment);
+      }
+    },
+    reviewsData(newVal) {
+      if (newVal && newVal.length) {
+        this.$nextTick(this.adjustAlignment);
+      }
+    },
   },
   methods: {
     async loadData() {
@@ -136,11 +80,17 @@ const app = createApp({
         this.videos = data.sections.videos;
         this.contacts = data.sections.contacts;
 
+        await this.loadAndProcessExtraData();
+
         // Продолжение присваивания данных, если это необходимо...
       } catch (e) {
         console.error("Ошибка при загрузке данных: ", e);
       } finally {
         this.isLoading = false;
+
+        setTimeout(() => {
+          this.adjustAlignment();
+        }, 0);
 
         document.title =
           this.mainInfo.name +
@@ -163,6 +113,71 @@ const app = createApp({
             " " +
             this.mainInfo.surname
         );
+      }
+    },
+    adjustAlignment() {
+      this.adjustScheduleAlignment();
+      this.adjustReviewsAlignment();
+      this.adjustVideosAlignment();
+    },
+    adjustScheduleAlignment() {
+      const container = this.$refs.scheduleContainer;
+      if (container) {
+        let totalWidth = 0;
+        const children = container.getElementsByClassName("training-day");
+        for (let child of children) {
+          totalWidth += child.offsetWidth;
+        }
+        const windowWidth = window.innerWidth;
+        this.isContainerCentered = totalWidth < windowWidth;
+      }
+    },
+    adjustReviewsAlignment() {
+      const reviewsContainer = this.$refs.reviewsContainer;
+      if (reviewsContainer) {
+        let totalWidth = 0;
+        const children = reviewsContainer.getElementsByClassName("review-card");
+        for (let child of children) {
+          totalWidth += child.offsetWidth;
+        }
+        const windowWidth = window.innerWidth;
+        this.isReviewsContainerCentered = totalWidth < windowWidth;
+      }
+    },
+    adjustVideosAlignment() {
+      const videosContainer = this.$refs.videosContainer;
+      if (videosContainer) {
+        let totalWidth = 0;
+        const children = videosContainer.getElementsByClassName("lazy-video");
+        for (let child of children) {
+          totalWidth += child.offsetWidth;
+        }
+        const windowWidth = window.innerWidth;
+        this.isVideosContainerCentered = totalWidth < windowWidth;
+      }
+    },
+    async loadAndProcessExtraData() {
+      const extraDataUrl = `/php/getData.php?trainer=${this.subdomain}`;
+      try {
+        const response = await fetch(extraDataUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const extraData = await response.json();
+
+        if (extraData.err) {
+          throw new Error(`Server error: ${extraData.err}`);
+        }
+
+        this.trainingsData = this.processTrainingData(extraData.trainings);
+        this.reviews.reviewData = extraData.reviews;
+        this.reviews.averageRating = extraData.averageRating;
+        this.videos.videoIDs = extraData.videos;
+        setTimeout(() => {
+          this.adjustAlignment();
+        }, 0);
+      } catch (error) {
+        console.error("Ошибка при загрузке данных о тренировках: ", error);
       }
     },
 
@@ -205,16 +220,18 @@ const app = createApp({
     },
     loadMapScript() {
       // Создаем тег script для загрузки Yandex карты
-      const script = document.createElement("script");
-      script.src =
-        "https://api-maps.yandex.ru/2.1/?apikey=b8881559-3564-4ced-9428-3763a582d14d&lang=ru_RU";
-      script.type = "text/javascript";
-      document.body.appendChild(script);
+      if (this.clubs.list.length > 0) {
+        const script = document.createElement("script");
+        script.src =
+          "https://api-maps.yandex.ru/2.1/?apikey=b8881559-3564-4ced-9428-3763a582d14d&lang=ru_RU";
+        script.type = "text/javascript";
+        document.body.appendChild(script);
 
-      // Инициализация карты после загрузки скрипта
-      script.onload = () => {
-        ymaps.ready(this.initMap);
-      };
+        // Инициализация карты после загрузки скрипта
+        script.onload = () => {
+          ymaps.ready(this.initMap);
+        };
+      }
     },
     initMap() {
       this.myMap = new ymaps.Map("map", {
@@ -259,6 +276,49 @@ const app = createApp({
         });
       }
     },
+    processTrainingData(rawData) {
+      return Object.keys(rawData).map((dateStr) => {
+        return {
+          date: this.getFormattedDate(dateStr),
+          trainings: rawData[dateStr].trainings.map((t) => ({
+            ...t,
+            duration: `${t.duration} ч`,
+            price: `${t.price}₽`,
+          })),
+        };
+      });
+    },
+
+    getFormattedDate(dateStr) {
+      const date = new Date(dateStr);
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      const options = { month: "long", day: "numeric" };
+      const formattedDate = date.toLocaleDateString("ru-RU", options);
+
+      if (date.toDateString() === today.toDateString()) {
+        return `Сегодня, ${formattedDate}`;
+      } else if (date.toDateString() === tomorrow.toDateString()) {
+        return `Завтра, ${formattedDate}`;
+      } else {
+        return `${this.getDayOfWeek(date)}, ${formattedDate}`;
+      }
+    },
+
+    getDayOfWeek(date) {
+      const days = [
+        "Воскресенье",
+        "Понедельник",
+        "Вторник",
+        "Среда",
+        "Четверг",
+        "Пятница",
+        "Суббота",
+      ];
+      return days[date.getDay()];
+    },
     toggleActive(index) {
       if (this.activeIndex === index) {
         // Если нажатый вопрос уже активен, закрываем его
@@ -283,7 +343,7 @@ const app = createApp({
       return index === this.activeIndex;
     },
     playVideo(videoID) {
-      this.videos.activeVideoID = videoID;
+      this.activeVideoID = videoID;
     },
     async submitForm() {
       // Сохраняем данные формы

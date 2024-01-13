@@ -77,7 +77,21 @@ const PhotoUpload = {
       if (file && file.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.$emit("update:modelValue", e.target.result);
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const scaleFactor = 600 / img.width;
+            canvas.width = 600;
+            canvas.height = img.height * scaleFactor;
+
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const resizedImage = canvas.toDataURL();
+
+            this.$emit("update:modelValue", resizedImage);
+          };
+          img.src = e.target.result;
         };
         reader.readAsDataURL(file);
       }
@@ -219,144 +233,78 @@ const App = {
   data() {
     return {
       sections: {
-        //   mainInfo: {
-        //     title: "Основная информация",
-        //     surname: "",
-        //     name: "",
-        //     profile: "",
-        //     subtitle: "",
-        //     displayedTitle: "",
-        //     imageData: null,
-        //   },
-        //   aboutMe: {
-        //     title: "Обо мне",
-        //     displayedTitle: "Обо мне",
-        //     description: "",
-        //     imageData: null,
-        //     featuresList: [
-        //       {
-        //         emoji: "🛺",
-        //         description: "hheyt",
-        //         error: false,
-        //         errorMessage: "Введите текст достижения",
-        //         emojiErrorMessage: "Добавьте эмодзи",
-        //       },
-        //     ],
-        //   },
-        //   groupTraining: {
-        //     title: "Групповые тренировки",
-        //     showBlock: true,
-        //     showRTTF: false,
-        //     displayedTitle: "Групповые тренировки",
-        //     description: "",
-        //   },
-        //   individualTraining: {
-        //     title: "Индивидуальные тренировки",
-        //     showBlock: true,
-        //     showRTTF: false,
-        //     displayedTitle: "Индивидуальные тренировки",
-        //     description: "",
-        //     featuresList: [
-        //       {
-        //         emoji: "1",
-        //         title: "2",
-        //         description: "3",
-        //         error: false,
-        //         errorMessage: "Введите текст достижения",
-        //         emojiErrorMessage: "Добавьте эмодзи",
-        //       },
-        //     ],
-        //   },
-        //   prices: {
-        //     title: "Цены",
-        //     displayedTitle: "Цены",
-        //     showBlock: true,
-        //     cards: [
-        //       {
-        //         title: "",
-        //         price: "",
-        //         description: "",
-        //         error: false,
-        //         errorMessage: "Заполните все поля карточки",
-        //       },
-        //     ],
-        //   },
-        //   reviews: {
-        //     title: "Отзывы с RTTF",
-        //     showBlock: true,
-        //     showAverageRating: true,
-        //     displayedTitle: "Цены",
-        //   },
-        //   clubs: {
-        //     title: "Клубы",
-        //     showBlock: true,
-        //     displayedTitle: "Клубы",
-        //     list: [],
-        //     clubnames: [
-        //       { id: 1, name: "Ассоциация Спин" },
-        //       { id: 2, name: "Быстрые Лупы" },
-        //       { id: 3, name: "Ракетка и Мяч" },
-        //       { id: 4, name: "Пинг-Понг Мастеры" },
-        //       { id: 5, name: "СпортМастер ТТ" },
-        //       { id: 6, name: "Гранд Слам ТТ" },
-        //       { id: 7, name: "Турбо Теннис" },
-        //       { id: 8, name: "ТТ Шторм" },
-        //       { id: 9, name: "Теннисный Вихрь" },
-        //       { id: 10, name: "Академия ТТ" },
-        //       { id: 11, name: "Spin Masters" },
-        //       { id: 12, name: "Rapid Rackets" },
-        //       { id: 13, name: "Ball & Paddle" },
-        //       { id: 14, name: "Ping-Pong Club" },
-        //       { id: 15, name: "SportElite TT" },
-        //       { id: 16, name: "Slam Champions TT" },
-        //       { id: 17, name: "Turbo Spin Club" },
-        //       { id: 18, name: "TT Cyclone" },
-        //       { id: 19, name: "Tennis Tornado" },
-        //       { id: 20, name: "Table Tennis Scholars" },
-        //     ],
-        //   },
-        //   benefitsTT: {
-        //     title: "Польза настольного тенниса",
-        //     displayedTitle: "Польза настольного тенниса",
-        //     showBlock: true,
-        //     featuresList: [
-        //       {
-        //         emoji: "",
-        //         description: "",
-        //         error: false,
-        //         errorMessage: "Введите текст достижения",
-        //         emojiErrorMessage: "Добавьте эмодзи",
-        //       },
-        //     ],
-        //   },
-        //   faq: {
-        //     title: "Часто задаваемые вопросы",
-        //     showBlock: true,
-        //     displayedTitle: "Часто задаваемые вопросы",
-        //     qas: [
-        //       {
-        //         question: "",
-        //         answer: "",
-        //         questionCharsLeft: 200,
-        //         answerCharsLeft: 500,
-        //         questionError: false,
-        //         answerError: false,
-        //         questionErrorMessage: "Вопрос обязателен к заполнению",
-        //         answerErrorMessage: "Ответ обязателен к заполнению",
-        //       },
-        //     ],
-        //   },
-        //   videos: {
-        //     title: "Видео со мной",
-        //     showBlock: true,
-        //     displayedTitle: "Видео со мной",
-        //   },
-        //   contacts: {
-        //     title: "Контакты",
-        //     phone: "",
-        //     whatsapp: "",
-        //     telegram: "",
-        //   },
+        mainInfo: {
+          title: "Основная информация",
+          surname: "",
+          name: "",
+          profile: "",
+          subtitle: "",
+          displayedTitle: "",
+          imageData: null,
+        },
+        aboutMe: {
+          title: "Обо мне",
+          displayedTitle: "Обо мне",
+          description: "",
+          imageData: null,
+          featuresList: [],
+        },
+        groupTraining: {
+          title: "Групповые тренировки",
+          showBlock: false,
+          showRTTF: false,
+          displayedTitle: "Групповые тренировки",
+          description: "",
+        },
+        individualTraining: {
+          title: "Индивидуальные тренировки",
+          showBlock: false,
+          showRTTF: false,
+          displayedTitle: "Индивидуальные тренировки",
+          description: "",
+          featuresList: [],
+        },
+        prices: {
+          title: "Цены",
+          displayedTitle: "Цены",
+          showBlock: false,
+          cards: [],
+        },
+        reviews: {
+          title: "Отзывы с RTTF",
+          showBlock: false,
+          showAverageRating: true,
+          displayedTitle: "Цены",
+        },
+        clubs: {
+          title: "Клубы",
+          showBlock: false,
+          displayedTitle: "Клубы",
+          list: [],
+        },
+        benefitsTT: {
+          title: "Польза настольного тенниса",
+          displayedTitle: "Польза настольного тенниса",
+          showBlock: false,
+          featuresList: [],
+        },
+        faq: {
+          title: "Часто задаваемые вопросы",
+          showBlock: false,
+          displayedTitle: "Часто задаваемые вопросы",
+          qas: [],
+        },
+        videos: {
+          title: "Видео со мной",
+          showBlock: false,
+          displayedTitle: "Видео со мной",
+        },
+        contacts: {
+          title: "Контакты",
+          phone: "",
+          whatsapp: "",
+          telegram: "",
+        },
       },
       activeTab: "mainInfo",
       trainerName: null,
@@ -389,7 +337,7 @@ const App = {
     try {
       const subdomain = window.location.hostname.split(".")[0];
       this.trainerName = subdomain;
-      const dataUrl = `/json/${subdomain}.json`;
+      const dataUrl = `/json/${subdomain}.json?timestamp=${new Date().getTime()}`;
       const response = await fetch(dataUrl);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -397,7 +345,8 @@ const App = {
       const jsonData = await response.json();
       this.sections = jsonData.sections;
     } catch (e) {
-      console.error("Ошибка при загрузке данных из data.json:", e);
+      this.loadFromLocalStorage();
+      console.error("Ошибка при загрузке данных:", e);
     }
   },
 
@@ -431,11 +380,10 @@ const App = {
       // localStorage.setItem("sections", JSON.stringify(this.sections));
 
       const trainer = this.trainerName;
-      const pwd = document.cookie.match(
-        /^(.*;)?\s*user_pass\s*=\s*[^;]+(.*)?$/
-      )[0];
-      const json = JSON.stringify(this.sections);
-
+      const pwdMatch = document.cookie.match(/user_pass=([^;]+)/);
+      const pwd = pwdMatch ? pwdMatch[1] : "";
+      const json = JSON.stringify({ sections: this.sections });
+      localStorage.setItem("sections", JSON.stringify(this.sections));
       fetch("/php/edit.php", {
         method: "POST",
         headers: {
@@ -538,18 +486,18 @@ const App = {
           });
         }
 
-        if (sectionId === "clubs") {
-          // Remove clubs with empty names
-          this.sections.clubs.list = this.sections.clubs.list.filter((club) =>
-            club.title.trim()
-          );
-          const hasClubError = this.sections.clubs.list.some(
-            (club) => club.error
-          );
-          if (hasClubError) {
-            isValid = false;
-          }
-        }
+        // if (sectionId === "clubs") {
+        //   // Remove clubs with empty names
+        //   this.sections.clubs.list = this.sections.clubs.list.filter((club) =>
+        //     club.title.trim()
+        //   );
+        //   const hasClubError = this.sections.clubs.list.some(
+        //     (club) => club.error
+        //   );
+        //   if (hasClubError) {
+        //     isValid = false;
+        //   }
+        // }
 
         if (isValid) {
           this.saveToLocalStorage();
@@ -643,7 +591,8 @@ const App = {
       }
     },
     filterClubs(value, index) {
-      const selectedClubs = this.sections.clubs.list.map((club) => club.name);
+      const selectedClubs = this.sections.clubs.list.map((club) => club.title);
+      console.log(selectedClubs);
       const inputValue = value.toLowerCase().trim();
 
       if (inputValue) {
@@ -670,6 +619,10 @@ const App = {
     },
 
     selectClub(selectedClub) {
+      console.log(
+        this.currentSuggestionIndex,
+        this.sections.clubs.list[this.currentSuggestionIndex].title
+      );
       if (this.currentSuggestionIndex >= 0) {
         this.sections.clubs.list[this.currentSuggestionIndex].id =
           selectedClub.id;
@@ -690,7 +643,7 @@ const App = {
             this.currentSuggestions.length) %
           this.currentSuggestions.length;
         event.preventDefault();
-        this.scrollIntoView();
+        // this.scrollIntoView();
       } else if (event.key === "Enter") {
         if (
           this.highlightedSuggestion >= 0 &&
@@ -753,6 +706,7 @@ const App = {
       const clubExists = this.sections.clubs.clubnames.some(
         (club) => club.title === currentClub.title
       );
+      console.log(clubExists, currentClub.title);
 
       if (!clubExists && currentClub.title) {
         // Keep the entered text but add an error state

@@ -132,7 +132,7 @@
         <div v-if="groupTraining.showBlock" id="trainings" class="block-bg">
           <div class="container">
             <div class="photo-text-block">
-              <div v-if="aboutMe.imageData" class="photo">
+              <div v-if="groupTraining.imageData" class="photo">
                 <img
                   loading="lazy"
                   :src="groupTraining.imageData"
@@ -160,7 +160,11 @@
               <span>{{ day.date.split(', ')[1] }}</span>
             </button>
           </div>
-          <div class="training-schedule-container">
+          <div
+            ref="scheduleContainer"
+            class="training-schedule-container"
+            :class="{ 'center-aligned': isContainerCentered }"
+          >
             <div
               v-for="(day, index) in trainingsData"
               :key="index"
@@ -169,49 +173,51 @@
             >
               <h3 class="training-date">{{ day.date }}</h3>
               <div class="training-cards">
-                <div
+                <a
                   v-for="training in day.trainings"
                   :key="training.time"
                   class="training-card"
+                  :href="`https://rttf.ru/workouts/${training.id}`"
                 >
                   <div class="training-time">
                     <span class="time">{{ training.time }}</span>
                     <span class="duration">{{ training.duration }}</span>
                   </div>
                   <div class="training-details">
-                    <div class="training-name">{{ training.name }}</div>
+                    <div v-html="training.name" class="training-name"></div>
                     <div class="training-info">
                       <div class="info-item">
                         <img
                           src="images/trainings-block-home.svg"
                           alt="Локация"
-                          class="icon home-icon"
+                          class="icon"
                         />
-                        <span class="training-location"
-                          >{{ training.location }}</span
-                        >
+                        <span
+                          v-html="training.location"
+                          class="training-location"
+                        ></span>
                       </div>
                       <div class="info-item">
                         <img
                           src="images/trainings-block-person.svg"
                           alt="Участники"
-                          class="icon person-icon"
+                          class="icon"
                         />
                         <span class="training-participants"
-                          >{{ training.participants }}</span
+                          >{{ training.players }}</span
                         >
                       </div>
                       <div class="info-item">
                         <img
                           src="images/trainings-block-price.svg"
                           alt="Цена"
-                          class="icon price-icon"
+                          class="icon"
                         />
                         <span class="training-price">{{ training.price }}</span>
                       </div>
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>
@@ -272,10 +278,17 @@
           </div>
         </div>
 
-        <div v-if="reviews.showBlock" id="reviews" class="block-bg">
+        <div
+          v-if="reviews.showBlock"
+          id="reviews"
+          class="reviews-block block-bg"
+        >
           <div class="title-container">
             <h2>{{ reviews.title }}</h2>
-            <div class="average-rating">
+            <div
+              v-if="reviews.showAverageRating && reviews.averageRating > 0"
+              class="average-rating"
+            >
               <span>Мой рейтинг</span>
               <div class="review-rating">
                 <img
@@ -289,7 +302,11 @@
               <span>{{ reviews.averageRating }}</span>
             </div>
           </div>
-          <div class="reviews-container">
+          <div
+            class="reviews-container"
+            ref="reviewsContainer"
+            :class="{ 'center-aligned': isReviewsContainerCentered }"
+          >
             <div
               class="review-card"
               v-for="(review, index) in reviews.reviewData"
@@ -299,7 +316,7 @@
                 <div class="review-avatar-wrapper">
                   <img
                     class="review-avatar"
-                    :src="review.avatar"
+                    :src="review.avatar || 'images/user-photo.svg'"
                     alt="Аватар пользователя"
                   />
                 </div>
@@ -318,7 +335,7 @@
                   <div class="review-rating">
                     <img
                       v-for="index in 5"
-                      :src="getStarImage(review.rating, index)"
+                      :src="getStarImage(review.reviewRating, index)"
                       alt="Rating Star"
                       class="player-rating-icon"
                       :key="`star-${review.name}-${index}`"
@@ -329,12 +346,12 @@
               </div>
               <div
                 class="review-comment"
-                :class="{ expanded: expandedComment === index, 'cursor-pointer': isCommentLong(review.comment) }"
-                @click="isCommentLong(review.comment) ? toggleComment(index) : null"
+                :class="{ expanded: expandedComment === index, 'cursor-pointer': isCommentLong(review.text) }"
+                @click="isCommentLong(review.text) ? toggleComment(index) : null"
               >
-                {{ review.comment }}
+                {{ review.text }}
                 <span
-                  v-if="isCommentLong(review.comment) && expandedComment !== index"
+                  v-if="isCommentLong(review.text) && expandedComment !== index"
                   >Раскрыть комментарий</span
                 >
               </div>
@@ -419,7 +436,11 @@
             <h2>{{ videos.displayedTitle }}</h2>
           </div>
 
-          <div class="video-container">
+          <div
+            class="video-container"
+            ref="videosContainer"
+            :class="{ 'center-aligned': isVideosContainerCentered }"
+          >
             <div
               v-for="videoID in videos.videoIDs"
               :key="videoID"
@@ -427,14 +448,14 @@
               @click="playVideo(videoID)"
             >
               <img
-                v-if="videos.activeVideoID !== videoID"
+                v-if="activeVideoID !== videoID"
                 loading="lazy"
                 :src="`https://img.youtube.com/vi/${videoID}/mqdefault.jpg`"
                 :alt="`YouTube video ${videoID}`"
                 class="video-thumbnail"
               />
               <div
-                v-if="videos.activeVideoID === videoID"
+                v-if="activeVideoID === videoID"
                 class="video-iframe-container"
               >
                 <iframe
@@ -445,10 +466,7 @@
                   class="video-iframe"
                 ></iframe>
               </div>
-              <div
-                v-if="videos.activeVideoID !== videoID"
-                class="play-button"
-              ></div>
+              <div v-if="activeVideoID !== videoID" class="play-button"></div>
             </div>
           </div>
         </div>
@@ -462,7 +480,8 @@
             <div class="contact-info">
               <img
                 loading="lazy"
-                src="images/Anna2.jpg"
+                v-if="mainInfo.imageData"
+                :src="mainInfo.imageData"
                 alt="Anna Voznesenskaya"
                 class="contact-photo"
               />
@@ -556,7 +575,6 @@
                   <select
                     id="contact-method"
                     name="contact_method"
-                    required
                     v-model="form.contact_method"
                   >
                     <option value="">Выберите метод связи</option>
@@ -572,11 +590,8 @@
                     id="message"
                     name="message"
                     placeholder="Напишите где и когда вы бы хотели тренироваться"
-                    required
                     v-model="form.message"
                     autocomplete="off"
-                    oninvalid="this.setCustomValidity('Напишите хоть немного')"
-                    oninput="this.setCustomValidity('')"
                   ></textarea>
                 </div>
                 <button class="signup-button" type="submit">Записаться</button>
