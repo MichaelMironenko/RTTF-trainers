@@ -19,7 +19,6 @@
           >
             {{ section.title }}
           </button>
-          {{trainerID}}
         </div>
 
         <div
@@ -447,7 +446,8 @@
                   Показываются все отзывы со страницы
                   <a :href="`https://rttf.ru/coaches/${trainerID}`">
                     вашего профиля на RTTF</a
-                  >.
+                  >. Если пока отзывов на RTTF нет, блок "Отзывы" будет скрыт на
+                  лендинге автоматически.
                 </p>
                 <!-- Переключатель "Показать мои тренировки с RTTF" -->
                 <div class="toggle-container mg-top-32">
