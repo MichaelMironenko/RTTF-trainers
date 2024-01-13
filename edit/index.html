@@ -805,8 +805,8 @@
           v-if="errorMessage"
           class="save-success-message save-error-message"
         >
-          <p>Не получилось сохранить</p>
-          <p>{{ errorMessage }}</p>
+          <h4 style="margin-top: 0">Ой, что-то не так</h4>
+          <p style="color: black">{{ errorMessage }}</p>
           <div class="buttons-row">
             <button @click="openRTTF" class="ok-button">
               Открыть RTTF в другой вкладке

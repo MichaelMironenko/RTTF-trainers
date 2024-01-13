@@ -422,6 +422,9 @@ const App = {
     closeErrorMessage() {
       this.errorMessage = "";
     },
+    openRTTF() {
+      window.open("https://rttf.ru", "_blank");
+    },
     // Метод для восстановления элемента
     restoreItem(itemIndex, itemsArray) {
       if (itemsArray[itemIndex]) {
