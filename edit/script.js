@@ -419,6 +419,7 @@ const App = {
     closeErrorMessage() {
       this.errorMessage = "";
       this.showModal = false;
+      console.log(showModal);
     },
     removeItem(itemIndex, itemsArray) {
       if (itemsArray[itemIndex]) {
