@@ -676,6 +676,9 @@ const App = {
     delayedBlur() {
       setTimeout(this.handleSuggestionsInteraction, 300);
     },
+    delayedHandleKeyDown() {
+      setTimeout(this.handleKeyDown, 300);
+    },
     formatAddress(suggestion) {
       return `${suggestion.city} ${suggestion.address}`;
     },

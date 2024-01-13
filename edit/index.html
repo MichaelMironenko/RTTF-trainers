@@ -505,7 +505,7 @@
                       :class="{'input-club': true, 'error-border': club.error}"
                       autocomplete="off"
                       @input="filterClubs($event.target.value, index, $event)"
-                      @keydown="handleKeyDown"
+                      @keydown="delayedHandleKeyDown"
                       @blur="delayedBlur"
                     />
                     <div v-if="club.error" class="error-message">
