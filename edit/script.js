@@ -486,18 +486,18 @@ const App = {
           });
         }
 
-        // if (sectionId === "clubs") {
-        //   // Remove clubs with empty names
-        //   this.sections.clubs.list = this.sections.clubs.list.filter((club) =>
-        //     club.title.trim()
-        //   );
-        //   const hasClubError = this.sections.clubs.list.some(
-        //     (club) => club.error
-        //   );
-        //   if (hasClubError) {
-        //     isValid = false;
-        //   }
-        // }
+        if (sectionId === "clubs") {
+          // Remove clubs with empty names
+          this.sections.clubs.list = this.sections.clubs.list.filter((club) =>
+            club.title.trim()
+          );
+          const hasClubError = this.sections.clubs.list.some(
+            (club) => club.error
+          );
+          if (hasClubError) {
+            isValid = false;
+          }
+        }
 
         if (isValid) {
           this.saveToLocalStorage();
@@ -620,6 +620,7 @@ const App = {
 
     selectClub(selectedClub) {
       console.log(
+        selectedClub,
         this.currentSuggestionIndex,
         this.sections.clubs.list[this.currentSuggestionIndex].title
       );
@@ -720,6 +721,7 @@ const App = {
       this.currentSuggestionIndex = -1;
       this.highlightedSuggestion = -1;
     },
+
     addQA() {
       if (this.sections.faq.qas.length < 10) {
         this.sections.faq.qas.push({
