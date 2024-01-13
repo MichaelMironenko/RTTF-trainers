@@ -635,6 +635,7 @@ const App = {
       this.highlightedSuggestion = -1;
     },
     handleKeyDown(event) {
+      console.log(event);
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         const direction = event.key === "ArrowDown" ? 1 : -1;
         this.highlightedSuggestion =
@@ -676,9 +677,7 @@ const App = {
     delayedBlur() {
       setTimeout(this.handleSuggestionsInteraction, 300);
     },
-    delayedHandleKeyDown() {
-      setTimeout(this.handleKeyDown, 300);
-    },
+
     formatAddress(suggestion) {
       return `${suggestion.city} ${suggestion.address}`;
     },
