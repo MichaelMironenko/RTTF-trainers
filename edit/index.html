@@ -523,13 +523,15 @@
                         :key="index + '-' + suggestion.id"
                         @click="selectClub(suggestion)"
                         :class="{ 'highlighted': suggestionIndex === highlightedSuggestion }"
-                        v-html="suggestion.title"
                       >
+                        <span
+                          v-html="suggestion.title"
+                          class="club-name"
+                        ></span>
                         <span
                           class="club-address"
                           v-html="formatAddress(suggestion)"
-                        >
-                        </span>
+                        ></span>
                       </li>
                     </ul>
                   </div>
