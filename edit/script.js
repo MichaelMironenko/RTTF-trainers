@@ -674,6 +674,9 @@ const App = {
       });
     },
 
+    delayedBlur() {
+      setTimeout(this.handleSuggestionsInteraction, 300);
+    },
     handleSuggestionsInteraction(event) {
       if (this.currentSuggestionIndex < 0 || !this.$refs.suggestionsList) {
         this.closeSuggestions();
