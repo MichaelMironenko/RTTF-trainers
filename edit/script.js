@@ -314,6 +314,7 @@ const App = {
       isSubmitAttempted: false,
       navigatingSuggestions: false,
       currentSuggestions: [],
+      showModal: false,
       currentSuggestionIndex: -1,
       highlightedSuggestion: -1,
       currentSuggestionListElement: null,
@@ -402,6 +403,7 @@ const App = {
         .then((data) => {
           if (data.err) {
             this.errorMessage = data.err;
+            this.showModal = true;
           } else {
             this.saveSuccessful = true;
             setTimeout(() => {
@@ -413,6 +415,10 @@ const App = {
           console.error("Ошибка:", error);
           this.saveSuccessful = false;
         });
+    },
+    closeErrorMessage() {
+      this.errorMessage = "";
+      this.showModal = false;
     },
     removeItem(itemIndex, itemsArray) {
       if (itemsArray[itemIndex]) {

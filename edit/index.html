@@ -801,16 +801,19 @@
         <div v-if="saveSuccessful" class="save-success-message">
           Изменения сохранены
         </div>
-        <div
-          v-if="errorMessage"
-          class="save-success-message save-error-message"
-        >
-          <h4 style="margin-top: 8px">Ой, что-то не так</h4>
-          <p style="color: black">{{ errorMessage }}</p>
+        <div v-if="showModal" class="modal-backdrop" @click="closeErrorMessage">
+          <div
+            v-if="errorMessage"
+            class="save-success-message save-error-message"
+            @click.stop
+          >
+            <h4 style="margin-top: 8px">Ой, что-то не так</h4>
+            <p style="color: black">{{ errorMessage }}</p>
 
-          <button @click="closeErrorMessage" class="ok-button">
-            Понял, принял
-          </button>
+            <button @click="closeErrorMessage" class="ok-button">
+              Понял, принял
+            </button>
+          </div>
         </div>
       </div>
     </div>
