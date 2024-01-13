@@ -634,17 +634,17 @@ const App = {
       this.currentSuggestionIndex = -1;
       this.highlightedSuggestion = -1;
     },
-    handleKeyDown(event) {
-      console.log(event);
+    handleKeyDown(event, index) {
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
         const direction = event.key === "ArrowDown" ? 1 : -1;
         this.highlightedSuggestion =
           (this.highlightedSuggestion +
             direction +
             this.currentSuggestions.length) %
           this.currentSuggestions.length;
-        event.preventDefault();
-        // this.scrollIntoView();
+
+        this.scrollIntoView();
       } else if (event.key === "Enter") {
         if (
           this.highlightedSuggestion >= 0 &&
@@ -656,6 +656,7 @@ const App = {
         }
       }
     },
+
     scrollIntoView() {
       this.$nextTick(() => {
         if (this.highlightedSuggestion < 0 || this.currentSuggestionIndex < 0)
