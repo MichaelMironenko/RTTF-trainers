@@ -367,9 +367,11 @@
           <div class="locations-container">
             <div class="clubs-container">
               <div v-for="club in clubs.list" :key="club.name" class="club">
-                <a :href="club.link" class="club-name">{{ club.title }}</a>
+                <a :href="'https://rttf.ru/halls/${club.id}'" class="club-name"
+                  >{{ club.title }}</a
+                >
                 <div class="club-address">
-                  {{ club.city }} {{ club.address }}
+                  {{ club.city }}, {{ club.address }}
                 </div>
                 <div v-if="club.metro" class="club-metro-container">
                   <div
