@@ -319,6 +319,7 @@ const App = {
       currentSuggestionListElement: null,
       saveSuccessful: false,
       isValid: false,
+      errorMessage: "",
       requiredFields: {
         mainInfo: ["surname", "name", "subtitle", "displayedTitle"],
         aboutMe: ["displayedTitle", "description"],
@@ -399,11 +400,14 @@ const App = {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
-          this.saveSuccessful = true;
-          setTimeout(() => {
-            this.saveSuccessful = false;
-          }, 2000);
+          if (data.err) {
+            this.errorMessage = data.err;
+          } else {
+            this.saveSuccessful = true;
+            setTimeout(() => {
+              this.saveSuccessful = false;
+            }, 2000);
+          }
         })
         .catch((error) => {
           console.error("Ошибка:", error);
@@ -415,7 +419,9 @@ const App = {
         itemsArray[itemIndex].isDeleted = true;
       }
     },
-
+    closeErrorMessage() {
+      this.errorMessage = "";
+    },
     // Метод для восстановления элемента
     restoreItem(itemIndex, itemsArray) {
       if (itemsArray[itemIndex]) {

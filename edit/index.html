@@ -801,6 +801,13 @@
         <div v-if="saveSuccessful" class="save-success-message">
           Изменения сохранены
         </div>
+        <div
+          v-if="errorMessage"
+          class="save-success-message save-error-message"
+        >
+          {{ errorMessage }}
+          <button @click="closeErrorMessage">Ок</button>
+        </div>
       </div>
     </div>
 
