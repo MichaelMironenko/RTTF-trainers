@@ -367,7 +367,7 @@
           <div class="locations-container">
             <div class="clubs-container">
               <div v-for="club in clubs.list" :key="club.name" class="club">
-                <a :href="'https://rttf.ru/halls/${club.id}'" class="club-name"
+                <a :href="`https://rttf.ru/halls/${club.id}`" class="club-name"
                   >{{ club.title }}</a
                 >
                 <div class="club-address">
