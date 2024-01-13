@@ -79,7 +79,7 @@
               ></input-field>
               <input-field
                 id="displayedTitle"
-                label="Заголовок (онсновной текст в верхнем блоке)"
+                label="Заголовок (основной текст в верхнем блоке)"
                 type="textarea"
                 :maxlength="100"
                 :required="true"
@@ -438,7 +438,7 @@
                   v-model="sections.reviews.displayedTitle"
                 ></input-field>
                 <!-- <p class="hint">
-                  Выберите отзывы для отображения со своей страницы тренера на
+                  Выберите отзывы для отображения со своей <a :href="`https://rttf.ru/coaches/${trainerID}`">страницы тренера</a> на
                   RTTF, выбрав “Показать на персональной странице” рядом с
                   отзывом.
                 </p> -->

@@ -309,6 +309,7 @@ const App = {
       activeTab: "mainInfo",
       trainerName: null,
       trainerID: null,
+      clubnames: [],
       isClubsDataFetched: false,
       isSubmitAttempted: false,
       navigatingSuggestions: false,
@@ -585,7 +586,7 @@ const App = {
         fetch(`/php/getDataEdit.php?trainer=${this.trainerName}`)
           .then((response) => response.json())
           .then((data) => {
-            this.sections.clubs.clubnames = data.halls;
+            this.clubnames = data.halls;
             this.trainerID = data.coachID;
             this.isClubsDataFetched = true;
           })
@@ -599,7 +600,7 @@ const App = {
       const inputWords = value.toLowerCase().trim().split(/\s+/);
 
       if (inputWords.length > 0 && inputWords[0] !== "") {
-        this.currentSuggestions = this.sections.clubs.clubnames
+        this.currentSuggestions = this.clubnames
           .filter((club) => {
             const clubWords = club.title.toLowerCase().split(/\s+/);
             return (
@@ -621,10 +622,9 @@ const App = {
 
     selectClub(selectedClub) {
       if (this.currentSuggestionIndex >= 0) {
-        this.sections.clubs.list[this.currentSuggestionIndex].id =
-          selectedClub.id;
-        this.sections.clubs.list[this.currentSuggestionIndex].title =
-          selectedClub.title;
+        this.sections.clubs.list[this.currentSuggestionIndex] = {
+          ...selectedClub,
+        };
       }
 
       this.currentSuggestions = [];
@@ -716,7 +716,7 @@ const App = {
       }
 
       const currentClub = this.sections.clubs.list[this.currentSuggestionIndex];
-      const clubExists = this.sections.clubs.clubnames.some(
+      const clubExists = this.clubnames.some(
         (club) => club.title === currentClub.title
       );
 
