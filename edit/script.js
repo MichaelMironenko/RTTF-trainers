@@ -274,7 +274,7 @@ const App = {
           title: "Отзывы с RTTF",
           showBlock: false,
           showAverageRating: true,
-          displayedTitle: "Цены",
+          displayedTitle: "Отзывы с RTTF",
         },
         clubs: {
           title: "Клубы",
@@ -308,6 +308,7 @@ const App = {
       },
       activeTab: "mainInfo",
       trainerName: null,
+      trainerID: null,
       isClubsDataFetched: false,
       isSubmitAttempted: false,
       navigatingSuggestions: false,
@@ -353,6 +354,7 @@ const App = {
 
   mounted() {
     this.$nextTick(() => {
+      this.fetchClubs();
       this.scrollToActiveTab();
     });
     document.addEventListener("click", this.handleSuggestionsInteraction);
@@ -533,9 +535,7 @@ const App = {
 
     selectTab(tabId) {
       this.activeTab = tabId;
-      if (tabId === "clubs") {
-        this.fetchClubs();
-      }
+
       this.$nextTick(() => {
         this.scrollToActiveTab();
       });
@@ -586,6 +586,7 @@ const App = {
           .then((response) => response.json())
           .then((data) => {
             this.sections.clubs.clubnames = data.halls;
+            this.trainerID = data.coachID;
             this.isClubsDataFetched = true;
           })
           .catch((error) => console.error("Ошибка:", error));

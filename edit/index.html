@@ -437,10 +437,16 @@
                   :is-submit-attempted="isSubmitAttempted"
                   v-model="sections.reviews.displayedTitle"
                 ></input-field>
-                <p class="hint">
+                <!-- <p class="hint">
                   Выберите отзывы для отображения со своей страницы тренера на
                   RTTF, выбрав “Показать на персональной странице” рядом с
                   отзывом.
+                </p> -->
+                <p class="hint">
+                  Показываются все отзывы со страницы
+                  <a :href="`https://rttf.ru/coaches/${trainerID}`">
+                    вашего профиля на RTTF</a
+                  >.
                 </p>
                 <!-- Переключатель "Показать мои тренировки с RTTF" -->
                 <div class="toggle-container mg-top-32">
