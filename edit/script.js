@@ -582,7 +582,7 @@ const App = {
     },
     fetchClubs() {
       if (!this.isClubsDataFetched) {
-        fetch(`/php/getDataEdit.php?trainer=annet`)
+        fetch(`/php/getDataEdit.php?trainer=${this.trainerName}`)
           .then((response) => response.json())
           .then((data) => {
             this.sections.clubs.clubnames = data.halls;
