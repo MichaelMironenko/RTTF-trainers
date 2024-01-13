@@ -700,7 +700,7 @@ input:checked + .slider:before {
 }
 
 .save-button {
-  background-color: darkgreen;
+  background-color: #155724;
   padding: 12px;
   border: none;
   border-radius: 8px;
@@ -781,9 +781,17 @@ input:checked + .slider:before {
   border-radius: 8px;
   border: none;
   background-color: #155724;
+  font-size: 16px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.buttons-row {
-  display: flex;
-  gap: 16px;
+.ok-button:hover {
+  background-color: green;
+}
+
+.ok-button:active {
+  transform: scale(0.98);
 }
