@@ -590,23 +590,22 @@ const App = {
           .catch((error) => console.error("Ошибка:", error));
       }
     },
-    filterClubs(value, index) {
+    filterClubs(value, index, event) {
+      if (event.shiftKey) return;
       const selectedClubs = this.sections.clubs.list.map((club) => club.title);
       console.log(selectedClubs);
-      const inputValue = value.toLowerCase().trim();
+      const inputWords = value.toLowerCase().trim().split(/\s+/);
 
-      if (inputValue) {
+      if (inputWords.length > 0 && inputWords[0] !== "") {
         this.currentSuggestions = this.sections.clubs.clubnames
           .filter((club) => {
+            const clubWords = club.title.toLowerCase().split(/\s+/);
             return (
-              club.title
-                .toLowerCase()
-                .split(/\s+/)
-                .some((word) => word.startsWith(inputValue)) &&
-              !selectedClubs.includes(club.title)
+              inputWords.every((inputWord) =>
+                clubWords.some((clubWord) => clubWord.startsWith(inputWord))
+              ) && !selectedClubs.includes(club.title)
             );
           })
-
           .slice(0, 6);
       } else {
         this.currentSuggestions = [];

@@ -504,7 +504,7 @@
                       v-model="club.title"
                       :class="{'input-club': true, 'error-border': club.error}"
                       autocomplete="off"
-                      @input="filterClubs($event.target.value, index)"
+                      @input="filterClubs($event.target.value, index, $event)"
                       @keydown="handleKeyDown"
                       @blur="delayedBlur"
                     />
