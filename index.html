@@ -13,7 +13,7 @@
     />
     <meta name="author" content="Анна Вознесенская" />
     <title>Тренер по настольному теннису Анна Вознесенская</title>
-    <link rel="stylesheet" href="https://coach.rttf.ru/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
 
     <link rel="icon" href="images/favicon.ico" sizes="any" />
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
@@ -359,7 +359,11 @@
           </div>
         </div>
 
-        <div v-if="clubs.showBlock" id="clubs" class="block-bg">
+        <div
+          v-if="clubs.showBlock && clubs.list.length > 0"
+          id="clubs"
+          class="block-bg"
+        >
           <div class="title-container">
             <h2>{{ clubs.displayedTitle }}</h2>
           </div>
@@ -644,6 +648,6 @@
     </div>
 
     <script src="https://unpkg.com/vue@3.4.5"></script>
-    <script src="https://coach.rttf.ru/script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
