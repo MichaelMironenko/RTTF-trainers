@@ -310,6 +310,7 @@ const App = {
       trainerName: null,
       isClubsDataFetched: false,
       isSubmitAttempted: false,
+      navigatingSuggestions: false,
       currentSuggestions: [],
       currentSuggestionIndex: -1,
       highlightedSuggestion: -1,
@@ -634,17 +635,21 @@ const App = {
       this.currentSuggestionIndex = -1;
       this.highlightedSuggestion = -1;
     },
-    handleKeyDown(event, index) {
+    handleKeyDown(event) {
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-        event.preventDefault();
+        this.navigatingSuggestions = true;
+        setTimeout(() => {
+          this.navigatingSuggestions = false;
+        }, 300); // Добавьте таймаут
+
         const direction = event.key === "ArrowDown" ? 1 : -1;
         this.highlightedSuggestion =
           (this.highlightedSuggestion +
             direction +
             this.currentSuggestions.length) %
           this.currentSuggestions.length;
-
-        // this.scrollIntoView();
+        event.preventDefault();
+        this.scrollIntoView();
       } else if (event.key === "Enter") {
         if (
           this.highlightedSuggestion >= 0 &&
@@ -683,6 +688,9 @@ const App = {
       return `${suggestion.city} ${suggestion.address}`;
     },
     handleSuggestionsInteraction(event) {
+      if (this.navigatingSuggestions) {
+        return; // Не закрывайте подсказки, если происходит навигация
+      }
       if (this.currentSuggestionIndex < 0 || !this.$refs.suggestionsList) {
         this.closeSuggestions();
         return;
