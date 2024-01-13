@@ -506,7 +506,7 @@
                       autocomplete="off"
                       @input="filterClubs($event.target.value, index)"
                       @keydown="handleKeyDown"
-                      @blur="() => setTimeout(handleSuggestionsInteraction, 300)"
+                      @blur="handleSuggestionsInteraction"
                     />
                     <div v-if="club.error" class="error-message">
                       Клуб не существует или написан с ошибкой
