@@ -805,10 +805,12 @@
           v-if="errorMessage"
           class="save-success-message save-error-message"
         >
-          {{ errorMessage }}
-          <p>
+          <p>Ой, тут такое дело...</p>
+          <p>{{ errorMessage }}</p>
+          <div class="buttons-row">
             <button @click="closeErrorMessage" class="ok-button">Ок</button>
-          </p>
+            <button @click="closeErrorMessage" class="ok-button">Ок</button>
+          </div>
         </div>
       </div>
     </div>
