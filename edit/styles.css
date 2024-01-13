@@ -368,6 +368,7 @@ label {
 .club-address {
   font-size: smaller;
   color: grey;
+  margin-left: 8px;
   /* другие стили для адреса клуба */
 }
 

@@ -594,7 +594,7 @@ const App = {
     filterClubs(value, index, event) {
       if (event.shiftKey) return;
       const selectedClubs = this.sections.clubs.list.map((club) => club.title);
-      console.log(selectedClubs);
+
       const inputWords = value.toLowerCase().trim().split(/\s+/);
 
       if (inputWords.length > 0 && inputWords[0] !== "") {
@@ -619,11 +619,6 @@ const App = {
     },
 
     selectClub(selectedClub) {
-      console.log(
-        selectedClub,
-        this.currentSuggestionIndex,
-        this.sections.clubs.list[this.currentSuggestionIndex].title
-      );
       if (this.currentSuggestionIndex >= 0) {
         this.sections.clubs.list[this.currentSuggestionIndex].id =
           selectedClub.id;
@@ -723,7 +718,6 @@ const App = {
       const clubExists = this.sections.clubs.clubnames.some(
         (club) => club.title === currentClub.title
       );
-      console.log(clubExists, currentClub.title);
 
       if (!clubExists && currentClub.title) {
         // Keep the entered text but add an error state
