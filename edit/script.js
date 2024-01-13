@@ -644,7 +644,7 @@ const App = {
             this.currentSuggestions.length) %
           this.currentSuggestions.length;
 
-        this.scrollIntoView();
+        // this.scrollIntoView();
       } else if (event.key === "Enter") {
         if (
           this.highlightedSuggestion >= 0 &&
