@@ -22,6 +22,8 @@ const app = createApp({
       activeIndex: null,
       subdomain: null,
       activeVideoID: null,
+      showModal: false,
+      errorMessage: "",
     };
   },
 
@@ -364,9 +366,8 @@ const app = createApp({
         const responseData = await response.json();
 
         if (responseData.err) {
-          // Обработка ошибок, если они есть
-          console.error(responseData.err);
-          // Показать сообщение об ошибке пользователю
+          this.errorMessage = data.err;
+          this.showModal = true;
         } else {
           // Успешная отправка данных
           this.submitted = true; // Показываем сообщение об успешной отправке
@@ -398,6 +399,10 @@ const app = createApp({
         event.preventDefault();
         this.handleNavLinkClick(event.target.getAttribute("href"));
       }
+    },
+    closeErrorMessage() {
+      this.errorMessage = "";
+      this.showModal = false;
     },
     handleNavLinkClick(section) {
       const element = document.querySelector(section);

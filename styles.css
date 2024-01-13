@@ -1290,3 +1290,68 @@ textarea {
   color: #333; /* Цвет текста */
   text-align: center;
 }
+
+.save-success-message {
+  color: #155724;
+  background-color: #ffffff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border: 2px solid #155724;
+  line-height: 1.4;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  z-index: 1000;
+  min-width: 300px;
+  text-align: center;
+  box-sizing: border-box;
+  max-width: 80%;
+  font-weight: 500;
+}
+
+.save-error-message {
+  color: #d94e4c;
+  border: 2px solid #d94e4c;
+}
+
+.fade-out {
+  transition: transform 0.3s ease-out;
+  transform: scaleY(0);
+}
+
+.ok-button {
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 0;
+  border-radius: 8px;
+  border: none;
+  background-color: #155724;
+  font-size: 16px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.ok-button:hover {
+  background-color: green;
+}
+
+.ok-button:active {
+  transform: scale(0.98);
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}

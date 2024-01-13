@@ -625,6 +625,20 @@
                 <p>Я свяжусь с вами в ближайшее время</p>
               </div>
             </div>
+            <div
+              v-if="errorMessage"
+              class="modal-backdrop"
+              @click="closeErrorMessage"
+            >
+              <div class="save-success-message save-error-message" @click.stop>
+                <h4 style="margin-top: 8px">Ой, что-то не так</h4>
+                <p style="color: black">{{ errorMessage }}</p>
+
+                <button @click="closeErrorMessage" class="ok-button">
+                  Понял, принял
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
