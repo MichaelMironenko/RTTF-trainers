@@ -807,11 +807,10 @@
         >
           <h4 style="margin-top: 8px">Ой, что-то не так</h4>
           <p style="color: black">{{ errorMessage }}</p>
-          <div class="buttons-row">
-            <button @click="closeErrorMessage" class="ok-button">
-              Понял, принял
-            </button>
-          </div>
+
+          <button @click="closeErrorMessage" class="ok-button">
+            Понял, принял
+          </button>
         </div>
       </div>
     </div>
