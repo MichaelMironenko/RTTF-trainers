@@ -765,6 +765,7 @@ input:checked + .slider:before {
 
 .save-error-message {
   color: #d94e4c;
+  border: 2px solid #d94e4c;
 }
 
 .fade-out {
