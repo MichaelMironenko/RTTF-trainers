@@ -629,6 +629,13 @@ input:checked + .slider:before {
   line-height: 1.5;
 }
 
+.metro-color-icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .autocomplete-wrapper {
   position: relative;
   margin-bottom: 8px;

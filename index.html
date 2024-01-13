@@ -367,10 +367,22 @@
           <div class="locations-container">
             <div class="clubs-container">
               <div v-for="club in clubs.list" :key="club.name" class="club">
-                <a :href="club.link" class="club-name">{{ club.name }}</a>
-                <div class="club-address">{{ club.address }}</div>
-                <div class="club-metro-container">
-                  <img src="images/metro.svg" alt="Метро" class="metro-icon" />
+                <a :href="club.link" class="club-name">{{ club.title }}</a>
+                <div class="club-address">
+                  {{ club.city }} {{ club.address }}
+                </div>
+                <div v-if="club.metro" class="club-metro-container">
+                  <div
+                    v-if="club.metroColor"
+                    class="metro-color-icon"
+                    :style="{ backgroundColor: club.metroColor }"
+                  ></div>
+                  <img
+                    v-else
+                    src="images/metro.svg"
+                    alt="Метро"
+                    class="metro-icon"
+                  />
                   <div class="club-metro">{{ club.metro }}</div>
                 </div>
               </div>
