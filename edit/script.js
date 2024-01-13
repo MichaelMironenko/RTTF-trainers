@@ -677,6 +677,9 @@ const App = {
     delayedBlur() {
       setTimeout(this.handleSuggestionsInteraction, 300);
     },
+    formatAddress(suggestion) {
+      return `${suggestion.city} ${suggestion.address}`;
+    },
     handleSuggestionsInteraction(event) {
       if (this.currentSuggestionIndex < 0 || !this.$refs.suggestionsList) {
         this.closeSuggestions();

@@ -517,17 +517,19 @@
                       class="suggestions"
                       ref="suggestionsList"
                       key="index"
-                    > 
+                    >
                       <li
                         v-for="(suggestion, suggestionIndex) in currentSuggestions"
                         :key="index + '-' + suggestion.id"
                         @click="selectClub(suggestion)"
                         :class="{ 'highlighted': suggestionIndex === highlightedSuggestion }"
+                        v-html="suggestion.title"
                       >
-                        {{ suggestion.title }} 
-                        <span class="club-address"></span>
-                          {{ suggestion.city }} {{ suggestion.address }}</span
+                        <span
+                          class="club-address"
+                          v-html="formatAddress(suggestion)"
                         >
+                        </span>
                       </li>
                     </ul>
                   </div>
