@@ -82,10 +82,17 @@ const PhotoUpload = {
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
 
-            const scaleFactor = 600 / img.width;
-            canvas.width = 600;
-            canvas.height = img.height * scaleFactor;
+            // Определение длинной стороны и коэффициента масштабирования
+            const isWidthLonger = img.width >= img.height;
+            const scaleFactor = isWidthLonger
+              ? 600 / img.width
+              : 600 / img.height;
 
+            // Установка размеров канваса
+            canvas.width = isWidthLonger ? 600 : img.width * scaleFactor;
+            canvas.height = isWidthLonger ? img.height * scaleFactor : 600;
+
+            // Рисование и компрессия изображения
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             const compressedImage = canvas.toDataURL("image/webp", 0.8); // Использование формата WebP
 
