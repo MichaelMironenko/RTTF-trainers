@@ -23,7 +23,7 @@ const app = createApp({
       subdomain: null,
       activeVideoID: null,
       showModal: false,
-      errorMessage: "",
+      errorMessage: null,
     };
   },
 
