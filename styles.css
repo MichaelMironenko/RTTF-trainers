@@ -13,7 +13,7 @@
 }
 
 [v-cloak] {
-  display: none;
+  display: none !important;
 }
 
 * {

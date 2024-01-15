@@ -18,7 +18,7 @@ const app = createApp({
       isNavOpen: false,
       activeDay: 0,
       expandedComment: null,
-      loaded: false,
+      isLoading: false,
       activeIndex: null,
       subdomain: null,
       activeVideoID: null,
@@ -39,7 +39,6 @@ const app = createApp({
       this.adjustAlignment();
       window.addEventListener("resize", this.adjustAlignment);
     });
-    this.loaded = true;
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.adjustAlignment);
@@ -58,6 +57,7 @@ const app = createApp({
   },
   methods: {
     async loadData() {
+      this.isLoading = true;
       try {
         this.subdomain = window.location.hostname.split(".")[0];
         console.log(this.subdomain);
@@ -88,6 +88,8 @@ const app = createApp({
       } catch (e) {
         console.error("Ошибка при загрузке данных: ", e);
       } finally {
+        this.isLoading = false;
+
         setTimeout(() => {
           this.adjustAlignment();
         }, 0);

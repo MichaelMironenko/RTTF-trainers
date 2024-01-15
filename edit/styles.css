@@ -33,6 +33,10 @@ body {
   display: none;
 }
 
+[v-cloak] {
+  display: none !important;
+}
+
 .tab button {
   border: none;
   padding: 8px 12px;
