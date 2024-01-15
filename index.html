@@ -48,9 +48,15 @@
               <a href="#trainings">Тренировки</a>
             </li>
             <li v-if="prices.showBlock"><a href="#prices">Цены</a></li>
-            <li v-if="reviews.showBlock"><a href="#reviews">Отзывы</a></li>
-            <li v-if="clubs.showBlock"><a href="#clubs">Клубы</a></li>
-            <li v-if="videos.showBlock"><a href="#videos">Видео</a></li>
+            <li v-if="reviews.showBlock && reviews.reviewData.length > 0">
+              <a href="#reviews">Отзывы</a>
+            </li>
+            <li v-if="clubs.showBlock && clubs.list.length > 0">
+              <a href="#clubs">Клубы</a>
+            </li>
+            <li v-if="videos.showBlock && videos.videosIDs.length > 0">
+              <a href="#videos">Видео</a>
+            </li>
             <li v-if="faq.showBlock"><a href="#faq">FAQ</a></li>
             <li><a href="#contacts">Контакты</a></li>
           </ul>
@@ -332,7 +338,7 @@
                       <span class="rating-number">{{ review.gameRating }}</span>
                     </div>
                   </div>
-                  <!-- <div class="review-rating">
+                  <div v-if="review.reviewRating > 0" class="review-rating">
                     <img
                       v-for="index in 5"
                       :src="getStarImage(review.reviewRating, index)"
@@ -340,7 +346,7 @@
                       class="player-rating-icon"
                       :key="`star-${review.name}-${index}`"
                     />
-                  </div> -->
+                  </div>
                   <div class="review-date">{{ review.date }}</div>
                 </div>
               </div>
