@@ -23,7 +23,7 @@
 
   <body>
     <div id="app" v-cloak>
-      <div v-if="!isLoading">
+      <div v-show="loaded">
         <!-- Верхнее меню -->
         <nav class="navbar">
           <div class="logo-container">
@@ -283,7 +283,6 @@
             </div>
           </div>
         </div>
-        {{reviews.reviewData.length}}
         <div
           v-if="reviews.showBlock && reviews.reviewData.length > 0"
           id="reviews"

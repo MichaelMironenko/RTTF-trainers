@@ -18,7 +18,7 @@ const app = createApp({
       isNavOpen: false,
       activeDay: 0,
       expandedComment: null,
-      isLoading: false,
+      loaded: false,
       activeIndex: null,
       subdomain: null,
       activeVideoID: null,
@@ -57,7 +57,6 @@ const app = createApp({
   },
   methods: {
     async loadData() {
-      this.isLoading = true;
       try {
         this.subdomain = window.location.hostname.split(".")[0];
         console.log(this.subdomain);
@@ -88,7 +87,7 @@ const app = createApp({
       } catch (e) {
         console.error("Ошибка при загрузке данных: ", e);
       } finally {
-        this.isLoading = false;
+        this.loaded = true;
 
         setTimeout(() => {
           this.adjustAlignment();
