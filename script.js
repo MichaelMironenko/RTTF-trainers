@@ -405,9 +405,12 @@ const app = createApp({
       this.showModal = false;
     },
     handleNavLinkClick(section) {
+      const navbarHeight = document.querySelector(".navbar").offsetHeight;
       const element = document.querySelector(section);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        const elementPosition =
+          element.getBoundingClientRect().top + window.scrollY - navbarHeight;
+        window.scrollTo({ top: elementPosition, behavior: "smooth" });
       }
       this.closeNav();
     },
