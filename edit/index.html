@@ -131,7 +131,7 @@
 
               <!-- Форма загрузки картинки -->
               <photo-upload
-                :label="'Фотография тренера для раздела (JPG, PNG, WebP, не более 10мб.)'"
+                :label="'Фотография тренера на прозрачном фоне в портретной ориентации'"
                 v-model="sections.aboutMe.imageData"
                 :is-avatar="false"
                 :section-id="'aboutMe'"
@@ -200,7 +200,7 @@
 
                 <!-- Форма загрузки картинки -->
                 <photo-upload
-                  :label="'Фотография для раздела (JPG, PNG, WebP, не более 10мб.)'"
+                  :label="'Фото с вами на групповых тренировках'"
                   v-model="sections.groupTraining.imageData"
                   :is-avatar="false"
                   :section-id="'groupTraining'"
@@ -273,7 +273,7 @@
 
                 <!-- Форма загрузки картинки -->
                 <photo-upload
-                  :label="'Фотография для раздела (JPG, PNG, WebP, не более 10мб.)'"
+                  :label="'Фотография с индивидиуальной тренировки'"
                   v-model="sections.individualTraining.imageData"
                   :is-avatar="false"
                   :section-id="'individualTraining'"
@@ -591,7 +591,7 @@
 
                 <!-- Форма загрузки картинки -->
                 <photo-upload
-                  :label="'Фотография для раздела (JPG, PNG, WebP, не более 10мб.)'"
+                  :label="'Фотография для раздела'"
                   v-model="sections.benefitsTT.imageData"
                   :is-avatar="false"
                   :section-id="'benefitsTT'"
