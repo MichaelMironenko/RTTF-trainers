@@ -39,6 +39,7 @@ const app = createApp({
       this.adjustAlignment();
       window.addEventListener("resize", this.adjustAlignment);
     });
+    this.loaded = true;
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.adjustAlignment);
@@ -87,8 +88,6 @@ const app = createApp({
       } catch (e) {
         console.error("Ошибка при загрузке данных: ", e);
       } finally {
-        this.loaded = true;
-
         setTimeout(() => {
           this.adjustAlignment();
         }, 0);
