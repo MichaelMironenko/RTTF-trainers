@@ -87,9 +87,9 @@ const PhotoUpload = {
             canvas.height = img.height * scaleFactor;
 
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const resizedImage = canvas.toDataURL();
+            const compressedImage = canvas.toDataURL("image/webp", 0.8); // Использование формата WebP
 
-            this.$emit("update:modelValue", resizedImage);
+            this.$emit("update:modelValue", compressedImage);
           };
           img.src = e.target.result;
         };
@@ -418,9 +418,7 @@ const App = {
     },
     closeErrorMessage() {
       this.errorMessage = "";
-      console.log("okay");
       this.showModal = false;
-      console.log("show", showModal);
     },
     removeItem(itemIndex, itemsArray) {
       if (itemsArray[itemIndex]) {
