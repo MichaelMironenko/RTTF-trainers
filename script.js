@@ -42,18 +42,18 @@ const app = createApp({
   beforeDestroy() {
     window.removeEventListener("resize", this.adjustAlignment);
   },
-  watch: {
-    trainingsData(newVal) {
-      if (newVal && newVal.length) {
-        this.$nextTick(this.adjustAlignment);
-      }
-    },
-    reviewsData(newVal) {
-      if (newVal && newVal.length) {
-        this.$nextTick(this.adjustAlignment);
-      }
-    },
-  },
+  // watch: {
+  //   trainingsData(newVal) {
+  //     if (newVal && newVal.length) {
+  //       this.$nextTick(this.adjustAlignment);
+  //     }
+  //   },
+  //   reviewsData(newVal) {
+  //     if (newVal && newVal.length) {
+  //       this.$nextTick(this.adjustAlignment);
+  //     }
+  //   },
+  // },
   methods: {
     async loadData() {
       this.isLoading = true;
