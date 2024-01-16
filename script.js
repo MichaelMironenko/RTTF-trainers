@@ -17,7 +17,7 @@ const app = createApp({
       isNavOpen: false,
       activeDay: 0,
       expandedComment: null,
-      isLoading: false,
+      isLoading: true,
       activeIndex: null,
       subdomain: null,
       activeVideoID: null,
