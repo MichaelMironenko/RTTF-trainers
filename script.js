@@ -174,6 +174,7 @@ const app = createApp({
         this.reviews.reviewData = extraData.reviews;
         this.reviews.averageRating = extraData.averageRating;
         this.videos.videoIDs = extraData.videos;
+        console.log(this.reviews, this.videos, this.trainingsData);
         setTimeout(() => {
           this.adjustAlignment();
         }, 0);

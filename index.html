@@ -25,7 +25,89 @@
     <div id="app" v-cloak>
       <div v-if="!isLoading">
         <!-- Верхнее меню -->
-        hello
+        <nav class="navbar">
+          <div class="logo-container">
+            <img
+              v-if="mainInfo.imageData"
+              :src="mainInfo.imageData"
+              :alt="`${mainInfo.name} ${mainInfo.surname}`"
+              class="logo-image"
+            />
+            <div class="logo-text">
+              <span>{{ mainInfo.name.toUpperCase() }}</span>
+              <span>{{ mainInfo.surname.toUpperCase() }}</span>
+            </div>
+          </div>
+          <ul
+            class="nav-links"
+            :class="{ 'active': isNavOpen }"
+            @click="handleNavClick"
+          >
+            <li><a href="#about">Обо мне</a></li>
+            <li v-if="groupTraining.showBlock || individualTraining.showBlock">
+              <a href="#trainings">Тренировки</a>
+            </li>
+            <li v-if="prices.showBlock"><a href="#prices">Цены</a></li>
+            <li v-if="reviews.showBlock && reviews.reviewData.length > 0">
+              <a href="#reviews">Отзывы</a>
+            </li>
+            <li v-if="clubs.showBlock && clubs.list.length > 0">
+              <a href="#clubs">Клубы</a>
+            </li>
+            <li v-if="videos.showBlock && videos.videosIDs.length > 0">
+              <a href="#videos">Видео</a>
+            </li>
+            <li v-if="faq.showBlock"><a href="#faq">FAQ</a></li>
+            <li><a href="#contacts">Контакты</a></li>
+          </ul>
+          <div class="nav-phone">
+            <a
+              v-if="contacts.phone"
+              :href="contacts.phone"
+              target="_blank"
+              class="nav-icon"
+            >
+              <img src="images/logo-whatsapp.svg" alt="WhatsApp" />
+            </a>
+
+            <a
+              v-if="contacts.telegram"
+              :href="contacts.telegram"
+              target="_blank"
+              class="nav-icon"
+            >
+              <img src="images/logo-telegram.svg" alt="Telegram" />
+            </a>
+            <a v-if="contacts.phone" :href="`tel:${contacts.phoneNumber}`"
+              >{{ contacts.phone }}</a
+            >
+          </div>
+
+          <div class="nav-hamburger" @click="toggleNav">☰</div>
+          <div
+            class="nav-close"
+            :class="{ 'active': isNavOpen }"
+            @click="closeNav"
+          >
+            ✕
+          </div>
+        </nav>
+
+        <footer class="site-footer">
+          <div class="footer-content">
+            <a href="https://rttf.ru"
+              ><img
+                src="images/rttf-logo.png"
+                alt="RTTF Logo"
+                class="footer-logo"
+              />
+            </a>
+            <div class="footer-text">
+              Тренер по настольному теннису {{ mainInfo.name }} {{
+              mainInfo.surname }} © 2024
+            </div>
+          </div>
+        </footer>
       </div>
       <!-- конец app vue-->
     </div>
