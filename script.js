@@ -80,13 +80,14 @@ const app = createApp({
         this.faq = data.sections.faq;
         this.videos = data.sections.videos;
         this.contacts = data.sections.contacts;
-        console.log(this.mainInfo);
+
         await this.loadAndProcessExtraData();
 
         // Продолжение присваивания данных, если это необходимо...
       } catch (e) {
         console.error("Ошибка при загрузке данных: ", e);
       } finally {
+        console.log(this.reviews);
         this.isLoading = false;
         console.log("isLoading =", this.isLoading);
         setTimeout(() => {
