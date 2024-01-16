@@ -90,7 +90,7 @@ const app = createApp({
         console.error("Ошибка при загрузке данных: ", e);
       } finally {
         this.isLoading = false;
-        console.log("isLoading =", isLoading);
+        console.log("isLoading =", this.isLoading);
         setTimeout(() => {
           this.adjustAlignment();
         }, 0);
