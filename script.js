@@ -63,7 +63,7 @@ const app = createApp({
         console.log(this.subdomain);
         const dataUrl = `/json/${this.subdomain}.json`;
         const response = await fetch(dataUrl);
-
+        console.log(response);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
