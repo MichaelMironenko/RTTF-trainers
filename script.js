@@ -63,11 +63,12 @@ const app = createApp({
         console.log(this.subdomain);
         const dataUrl = `/json/${this.subdomain}.json`;
         const response = await fetch(dataUrl);
-        console.log(response);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log(data);
 
         // Присваивание данных к вашим переменным
         this.mainInfo = data.sections.mainInfo;
