@@ -182,20 +182,20 @@ const app = createApp({
       }
     },
 
-    // setMeta(metaName, content) {
-    //   let metas = document.getElementsByTagName("meta");
-    //   for (let i = 0; i < metas.length; i++) {
-    //     if (metas[i].getAttribute("name") === metaName) {
-    //       metas[i].setAttribute("content", content);
-    //       return;
-    //     }
-    //   }
-    //   // Если мета-тег не найден, создаем новый
-    //   let meta = document.createElement("meta");
-    //   meta.setAttribute("name", metaName);
-    //   meta.setAttribute("content", content);
-    //   document.getElementsByTagName("head")[0].appendChild(meta);
-    // },
+    setMeta(metaName, content) {
+      let metas = document.getElementsByTagName("meta");
+      for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute("name") === metaName) {
+          metas[i].setAttribute("content", content);
+          return;
+        }
+      }
+      // Если мета-тег не найден, создаем новый
+      let meta = document.createElement("meta");
+      meta.setAttribute("name", metaName);
+      meta.setAttribute("content", content);
+      document.getElementsByTagName("head")[0].appendChild(meta);
+    },
     switchDay(index) {
       this.activeDay = index;
     },
@@ -415,9 +415,9 @@ const app = createApp({
     },
   },
   computed: {
-    // isCommentLong() {
-    //   return (comment) => comment.length > 200;
-    // },
+    isCommentLong() {
+      return (comment) => comment.length > 200;
+    },
     formattedAboutText() {
       // Use double <br> to create a space between paragraphs
       return this.aboutMe.description.replace(/\n/g, "<br>");
