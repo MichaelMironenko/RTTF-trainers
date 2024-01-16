@@ -1,4 +1,3 @@
-console.log("start loading");
 const { createApp } = Vue;
 
 const app = createApp({
@@ -69,7 +68,6 @@ const app = createApp({
         }
         const data = await response.json();
         console.log(data);
-
         // Присваивание данных к вашим переменным
         this.mainInfo = data.sections.mainInfo;
         this.aboutMe = data.sections.aboutMe;
@@ -82,7 +80,7 @@ const app = createApp({
         this.faq = data.sections.faq;
         this.videos = data.sections.videos;
         this.contacts = data.sections.contacts;
-
+        console.log(this.mainInfo);
         await this.loadAndProcessExtraData();
 
         // Продолжение присваивания данных, если это необходимо...
