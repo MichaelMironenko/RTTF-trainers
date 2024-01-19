@@ -389,13 +389,12 @@ const App = {
         this.sections = JSON.parse(localStorage.getItem("sections"));
       }
     },
-    saveToLocalStorage() {
-      // localStorage.setItem("sections", JSON.stringify(this.sections));
-
+    saveData() {
       const trainer = this.trainerName;
       const pwdMatch = document.cookie.match(/user_pass=([^;]+)/);
       const pwd = pwdMatch ? pwdMatch[1] : "";
       const json = JSON.stringify({ sections: this.sections });
+      console.log(json);
       localStorage.setItem("sections", JSON.stringify(this.sections));
       fetch("/php/edit.php", {
         method: "POST",
@@ -526,7 +525,7 @@ const App = {
         }
 
         if (isValid) {
-          this.saveToLocalStorage();
+          this.saveData();
           this.isSubmitAttempted = false;
         } else if (firstErrorElementId) {
           this.$nextTick(() => {
@@ -535,7 +534,7 @@ const App = {
         }
       } else {
         // Если showBlock определен и равен false, сохраняем без валидации
-        this.saveToLocalStorage();
+        this.saveData();
       }
     },
 
